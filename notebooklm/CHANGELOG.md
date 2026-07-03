@@ -1,3 +1,25 @@
+﻿
+## [2026-07-03] - AtualizaÃ§Ã£o de contexto e templates de domÃ­nio
+
+### Adicionado
+- InstruÃ§Ã£o de idioma: queries devem ser formuladas em portuguÃªs do Brasil
+- Templates de query por domÃ­nio: jurÃ­dico-policial, concurso pÃºblico, conteÃºdo digital (Instagram/TikTok/YouTube) e IA/produtividade (Claude/ECC/skills)
+- Pipelines de integraÃ§Ã£o com outras skills: `relatorio-final-ip`, `instagram-autoridade`, `mapa-mental`
+- Tabela de estrutura de biblioteca recomendada (7 notebooks por domÃ­nio de uso)
+- Triggers em portuguÃªs adicionados Ã  seÃ§Ã£o "When to Use"
+- Mensagem de browser em portuguÃªs no Step 2
+- Entrada de troubleshooting para "Resposta em inglÃªs"
+- Decision Flow reescrito em portuguÃªs com etapa de identificaÃ§Ã£o de domÃ­nio
+
+### Modificado
+- Best Practices ampliadas com orientaÃ§Ãµes de organizaÃ§Ã£o por domÃ­nio e integraÃ§Ã£o de skills
+- SeÃ§Ã£o de recursos (Resources) simplificada
+
+### Contexto
+- AtualizaÃ§Ã£o baseada em anÃ¡lise do notebook NotebookLM do usuÃ¡rio
+  (Claude Code + NotebookLM = HACK DESBLOQUEADO) e padrÃµes de uso diÃ¡rio
+  identificados: trabalho policial/jurÃ­dico, preparo para concurso,
+  criaÃ§Ã£o de conteÃºdo digital e pesquisa sobre IA/Claude Code.
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -42,3 +64,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Notebook library management
 - Knowledge base preparation tools
 - Google authentication with persistent sessions
+

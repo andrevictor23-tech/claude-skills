@@ -4,15 +4,21 @@ description: Create beautiful visual art in .png and .pdf documents using design
 license: Complete terms in LICENSE.txt
 ---
 
-These are instructions for creating design philosophies - aesthetic movements that are then EXPRESSED VISUALLY. Output only .md files, .pdf files, and .png files.
+## When to Use This Skill
+
+Use when the user asks to create a poster, piece of art, design, or other static visual piece. Output only .md files, .pdf files, and .png files — never copy an existing artist's work.
+
+These are instructions for creating design philosophies - aesthetic movements that are then EXPRESSED VISUALLY.
+
+## Workflow Overview
 
 Complete this in two steps:
-1. Design Philosophy Creation (.md file)
-2. Express by creating it on a canvas (.pdf file or .png file)
+1. **Design Philosophy Creation** (.md file) — see "Design Philosophy Creation" below
+2. **Canvas Creation** — express the philosophy visually as a .pdf or .png file — see "Canvas Creation" below
 
 First, undertake this task:
 
-## DESIGN PHILOSOPHY CREATION
+## Design Philosophy Creation
 
 To begin, create a VISUAL PHILOSOPHY (not layouts or templates) that will be interpreted through:
 - Form, space, color, composition
@@ -86,7 +92,7 @@ Visual expression: Grid-based precision, bold photography or stark graphics, dra
 
 ---
 
-## DEDUCING THE SUBTLE REFERENCE
+## Deducing the Subtle Reference
 
 **CRITICAL STEP**: Before creating the canvas, identify the subtle conceptual thread from the original request.
 
@@ -97,7 +103,7 @@ This is **VERY IMPORTANT**: The reference must be refined so it enhances the wor
 
 ---
 
-## CANVAS CREATION
+## Canvas Creation
 
 With both the philosophy and the conceptual framework established, express it on a canvas. Take a moment to gather thoughts and clear the mind. Use the design philosophy created and the instructions below to craft a masterpiece, embodying all aspects of the philosophy with expert craftsmanship.
 
@@ -117,7 +123,7 @@ Output the final result as a single, downloadable .pdf or .png file, alongside t
 
 ---
 
-## FINAL STEP
+## Final Step
 
 **IMPORTANT**: The user ALREADY said "It isn't perfect enough. It must be pristine, a masterpiece if craftsmanship, as if it were about to be displayed in a museum."
 
@@ -125,6 +131,6 @@ Output the final result as a single, downloadable .pdf or .png file, alongside t
 
 Take a second pass. Go back to the code and refine/polish further to make this a philosophically designed masterpiece.
 
-## MULTI-PAGE OPTION
+## Multi-Page Option
 
 To create additional pages when requested, create more creative pages along the same lines as the design philosophy but distinctly different as well. Bundle those pages in the same .pdf or many .pngs. Treat the first page as just a single page in a whole coffee table book waiting to be filled. Make the next pages unique twists and memories of the original. Have them almost tell a story in a very tasteful way. Exercise full creative freedom.

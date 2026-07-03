@@ -130,6 +130,8 @@ Se o usuário pedir "mapa mental em texto", "mapa simples" ou "mapa no chat":
 
 ## Fluxo de Trabalho
 
+> Esta seção resume o processo passo a passo. Os detalhes de fundamentação (acima) e de formato/técnica (abaixo) são consultados dentro de cada passo conforme indicado.
+
 ### Passo 1: Receber o Input
 O input pode ser:
 - **Tema livre**: "Faça um mapa mental de Direito Penal - Crimes contra a pessoa"

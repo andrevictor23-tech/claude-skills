@@ -43,7 +43,7 @@ Para tabelas de tipos e fundamentos recorrentes, consulte `references/modelos.md
 
 ### Passo 4 — Escolher o desfecho
 
-São cinco desfechos típicos da unidade. Escolha o cabível:
+São seis desfechos típicos da unidade. Escolha o cabível:
 
 | Desfecho | Quando | Sinal no despacho |
 |---|---|---|
@@ -51,7 +51,8 @@ São cinco desfechos típicos da unidade. Escolha o cabível:
 | **APF + representação pela preventiva** | APF + risco concreto (reiteração, vida pregressa, risco à vítima, VD) | "é caso para REPRESENTAÇÃO PELA PRISÃO PREVENTIVA" |
 | **TCO** (termo circunstanciado) | Infração de menor potencial ofensivo (pena ≤ 2 anos), ex.: uso de droga art. 28, lesão simples | "Lavre-se TERMO CIRCUNSTANCIADO DE OCORRÊNCIA" |
 | **BOC** (boletim de ocorrência circunstanciado) | Ato infracional por adolescente (ECA, Lei 8.069/90) | "Lavre-se BOLETIM DE OCORRÊNCIA CIRCUNSTANCIADO... ato infracional análogo a..." |
-| **Instaurar IP / deixar de instaurar** | Sem flagrância (apurar por IP) OU ausente condição de procedibilidade (não instaura) | "deixo de instaurar procedimento" / "concluso para análise quanto à instauração" |
+| **Instaurar IP** | Sem flagrância, mas há indício de crime a apurar | "concluso para análise quanto à instauração" |
+| **Deixar de instaurar** | Sem flagrância E ausente condição de procedibilidade | "deixo de instaurar procedimento" |
 
 Um mesmo evento pode gerar desfechos diferentes para pessoas diferentes (ex.: traficante → APF; usuários → TCO; adolescente → BOC). Trate cada envolvido na sua linha.
 

@@ -7,7 +7,16 @@ description: Análise completa de carteira de investimentos baseada na filosofia
 
 Skill para análise de carteira seguindo a filosofia Bastter + Canal do Holder + Fundamentei, com foco em acumulação de patrimônio de longo prazo e possibilidade de meta financeira definida (ex: compra de imóvel).
 
-## IMPORTANTE — DISCLAIMERS
+## When to Use
+
+Ative esta skill sempre que o usuário:
+- Mencionar Bastter System, carteira de investimentos, análise de portfólio, balanceamento, aporte mensal, diversificação, renda variável/fixa, FIIs, Stocks, REITs, buy and hold ou análise fundamentalista;
+- Colar dados do Bastter System (PDF, texto, planilha, print de tela);
+- Perguntar onde aportar, se deve vender um ativo, ou como está a saúde/o patrimônio da carteira — mesmo em frases curtas como "analisa minha carteira" ou "o que comprar esse mês".
+
+Aplica-se a carteiras com ações brasileiras, FIIs, Tesouro Direto, Stocks, REITs e ETFs.
+
+## Disclaimers Obrigatórios
 
 Antes de qualquer análise, incluir SEMPRE:
 
