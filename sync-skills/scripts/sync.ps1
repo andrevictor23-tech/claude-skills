@@ -16,7 +16,7 @@ Set-Location $repo
 $dirty = git status --porcelain
 if ($dirty) {
     git add -A
-    $msg = "sync: $env:COMPUTERNAME $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+    $msg = "sync: $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
     git commit -m $msg | Out-Null
     if ($LASTEXITCODE -ne 0) {
         Write-Output "ERRO no commit (identidade git configurada? git config --global user.name/email)."

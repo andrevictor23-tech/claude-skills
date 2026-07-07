@@ -1,4 +1,6 @@
-# Estrutura dos Arquivos CSV do COAF — Exemplos Reais
+# Estrutura dos Arquivos CSV do COAF — Estrutura e Exemplos
+
+> Todos os dados abaixo (nomes, CPFs, contas, valores e números de ocorrência) são fictícios, criados apenas para ilustrar o formato dos arquivos.
 
 ## Características Técnicas dos Arquivos
 
@@ -16,10 +18,10 @@ Indexador;cpfCnpjEnvolvido;nomeEnvolvido;tipoEnvolvido;agenciaEnvolvido;contaEnv
 
 ### Exemplo de dados
 ```
-1;222.333.444-99;GUSTAVO GONCALVES NETO;Sacador;-;-;-;-;Não;Não;Não
-1;222.333.444-99;GUSTAVO GONCALVES NETO;Responsável;-;-;-;-;-;Não;-
-1;222.333.444-99;GUSTAVO GONCALVES NETO;Titular;1234;999999;11/05/2010;07/02/2020;-;Não;-
-2;500.500.500-55;TITO SILVEIRA;Responsável;-;-;-;-;Não;Não;Não
+1;222.333.444-99;FULANO DE TAL;Sacador;-;-;-;-;Não;Não;Não
+1;222.333.444-99;FULANO DE TAL;Responsável;-;-;-;-;-;Não;-
+1;222.333.444-99;FULANO DE TAL;Titular;1234;999999;11/05/2010;07/02/2020;-;Não;-
+2;500.500.500-55;SICRANO DA SILVA;Responsável;-;-;-;-;Não;Não;Não
 2;88.888.888/0001-35;EMPRESA Y;Titular;-;-;-;-;-;Não;-
 ```
 
@@ -78,11 +80,11 @@ Indexador;idOcorrencia;Ocorrencia
 ## Relação entre os Arquivos
 
 ```
-Indexador 1 ──┬── Envolvidos: Gustavo (Sacador, Responsável, Titular)
+Indexador 1 ──┬── Envolvidos: Fulano (Sacador, Responsável, Titular)
               ├── Comunicação: id=12345678, Saque de R$270.000, Belém/PA
               └── Ocorrência: 1159 - Saque >= R$50.000
 
-Indexador 2 ──┬── Envolvidos: Tito (Responsável), Empresa Y (Titular), Gustavo (Depositante)
+Indexador 2 ──┬── Envolvidos: Sicrano (Responsável), Empresa Y (Titular), Fulano (Depositante)
               ├── Comunicação: id=33333333, Depósito de R$50.000, Carauari/AM
               └── Ocorrência: 1161 - Depósito >= R$50.000
 ```

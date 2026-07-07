@@ -18,7 +18,7 @@ Biblioteca de skills para o Claude Code voltada à produção de documentos de P
 | relatorio-final-ip | Relatórios finais de inquérito policial, com templates por unidade e checklist por tipo penal, incluindo violência doméstica sob a Lei 14.994/2024 |
 | analise-rif | Análise de Relatórios de Inteligência Financeira do COAF (CSVs de envolvidos, comunicações e ocorrências), com Relatório de Análise Financeira em .docx segundo as tipologias da Carta Circular BACEN 4.001/2020 |
 | mapa-mental | Mapas mentais interativos em HTML/SVG para revisão de conteúdo jurídico |
-| revisao-espacada | Motor de repetição espaçada em Python, com caderno de erros, para preparação de concursos |
+| simulado-quiz | Simulados interativos em HTML gerados a partir de materiais de curso, para preparação de concursos |
 
 ## Instalação
 
@@ -41,6 +41,10 @@ Instaladas, as skills são acionadas pelo contexto da conversa ou por comando. E
 2. Os templates carregam convenções da minha unidade (cabeçalhos, fraseologia). Adapte antes de usar em outra delegacia ou escritório.
 3. Todo documento gerado é minuta e exige revisão da autoridade ou do profissional responsável antes de qualquer uso oficial.
 4. Dados de casos reais estão sujeitos a sigilo funcional e à LGPD (Lei 13.709/2018). Este repositório não contém dados de casos. Fora de ambiente institucional controlado, use apenas dados anonimizados.
+
+## Skills de terceiros
+
+As pastas `ecc/` (Everything Claude Code, de Affaan Mustafa, MIT), `notebooklm/`, `canvas-design/`, `internal-comms/`, `skill-creator/`, `doc-coauthoring/`, `find-skills/` e `prompt-master/` contêm skills de terceiros que uso no dia a dia, mantidas aqui por conveniência de sincronização, com licenças e créditos preservados nas respectivas pastas. As skills autorais deste repositório são as listadas na tabela acima.
 
 ## Licença
 
