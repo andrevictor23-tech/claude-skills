@@ -16,7 +16,7 @@ DELEGACIA DE POLÍCIA DE ALTA FLORESTA
 Rodapé de página:
 ```
 Rua D-04, 407 - Bairro Setor D - Alta Floresta/MT 78580-000
-Telefone(s): (66)3521-2909  (66)3521-2901  E-mail(s): dmaltafloresta@pjc.mt.gov.br
+Telefone(s): [telefone da unidade]  E-mail(s): [e-mail da unidade]
 ```
 
 > **ATENÇÃO**: O cabeçalho e rodapé da Delegacia de Polícia diferem do NEAMV. Verificar
@@ -176,7 +176,7 @@ nos termos da legislação vigente.
 | Elemento | NEAMV | Delegacia de Polícia |
 |----------|-------|----------------------|
 | Cabeçalho | "NÚCLEO ESPECIALIZADO DE ATENDIMENTO À MULHER E VULNERÁVEIS DE ALTA FLORESTA" | "DELEGACIA DE POLÍCIA DE ALTA FLORESTA" |
-| Telefone rodapé | (65)98173-0372 | (66)3521-2909 / (66)3521-2901 |
+| Telefone rodapé | [telefone do NEAMV] | [telefones da Delegacia] |
 | Numeração IP | 392.4.20XX.XXXX | 55.4.20XX.XXXX |
 | Depoimento da vítima | Verbatim em itálico entre aspas | Resumo narrativo (sem transcrição literal) |
 | Introdução | "A presente investigação criminal se iniciou após a notícia de que..." | "Trata-se de inquérito policial instaurado sob o nº..." |

@@ -16,7 +16,7 @@ NÚCLEO ESPECIALIZADO DE ATENDIMENTO À MULHER E VULNERÁVEIS DE ALTA FLORESTA
 Rodapé de página:
 ```
 Rua D-4, 407 - Delegacia Municipal de Alta Floresta - Bairro Setor D - Alta Floresta/MT 78580-000
-Telefone(s): (65)98173-0372  E-mail(s): dmaltafloresta@pjc.mt.gov.br
+Telefone(s): [telefone da unidade]  E-mail(s): [e-mail da unidade]
 ```
 
 ---
