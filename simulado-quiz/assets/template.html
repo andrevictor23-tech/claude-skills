@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>__TITLE__</title>
+<style>
+  :root { --bg:#0f172a; --card:#1e293b; --card2:#273549; --txt:#e2e8f0; --mut:#94a3b8;
+          --acc:#38bdf8; --ok:#22c55e; --err:#ef4444; --star:#fbbf24; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--txt); font-family:'Segoe UI',system-ui,sans-serif; line-height:1.55; }
+  .wrap { max-width:860px; margin:0 auto; padding:20px 16px 80px; }
+  h1 { font-size:1.35rem; color:var(--acc); margin-bottom:4px; }
+  .sub { color:var(--mut); font-size:.9rem; margin-bottom:16px; }
+  .bar { background:var(--card); border-radius:10px; padding:10px 14px; display:flex; gap:16px;
+         flex-wrap:wrap; align-items:center; margin-bottom:16px; font-size:.9rem; }
+  .bar b.ok { color:var(--ok); } .bar b.err { color:var(--err); }
+  select,button { background:var(--card2); color:var(--txt); border:1px solid #334155;
+         border-radius:8px; padding:6px 12px; font-size:.9rem; cursor:pointer; }
+  button:hover { border-color:var(--acc); }
+  .nav { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; }
+  .nav button { width:42px; padding:6px 0; text-align:center; }
+  .nav button.cur { border-color:var(--acc); color:var(--acc); font-weight:700; }
+  .nav button.acertou { background:#14532d; } .nav button.errou { background:#7f1d1d; }
+  .card { background:var(--card); border-radius:12px; padding:20px; margin-bottom:16px; }
+  .qhead { display:flex; justify-content:space-between; color:var(--acc); font-weight:700; margin-bottom:10px; }
+  .qhead .mat { color:var(--mut); font-weight:400; font-size:.85rem; }
+  .stem { white-space:pre-wrap; margin-bottom:16px; }
+  .alt { display:block; width:100%; text-align:left; margin-bottom:8px; padding:10px 14px;
+         border-radius:8px; background:var(--card2); border:1px solid #334155; color:var(--txt); }
+  .alt:hover { border-color:var(--acc); }
+  .alt.sel { border-color:var(--acc); background:#164e63; }
+  .alt.certa { border-color:var(--ok); background:#14532d; }
+  .alt.errada { border-color:var(--err); background:#7f1d1d; }
+  .alt b { margin-right:8px; }
+  .fb { border-radius:8px; padding:12px 14px; margin-top:12px; font-weight:600; }
+  .fb.ok { background:#14532d; color:#bbf7d0; } .fb.err { background:#7f1d1d; color:#fecaca; }
+  .coment { background:var(--card2); border-left:3px solid var(--acc); border-radius:0 8px 8px 0;
+            padding:12px 14px; margin-top:12px; white-space:pre-wrap; font-size:.92rem; color:#cbd5e1; }
+  .chave { border-left-color:var(--star); }
+  .chave b { color:var(--star); }
+  .acoes { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+  .hid { display:none; }
+  .rev-q { margin-bottom:28px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>__TITLE__</h1>
+  <div class="sub" id="sub"></div>
+  <div class="bar">
+    <span>Respondidas: <b id="nResp">0</b>/<b id="nTot">0</b></span>
+    <span>Acertos: <b class="ok" id="nOk">0</b></span>
+    <span>Erros: <b class="err" id="nErr">0</b></span>
+    <select id="fMat" class="hid"><option value="">Todas as matérias</option></select>
+    <button onclick="exportarErros()">Exportar erros</button>
+    <button onclick="zerar()">Zerar progresso</button>
+  </div>
+  <div class="nav" id="nav"></div>
+  <div id="area"></div>
+</div>
+<script>
+const MODE = "__MODE__";
+const DATA = __QUIZ_DATA__;
+const KEY = "quiz-" + "__TITLE__".replace(/\W+/g, "-").toLowerCase();
+
+let all = [];
+DATA.forEach(sim => sim.questoes.forEach(q => all.push({...q, sim: sim.id, uid: sim.id + "#" + q.numero})));
+let state = JSON.parse(localStorage.getItem(KEY) || "{}");
+let filtro = "", cur = 0;
+
+const mats = [...new Set(all.map(q => q.materia).filter(Boolean))];
+if (mats.length) {
+  const s = document.getElementById("fMat");
+  s.classList.remove("hid");
+  mats.forEach(m => { const o = document.createElement("option"); o.value = o.textContent = m; s.appendChild(o); });
+  s.onchange = () => { filtro = s.value; cur = 0; render(); };
+}
+
+function vis() { return filtro ? all.filter(q => q.materia === filtro) : all; }
+function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+
+function stats() {
+  const v = vis();
+  let ok = 0, err = 0;
+  v.forEach(q => { const r = state[q.uid]; if (r) (r === q.gabarito ? ok++ : err++); });
+  document.getElementById("nResp").textContent = ok + err;
+  document.getElementById("nTot").textContent = v.length;
+  document.getElementById("nOk").textContent = ok;
+  document.getElementById("nErr").textContent = err;
+  document.getElementById("sub").textContent = DATA.map(s => s.id).join(" + ") + (MODE === "revisao" ? " — caderno de revisão" : "");
+}
+
+function renderNav() {
+  const nav = document.getElementById("nav");
+  nav.innerHTML = "";
+  vis().forEach((q, i) => {
+    const b = document.createElement("button");
+    b.textContent = q.numero;
+    const r = state[q.uid];
+    if (r) b.className = r === q.gabarito ? "acertou" : "errou";
+    if (i === cur) b.className += " cur";
+    b.onclick = () => { cur = i; render(); };
+    nav.appendChild(b);
+  });
+}
+
+function esc(t) { const d = document.createElement("div"); d.textContent = t || ""; return d.innerHTML; }
+
+function cardHTML(q, revelado) {
+  const r = state[q.uid];
+  let h = `<div class="card"><div class="qhead"><span>Questão ${q.numero} <span class="mat">(${q.sim}${q.materia ? " · " + esc(q.materia) : ""})</span></span></div>`;
+  h += `<div class="stem">${esc(q.enunciado)}</div>`;
+  for (const [L, txt] of Object.entries(q.alternativas || {})) {
+    let cls = "alt";
+    if (revelado) {
+      if (L === q.gabarito) cls += " certa";
+      else if (r === L) cls += " errada";
+    } else if (r === L) cls += " sel";
+    h += `<button class="${cls}" onclick="marcar('${q.uid}','${L}')" ${revelado ? "disabled" : ""}><b>${L})</b>${esc(txt)}</button>`;
+  }
+  if (revelado) {
+    const acertou = r === q.gabarito;
+    h += `<div class="fb ${acertou ? "ok" : "err"}">${acertou ? "✔ Você acertou!" : "✘ Você marcou " + (r || "—") + ". Gabarito: " + (q.gabarito || "não extraído")}</div>`;
+    if (q.comentario) h += `<div class="coment"><b>Espelho:</b>\n${esc(q.comentario)}</div>`;
+  }
+  h += `</div>`;
+  return h;
+}
+
+function render() {
+  stats(); renderNav();
+  const area = document.getElementById("area");
+  const v = vis();
+  if (!v.length) { area.innerHTML = "<div class='card'>Nenhuma questão neste filtro.</div>"; return; }
+  if (MODE === "revisao") {
+    area.innerHTML = v.map(q => `<div class="rev-q">${cardHTML(q, true)}</div>`).join("");
+    return;
+  }
+  const q = v[Math.min(cur, v.length - 1)];
+  const revelado = !!state[q.uid];
+  let h = cardHTML(q, revelado);
+  h += `<div class="acoes">`;
+  if (cur > 0) h += `<button onclick="cur--;render()">← Anterior</button>`;
+  if (cur < v.length - 1) h += `<button onclick="cur++;render()">Próxima →</button>`;
+  h += `</div>`;
+  area.innerHTML = h;
+}
+
+function marcar(uid, L) {
+  if (state[uid]) return;
+  state[uid] = L; save(); render();
+}
+
+function exportarErros() {
+  const erros = all.filter(q => state[q.uid] && state[q.uid] !== q.gabarito)
+                   .map(q => ({sim: q.sim, numero: q.numero, marcada: state[q.uid], gabarito: q.gabarito}));
+  const blob = new Blob([JSON.stringify(erros, null, 1)], {type: "application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = KEY + "-erros.json";
+  a.click();
+}
+
+function zerar() {
+  if (confirm("Apagar todo o progresso deste quiz?")) { state = {}; save(); cur = 0; render(); }
+}
+
+render();
+</script>
+</body>
+</html>
