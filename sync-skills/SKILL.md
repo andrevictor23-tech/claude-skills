@@ -7,6 +7,8 @@ description: Sincroniza as skills do Claude entre as máquinas do usuário via g
 
 O usuário mantém `~/.claude/skills` como clone de `https://github.com/andrevictor23-tech/claude-skills.git` em 3 máquinas. A pasta `ecc/` é subpasta rastreada do mesmo repo (não é repo separado).
 
+O script também sincroniza um segundo repo: `~/Documents/DELEGACIA`, clone de `https://github.com/andrevictor23-tech/delegacia-claude-workspace.git` (**privado** — workspace institucional com CLAUDE.md aninhados). Se a pasta ainda não existir na máquina, o script clona automaticamente. O `.gitignore` desse repo é lista branca (só `.md` sobe), então arquivos de casos reais na pasta nunca são enviados.
+
 ## Procedimento
 
 Execute o script pronto:

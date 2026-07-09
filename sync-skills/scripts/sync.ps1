@@ -1,61 +1,96 @@
-# Sincroniza ~/.claude/skills com o GitHub (claude-skills).
+# Sincroniza os repos do usuario com o GitHub:
+#   1. ~/.claude/skills            (claude-skills)
+#   2. ~/Documents/DELEGACIA       (delegacia-claude-workspace, privado)
 # Seguro por padrao: commit local -> pull --rebase --autostash -> push.
 # Em conflito, aborta o rebase e reporta, sem perder nada.
 
 $ErrorActionPreference = 'Stop'
-$repo = Join-Path $env:USERPROFILE '.claude\skills'
+$global:exitCode = 0
 
-if (-not (Test-Path (Join-Path $repo '.git'))) {
-    Write-Output "ERRO: $repo nao e um repositorio git."
-    exit 1
-}
+function Sync-Repo {
+    param([string]$repo, [string]$label)
 
-Set-Location $repo
+    Write-Output ""
+    Write-Output "########## $label ##########"
 
-# 1. Commit local, se houver mudancas
-$dirty = git status --porcelain
-if ($dirty) {
-    git add -A
-    $msg = "sync: $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
-    git commit -m $msg | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "ERRO no commit (identidade git configurada? git config --global user.name/email)."
-        exit 1
+    if (-not (Test-Path (Join-Path $repo '.git'))) {
+        Write-Output "ERRO: $repo nao e um repositorio git."
+        $global:exitCode = 1
+        return
     }
-    Write-Output "Commit local criado: $msg"
-    Write-Output ($dirty | Out-String)
+
+    Set-Location $repo
+
+    # 1. Commit local, se houver mudancas
+    $dirty = git status --porcelain
+    if ($dirty) {
+        git add -A
+        $msg = "sync: $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+        git commit -m $msg | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            Write-Output "ERRO no commit (identidade git configurada? git config --global user.name/email)."
+            $global:exitCode = 1
+            return
+        }
+        Write-Output "Commit local criado: $msg"
+        Write-Output ($dirty | Out-String)
+    } else {
+        Write-Output "Nenhuma mudanca local para commitar."
+    }
+
+    $before = git rev-parse HEAD
+
+    # 2. Pull com rebase (autostash cobre sobras nao commitadas)
+    git fetch origin
+    git pull --rebase --autostash
+    if ($LASTEXITCODE -ne 0) {
+        Write-Output "CONFLITO no rebase. Abortando para preservar o estado local."
+        git rebase --abort
+        Write-Output "Repo restaurado. Veja os arquivos em conflito acima e resolva manualmente (SKILL.md da sync-skills)."
+        $global:exitCode = 2
+        return
+    }
+
+    # 3. Push
+    git push origin HEAD
+    if ($LASTEXITCODE -ne 0) {
+        Write-Output "ERRO no push. Verifique credenciais/conexao."
+        $global:exitCode = 3
+        return
+    }
+
+    # 4. Resumo
+    $after = git rev-parse HEAD
+    Write-Output ""
+    Write-Output "=== SYNC CONCLUIDO: $label ==="
+    $received = git log --oneline "$before..$after" 2>$null
+    if ($received) {
+        Write-Output "Novidades recebidas/aplicadas:"
+        Write-Output ($received | Out-String)
+    } else {
+        Write-Output "Repo ja estava atualizado."
+    }
+    git status --short --branch | Select-Object -First 3
+}
+
+# --- Repo 1: skills ---
+Sync-Repo -repo (Join-Path $env:USERPROFILE '.claude\skills') -label 'claude-skills'
+
+# --- Repo 2: workspace DELEGACIA (clona se ainda nao existir nesta maquina) ---
+$delegacia = Join-Path $env:USERPROFILE 'Documents\DELEGACIA'
+if (-not (Test-Path (Join-Path $delegacia '.git'))) {
+    Write-Output ""
+    Write-Output "########## delegacia-claude-workspace ##########"
+    Write-Output "Repo ainda nao existe nesta maquina. Clonando..."
+    git clone https://github.com/andrevictor23-tech/delegacia-claude-workspace.git $delegacia
+    if ($LASTEXITCODE -ne 0) {
+        Write-Output "ERRO ao clonar delegacia-claude-workspace. Verifique credenciais (repo privado)."
+        $global:exitCode = 3
+    } else {
+        Write-Output "Clonado em $delegacia"
+    }
 } else {
-    Write-Output "Nenhuma mudanca local para commitar."
+    Sync-Repo -repo $delegacia -label 'delegacia-claude-workspace'
 }
 
-$before = git rev-parse HEAD
-
-# 2. Pull com rebase (autostash cobre sobras nao commitadas)
-git fetch origin
-git pull --rebase --autostash
-if ($LASTEXITCODE -ne 0) {
-    Write-Output "CONFLITO no rebase. Abortando para preservar o estado local."
-    git rebase --abort
-    Write-Output "Repo restaurado. Veja os arquivos em conflito acima e resolva manualmente (SKILL.md da sync-skills)."
-    exit 2
-}
-
-# 3. Push
-git push origin HEAD
-if ($LASTEXITCODE -ne 0) {
-    Write-Output "ERRO no push. Verifique credenciais/conexao."
-    exit 3
-}
-
-# 4. Resumo
-$after = git rev-parse HEAD
-Write-Output ""
-Write-Output "=== SYNC CONCLUIDO ==="
-$received = git log --oneline "$before..$after" 2>$null
-if ($received) {
-    Write-Output "Novidades recebidas/aplicadas:"
-    Write-Output ($received | Out-String)
-} else {
-    Write-Output "Repo ja estava atualizado."
-}
-git status --short --branch | Select-Object -First 3
+exit $global:exitCode
