@@ -402,6 +402,18 @@ O RAF deve ser gerado em formato `.docx` profissional. Para isso:
 3. Valores SEMPRE em formato brasileiro: R$ X.XXX,XX
 4. Datas em formato dd/mm/aaaa
 
+### FASE 6.5 — REVISÃO POR AGENTE INDEPENDENTE (OBRIGATÓRIA)
+
+Antes de entregar o RAF (no chat ou em .docx), submeter o rascunho a um **subagente revisor** via ferramenta Agent (general-purpose), que NÃO participou da redação. O revisor recebe o rascunho completo do RAF e as tabelas consolidadas (tudo local — nenhum dado sai da máquina) com a instrução de auditar:
+
+1. **Somas e totais** — recalcular valores de crédito/débito por titular e totais gerais a partir das tabelas; não confiar nos números do texto
+2. **Contradições internas** — divergências entre o corpo dissertativo e as tabelas (valores, datas, quantidades de comunicações)
+3. **Vínculos sem sustentação** — toda conexão afirmada entre envolvidos deve ter lastro no cruzamento por Indexador; hipóteses devem estar marcadas como indício, nunca como fato
+4. **Duplicidades residuais** — mesmo idComunicacao contado mais de uma vez em somas ou contagens
+5. **Rastreabilidade** — valores citados sem correspondência nas tabelas de origem
+
+**Fluxo**: o revisor devolve lista de apontamentos → corrigir cada um no RAF → registrar na entrega ao usuário o que foi corrigido (ou informar "revisão independente sem apontamentos"). **Proibido entregar o RAF sem esta revisão.**
+
 ### FASE 7 — APRESENTAÇÃO INTERATIVA DOS RESULTADOS
 
 Após a análise, apresentar ao usuário:

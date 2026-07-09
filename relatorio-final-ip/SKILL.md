@@ -291,6 +291,18 @@ O indiciamento (ou não indiciamento) deve ser fundamentado com:
 - Raciocínio lógico-dedutivo da conclusão
 - Análise de excludentes (se aplicável)
 
+#### 4.6 Revisão por agente independente (OBRIGATÓRIA)
+
+Antes de passar à FASE 5, submeter o rascunho do relatório a um **subagente revisor** via ferramenta Agent (general-purpose), que NÃO participou da redação. O revisor recebe o rascunho e o resumo das provas dos autos (tudo local — nenhum dado sai da máquina) com a instrução de auditar:
+
+1. **Contradições internas** — datas, nomes, qualificações e sequência dos fatos inconsistentes entre seções
+2. **Afirmações sem lastro** — todo fato afirmado deve corresponder a prova listada (depoimento, perícia, documento); apontar afirmações órfãs
+3. **Tipificação** — adequação típica correta, dispositivo legal citado com artigo/parágrafo/inciso exatos, excludentes analisadas quando cabíveis
+4. **Campos pendentes** — marcadores [VERIFICAR] ou placeholders esquecidos no texto
+5. **Coerência da conclusão** — o indiciamento (ou não) decorre logicamente das provas confrontadas
+
+**Fluxo**: o revisor devolve lista de apontamentos → corrigir cada um → registrar na entrega o que foi corrigido (ou informar "revisão independente sem apontamentos"). **Proibido entregar o relatório sem esta revisão.**
+
 ### FASE 5 — ENTREGA DO RELATÓRIO
 
 #### 5.1 Formato de entrega — PADRÃO: resposta no chat

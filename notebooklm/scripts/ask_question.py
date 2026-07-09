@@ -100,6 +100,39 @@ def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> s
             print("  ❌ Could not find query input")
             return None
 
+        # Let chat history finish rendering (it loads lazily after the input appears),
+        # then snapshot existing responses so we only accept a NEW answer
+        history_stable = 0
+        last_history_count = -1
+        settle_deadline = time.time() + 15
+        while time.time() < settle_deadline:
+            try:
+                count = len(page.query_selector_all(RESPONSE_SELECTORS[0]))
+            except:
+                count = 0
+            if count == last_history_count:
+                history_stable += 1
+                if history_stable >= 3:
+                    break
+            else:
+                history_stable = 0
+                last_history_count = count
+            time.sleep(1)
+
+        baseline_counts = {}
+        baseline_texts = set()
+        for selector in RESPONSE_SELECTORS:
+            try:
+                existing = page.query_selector_all(selector)
+                baseline_counts[selector] = len(existing)
+                for el in existing:
+                    try:
+                        baseline_texts.add(el.inner_text().strip())
+                    except:
+                        pass
+            except:
+                baseline_counts[selector] = 0
+
         # Type question (human-like, fast)
         print("  ⏳ Typing question...")
         
@@ -120,7 +153,7 @@ def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> s
         answer = None
         stable_count = 0
         last_text = None
-        deadline = time.time() + 120  # 2 minutes timeout
+        deadline = time.time() + 300  # 5 minutes timeout (long answers stream slowly)
 
         while time.time() < deadline:
             # Check if NotebookLM is still thinking (most reliable indicator)
@@ -136,12 +169,14 @@ def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> s
             for selector in RESPONSE_SELECTORS:
                 try:
                     elements = page.query_selector_all(selector)
+                    # Only accept a response whose text did not exist before our
+                    # question (the chat list may be virtualized, so element count
+                    # is unreliable — compare by text instead)
                     if elements:
-                        # Get last (newest) response
                         latest = elements[-1]
                         text = latest.inner_text().strip()
 
-                        if text:
+                        if text and text not in baseline_texts:
                             if text == last_text:
                                 stable_count += 1
                                 if stable_count >= 3:  # Stable for 3 polls
