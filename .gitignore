@@ -1,2 +1,14 @@
 ﻿__pycache__/
 *.pyc
+
+# ESTE REPO E PUBLICO (github.com/andrevictor23-tech/claude-skills).
+# O acervo de modelos da skill representacao-cautelar e material sigiloso e nao
+# sobe aqui. Fonte de verdade: repositorio privado delegacia-claude-workspace.
+# Detalhes em representacao-cautelar/references/catalogo-modelos.LEIA-ME.md.
+representacao-cautelar/assets/modelos-brutos/*
+!representacao-cautelar/assets/modelos-brutos/LEIA-ME.md
+representacao-cautelar/assets/modelos/*
+!representacao-cautelar/assets/modelos/LEIA-ME.md
+representacao-cautelar/references/catalogo-modelos.md
+# O lexico semente reflete o vocabulario das pecas; segue os modelos.
+representacao-cautelar/scripts/lexico-semente.txt
