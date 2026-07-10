@@ -14,14 +14,16 @@ O script também sincroniza um segundo repo: `~/Documents/DELEGACIA`, clone de `
 Execute o script pronto:
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File "$env:USERPROFILE\.claude\skills\sync-skills\scripts\sync.ps1"
+& "$env:USERPROFILE\.claude\skills\sync-skills\scripts\sync.ps1"
 ```
 
-O script faz, nesta ordem:
-1. `git add -A` + commit automático das mudanças locais (mensagem `sync: <hostname> <data>`), se houver.
+Não use `-ExecutionPolicy Bypass`: a política `RemoteSigned` do usuário já permite rodar este script local, e a flag faz o classificador de permissões bloquear a execução.
+
+Para cada um dos dois repos, o script faz nesta ordem:
+1. `git add -A` + commit automático das mudanças locais (mensagem `sync: <data>`), se houver.
 2. `git pull --rebase --autostash`.
 3. `git push`.
-4. Imprime resumo (commits enviados/recebidos, skills novas ou alteradas).
+4. Imprime resumo (commits recebidos, skills novas ou alteradas).
 
 ## Se der conflito
 
