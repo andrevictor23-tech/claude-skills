@@ -9,6 +9,8 @@ O usuário mantém `~/.claude/skills` como clone de `https://github.com/andrevic
 
 O script também sincroniza um segundo repo: `~/Documents/DELEGACIA`, clone de `https://github.com/andrevictor23-tech/delegacia-claude-workspace.git` (**privado** — workspace institucional com CLAUDE.md aninhados). Se a pasta ainda não existir na máquina, o script clona automaticamente. O `.gitignore` desse repo é lista branca (só `.md`, mais `MODELOS-REPRESENTACAO/lexico-semente.txt`), então arquivos de casos reais na pasta nunca são enviados.
 
+Um terceiro repo também é sincronizado: `~/Documents/OSINT`, clone de `https://github.com/andrevictor23-tech/osint-investigacao.git`. Mesmo comportamento de clone automático caso a pasta ainda não exista na máquina.
+
 **Atenção: `claude-skills` é público.** Nada de sigiloso pode entrar nele. Em particular, o acervo da skill `representacao-cautelar` (modelos reais, catálogo e léxico) vive **apenas** no repo privado, em `MODELOS-REPRESENTACAO/`.
 
 ## Depois de clonar numa máquina nova
@@ -36,7 +38,7 @@ Execute o script pronto:
 
 Não use `-ExecutionPolicy Bypass`: a política `RemoteSigned` do usuário já permite rodar este script local, e a flag faz o classificador de permissões bloquear a execução.
 
-Para cada um dos dois repos, o script faz nesta ordem:
+Para cada um dos três repos, o script faz nesta ordem:
 1. `git add -A` + commit automático das mudanças locais (mensagem `sync: <data>`), se houver.
 2. `git pull --rebase --autostash`.
 3. `git push`.

@@ -1,6 +1,7 @@
 # Sincroniza os repos do usuario com o GitHub:
 #   1. ~/.claude/skills            (claude-skills)
 #   2. ~/Documents/DELEGACIA       (delegacia-claude-workspace, privado)
+#   3. ~/Documents/OSINT           (osint-investigacao)
 # Seguro por padrao: commit local -> pull --rebase --autostash -> push.
 # Em conflito, aborta o rebase e reporta, sem perder nada.
 
@@ -91,6 +92,23 @@ if (-not (Test-Path (Join-Path $delegacia '.git'))) {
     }
 } else {
     Sync-Repo -repo $delegacia -label 'delegacia-claude-workspace'
+}
+
+# --- Repo 3: osint-investigacao (clona se ainda nao existir nesta maquina) ---
+$osint = Join-Path $env:USERPROFILE 'Documents\OSINT'
+if (-not (Test-Path (Join-Path $osint '.git'))) {
+    Write-Output ""
+    Write-Output "########## osint-investigacao ##########"
+    Write-Output "Repo ainda nao existe nesta maquina. Clonando..."
+    git clone https://github.com/andrevictor23-tech/osint-investigacao.git $osint
+    if ($LASTEXITCODE -ne 0) {
+        Write-Output "ERRO ao clonar osint-investigacao. Verifique credenciais (repo privado?)."
+        $global:exitCode = 3
+    } else {
+        Write-Output "Clonado em $osint"
+    }
+} else {
+    Sync-Repo -repo $osint -label 'osint-investigacao'
 }
 
 exit $global:exitCode
