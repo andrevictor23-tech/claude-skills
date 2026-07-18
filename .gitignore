@@ -12,3 +12,8 @@ representacao-cautelar/assets/modelos/*
 representacao-cautelar/references/catalogo-modelos.md
 # O lexico semente reflete o vocabulario das pecas; segue os modelos.
 representacao-cautelar/scripts/lexico-semente.txt
+
+# osint-investigacao e um repo proprio, clonado aqui dentro pelo sync-skills
+# para que a skill fique visivel ao Claude. Sem esta linha, o `git add -A` do
+# sync gravaria um gitlink quebrado neste repo publico.
+osint-investigacao/

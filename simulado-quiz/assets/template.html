@@ -109,7 +109,7 @@ function esc(t) { const d = document.createElement("div"); d.textContent = t || 
 
 function cardHTML(q, revelado) {
   const r = state[q.uid];
-  let h = `<div class="card"><div class="qhead"><span>Questão ${q.numero} <span class="mat">(${q.sim}${q.materia ? " · " + esc(q.materia) : ""})</span></span></div>`;
+  let h = `<div class="card"><div class="qhead"><span>Questão ${q.numero} <span class="mat">(${q.sim}${q.materia ? " · " + esc(q.materia) : ""}${q.tema ? " · " + esc(q.tema) : ""})</span></span></div>`;
   h += `<div class="stem">${esc(q.enunciado)}</div>`;
   for (const [L, txt] of Object.entries(q.alternativas || {})) {
     let cls = "alt";
@@ -122,6 +122,7 @@ function cardHTML(q, revelado) {
   if (revelado) {
     const acertou = r === q.gabarito;
     h += `<div class="fb ${acertou ? "ok" : "err"}">${acertou ? "✔ Você acertou!" : "✘ Você marcou " + (r || "—") + ". Gabarito: " + (q.gabarito || "não extraído")}</div>`;
+    if (q.ponto_chave) h += `<div class="coment"><b>Ponto-chave:</b>\n${esc(q.ponto_chave)}</div>`;
     if (q.comentario) h += `<div class="coment"><b>Espelho:</b>\n${esc(q.comentario)}</div>`;
   }
   h += `</div>`;

@@ -1,7 +1,7 @@
 # Sincroniza os repos do usuario com o GitHub:
 #   1. ~/.claude/skills            (claude-skills)
 #   2. ~/Documents/DELEGACIA       (delegacia-claude-workspace, privado)
-#   3. ~/Documents/OSINT           (osint-investigacao)
+#   3. ~/.claude/skills/osint-investigacao  (osint-investigacao)
 # Seguro por padrao: commit local -> pull --rebase --autostash -> push.
 # Em conflito, aborta o rebase e reporta, sem perder nada.
 
@@ -95,7 +95,9 @@ if (-not (Test-Path (Join-Path $delegacia '.git'))) {
 }
 
 # --- Repo 3: osint-investigacao (clona se ainda nao existir nesta maquina) ---
-$osint = Join-Path $env:USERPROFILE 'Documents\OSINT'
+# Mora dentro de ~/.claude/skills para o Claude enxergar a skill. O .gitignore
+# do claude-skills exclui esta pasta, entao o `git add -A` do Repo 1 nao a engole.
+$osint = Join-Path $env:USERPROFILE '.claude\skills\osint-investigacao'
 if (-not (Test-Path (Join-Path $osint '.git'))) {
     Write-Output ""
     Write-Output "########## osint-investigacao ##########"
