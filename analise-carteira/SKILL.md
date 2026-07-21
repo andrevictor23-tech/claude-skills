@@ -37,6 +37,16 @@ O usuário pode fornecer dados da carteira em qualquer um destes formatos:
 - **Print/Screenshot**: imagem da tela do BS (Claude analisa visualmente)
 - **Descrição verbal**: "tenho X ações de WEGE3, Y cotas de HGLG11..."
 
+**PDF ou planilha grande?** Extraia antes de ler, para não gastar contexto à toa:
+
+```powershell
+$py = "$env:USERPROFILE\.claude\tools\docling-venv\Scripts\python.exe"
+$ex = "$env:USERPROFILE\.claude\tools\extrair.py"
+& $py $ex "carteira.pdf"
+```
+
+Ele reconhece estrutura de tabela. **Confira os números** contra o original antes de calcular percentuais — OCR erra dígito. Ver `sync-skills/references/extracao-documentos.md`.
+
 ### 1.2 Dados Necessários (mínimo)
 
 Para cada ativo: **Ticker** e **Quantidade** (ou valor investido)

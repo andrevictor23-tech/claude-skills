@@ -28,6 +28,26 @@ Remove-Item "$sk\assets\modelos\catalogo-modelos.md" -ErrorAction SilentlyContin
 
 Se o usuário editar modelos na skill, copie-os de volta para `MODELOS-REPRESENTACAO/` antes de sincronizar: o repo privado é a fonte de verdade.
 
+## Extração de documentos (Docling)
+
+As skills que leem PDF/DOCX/imagem usam um extrator comum, documentado em `references/extracao-documentos.md`. Duas peças, com destinos diferentes:
+
+| Peça | Vai para o git? |
+|---|---|
+| `scripts/extrair.py` e `scripts/setup-extracao.ps1` | **Sim** |
+| venv do Docling (~1,3 GB, em `~/.claude/tools/docling-venv`) | **Não** — recriado por máquina |
+| Cache de extração | Não — fica no `G:\Meu Drive`, sincroniza sozinho |
+
+**Numa máquina nova**, depois do primeiro sync:
+
+```powershell
+& "$env:USERPROFILE\.claude\skills\sync-skills\scripts\setup-extracao.ps1"
+```
+
+O script copia o `extrair.py` para `~/.claude/tools/`, cria o venv e instala o Docling (~1,3 GB). Na primeira conversão com OCR baixa ~500 MB de modelos.
+
+**Ao editar o `extrair.py`**: a fonte de verdade é a cópia no repo (`scripts/extrair.py`). Edite lá e rode o setup, ou copie para `~/.claude/tools/extrair.py` — as duas precisam ficar iguais.
+
 ## Procedimento
 
 Execute o script pronto:

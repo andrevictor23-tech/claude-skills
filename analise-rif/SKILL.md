@@ -57,6 +57,18 @@ Ao receber os arquivos CSV, Claude deve:
 
 ### FASE 1 — VALIDAÇÃO E CARREGAMENTO DOS CSVs
 
+#### 1.0 Quando o RIF vier em PDF em vez de CSV
+
+O COAF normalmente entrega CSV, mas bancos e ofícios às vezes mandam extrato em PDF. Nesse caso, **não leia o PDF no contexto** — extraia primeiro:
+
+```powershell
+$py = "$env:USERPROFILE\.claude\tools\docling-venv\Scripts\python.exe"
+$ex = "$env:USERPROFILE\.claude\tools\extrair.py"
+& $py $ex "extrato.pdf"
+```
+
+O extrator reconhece estrutura de tabela e devolve Markdown. Confira os valores contra o original antes de somar: OCR erra dígito. Detalhes em `sync-skills/references/extracao-documentos.md`.
+
 #### 1.1 Identificação dos Arquivos
 
 Os arquivos do COAF seguem o padrão: `RIF_[NÚMERO]_[Tipo].csv`

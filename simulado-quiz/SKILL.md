@@ -9,7 +9,7 @@ Fluxo do usuário (estudo MP-SP): PDFs `Simulado NN - MPSP (VadeFocus) - Enuncia
 
 ## REGRAS INEGOCIÁVEIS
 
-1. **NUNCA leia PDF de simulado como imagem/página no contexto** (Read em PDF grande já estourou uma sessão de 100 MB). Sempre `pdftotext` primeiro.
+1. **NUNCA leia PDF de simulado como imagem/página no contexto** (Read em PDF grande já estourou uma sessão de 100 MB). Sempre `pdftotext` primeiro. Se o `pdftotext` vier vazio ou truncado (PDF escaneado), use o extrator universal — ver `sync-skills/references/extracao-documentos.md`.
 2. **Cache primeiro**: antes de extrair, verifique `G:\Meu Drive\VS CODE TESTE\quiz-data\simulado-NN.json`. Se existir, use-o direto — não reprocesse o PDF. O cache fica no Drive de propósito: sincroniza entre as 3 máquinas do usuário.
 3. O HTML gerado é **autocontido** (um arquivo, sem dependências externas) e salvo em `G:\Meu Drive\VS CODE TESTE\quiz-data\` — abre em qualquer máquina.
 

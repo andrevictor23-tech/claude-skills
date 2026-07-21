@@ -17,3 +17,11 @@ representacao-cautelar/scripts/lexico-semente.txt
 # para que a skill fique visivel ao Claude. Sem esta linha, o `git add -A` do
 # sync gravaria um gitlink quebrado neste repo publico.
 osint-investigacao/
+
+# Ambiente de extracao de documentos (Docling): ~1,3 GB de venv + modelos.
+# Nao vai para o git — cada maquina recria com sync-skills/scripts/setup-extracao.ps1.
+# O cache de extracao fica no G:\Meu Drive e sincroniza sozinho.
+docling-venv/
+*-venv/
+.venv/
+cache/extracao/

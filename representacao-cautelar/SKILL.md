@@ -54,6 +54,16 @@ Antes de escrever uma linha da peça, confira o cabimento. Se a medida pedida n�
 
 ### Passo 3 — Extrair os elementos do caso
 
+Se vierem **arquivos** (autos em PDF, BO digitalizado, termos escaneados), **não os leia direto no contexto** — extraia primeiro:
+
+```powershell
+$py = "$env:USERPROFILE\.claude\tools\docling-venv\Scripts\python.exe"
+$ex = "$env:USERPROFILE\.claude\tools\extrair.py"
+& $py $ex "autos.pdf"
+```
+
+Leia o `.md` gerado. Ver `sync-skills/references/extracao-documentos.md`. **Confira contra o original** qualquer trecho que for citado literalmente na peça — o OCR erra dígito e caractere.
+
 Do relato ou dos arquivos fornecidos (BO, APF, despacho de plantão, termos de declaração), extraia: número do IP e da ocorrência; qualificação do investigado (nome completo, filiação, CPF, endereço, o que houver); vítima; fatos com datas e locais; elementos de materialidade e indícios de autoria já colhidos, com folhas; vida pregressa (APFs, condenações, medidas protetivas anteriores, processos com número); e o dado específico da medida (endereço exato da busca, número da linha e período do sigilo, operadora, IMEI do aparelho apreendido).
 
 Se veio de um despacho de plantão desta casa, aproveite a síntese fática e o bloco de preventiva já sinalizado, expandindo-o com a estrutura completa da peça.

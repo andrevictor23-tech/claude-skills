@@ -23,17 +23,41 @@ A maioria dos casos desta unidade é violência doméstica, descumprimento de me
 
 ### FASE 1 — PRÉ-PROCESSAMENTO DE DADOS
 
-Antes de qualquer análise, processar todos os documentos fornecidos. Em vez de reescrever o código de extração a cada caso, **use o script já incluído na skill**, que extrai texto de PDF (nativo e OCR), planilhas (XLSX/CSV) e DOCX, classifica cada documento, gera índice dos autos e extrai datas para a cronologia:
+Antes de qualquer análise, processar todos os documentos fornecidos.
+
+**NUNCA leia um PDF grande direto no contexto** — extraia primeiro e leia o `.md`. Um auto de 41 páginas escaneadas custa ~60-80k tokens lido como imagem, e ~9k extraído.
+
+#### Extração dos autos
+
+Use o extrator universal (Docling + EasyOCR em português, 100% local):
+
+```powershell
+$py = "$env:USERPROFILE\.claude\tools\docling-venv\Scripts\python.exe"
+$ex = "$env:USERPROFILE\.claude\tools\extrair.py"
+
+# Diagnosticar primeiro (instantâneo): tem texto ou é escaneado?
+& $py $ex "<pasta>\*.pdf" --info
+
+# Extrair
+& $py $ex "<pasta>\*.pdf"
+```
+
+Ele decide sozinho entre texto nativo (instantâneo) e OCR (~28s/página, só quando escaneado), remove carimbos repetidos das páginas e cacheia o resultado. Detalhes e opções em `sync-skills/references/extracao-documentos.md`.
+
+**Autos escaneados grandes demoram** (200 folhas ≈ 1h35). Rode em background e avise o usuário.
+
+**Confira toda citação literal contra o original.** O OCR erra `0`/`o`, `Nª`/`Nº` e às vezes troca a ordem de palavras. Serve para ler e analisar; não substitui a conferência antes de colar entre aspas em peça que vai ao Judiciário.
+
+#### Classificação, índice e cronologia
+
+Depois da extração, o script da skill classifica os documentos, gera o índice dos autos e o rascunho de cronologia a partir dos `.md`:
 
 ```bash
 python3 scripts/pre_processador.py <pasta_dos_arquivos> <pasta_de_saida>
 ```
 
-O script gera, na pasta de saída, o texto por página (com numeração para referência de folhas), um índice dos autos e um rascunho de cronologia. Trabalhe a partir desse material.
+**Notas úteis:**
 
-**Quando o script não cobrir algo** (formato incomum, OCR com qualidade ruim, tabela específica), trate manualmente. Notas úteis:
-
-- OCR de documentos escaneados: idioma `por`, DPI mínimo 300, preservar a numeração de folhas dos autos.
 - Dados telefônicos/bancários em CSV: leia com pandas (`encoding='utf-8'`).
 - Preserve sempre a referência de folhas, pois cada elemento do relatório precisa citar as fls.
 

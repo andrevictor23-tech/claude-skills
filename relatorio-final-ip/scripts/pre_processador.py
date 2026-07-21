@@ -37,40 +37,47 @@ def extrair_texto_pdf(filepath):
                         'metodo': 'pdfplumber'
                     })
                 else:
-                    # Tentar OCR
-                    texto_ocr = extrair_texto_ocr_pagina(filepath, i)
-                    if texto_ocr:
-                        texto_paginas.append({
-                            'pagina': i + 1,
-                            'texto': texto_ocr,
-                            'metodo': 'OCR'
-                        })
-                    else:
-                        texto_paginas.append({
-                            'pagina': i + 1,
-                            'texto': '[PÁGINA SEM TEXTO EXTRAÍVEL]',
-                            'metodo': 'falha'
-                        })
+                    texto_paginas.append({
+                        'pagina': i + 1,
+                        'texto': '[PÁGINA SEM TEXTO EXTRAÍVEL — USE extrair.py]',
+                        'metodo': 'falha'
+                    })
     except Exception as e:
         print(f"Erro ao processar PDF {filepath}: {e}")
-    
+
+    _avisar_se_escaneado(filepath, texto_paginas)
     return texto_paginas
 
 
-def extrair_texto_ocr_pagina(filepath, pagina_idx):
-    """Extrai texto via OCR de uma página específica."""
-    try:
-        from pdf2image import convert_from_path
-        import pytesseract
-        
-        images = convert_from_path(filepath, first_page=pagina_idx+1, 
-                                    last_page=pagina_idx+1, dpi=300)
-        if images:
-            texto = pytesseract.image_to_string(images[0], lang='por')
-            return texto if texto.strip() else None
-    except Exception as e:
-        print(f"OCR falhou para página {pagina_idx+1}: {e}")
-    return None
+def _avisar_se_escaneado(filepath, texto_paginas):
+    """Alerta quando o PDF e imagem e o pdfplumber nao extraiu nada util.
+
+    Falha em silencio e pior do que falha ruidosa: antes, um PDF escaneado
+    inteiro virava 41 paginas de '[PAGINA SEM TEXTO EXTRAIVEL]' sem aviso
+    nenhum, e o relatorio seguia sendo redigido em cima do nada. O OCR antigo
+    (pytesseract) dependia dos binarios Tesseract/Poppler, que nem estavam
+    instalados na maquina, e o except engolia o erro.
+    """
+    falhas = sum(1 for p in texto_paginas if p['metodo'] == 'falha')
+    if not falhas:
+        return
+
+    total = len(texto_paginas)
+    print()
+    print("=" * 70)
+    print(f"AVISO: {falhas} de {total} paginas sem texto extraivel")
+    print(f"  em {os.path.basename(filepath)}")
+    print()
+    print("  Este PDF e escaneado (imagem). O pdfplumber nao le imagem.")
+    print("  Extraia com OCR antes de prosseguir:")
+    print()
+    print(r'    $py = "$env:USERPROFILE\.claude\tools\docling-venv\Scripts\python.exe"')
+    print(r'    $ex = "$env:USERPROFILE\.claude\tools\extrair.py"')
+    print(f'    & $py $ex "{filepath}"')
+    print()
+    print("  (Docling + EasyOCR em portugues, 100% local, ~28s/pagina.)")
+    print("=" * 70)
+    print()
 
 
 def extrair_tabelas_pdf(filepath):
