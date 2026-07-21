@@ -45,8 +45,17 @@ VENV_PYTHON = Path.home() / ".claude" / "tools" / "docling-venv" / "Scripts" / "
 
 # O cache vai para o Google Drive quando disponivel, para sincronizar entre as
 # maquinas do usuario — mesmo padrao ja adotado pela skill simulado-quiz.
-CACHE_DRIVE = Path(r"G:\Meu Drive\VS CODE TESTE\extracao-cache")
+#
+# A letra do drive NAO e fixa: varia por maquina (G:, H:, ...), pode nao estar
+# montada, e o nome da pasta muda com o idioma do Google Drive ("Meu Drive" x
+# "My Drive"). Por isso procuramos, em vez de cravar um caminho.
 CACHE_LOCAL = Path.home() / ".claude" / "cache" / "extracao"
+
+# Permite fixar o cache por variavel de ambiente, acima de qualquer deteccao.
+CACHE_ENV = "CLAUDE_EXTRACAO_CACHE"
+
+_SUBPASTA_DRIVE = Path("VS CODE TESTE") / "extracao-cache"
+_NOMES_DRIVE = ("Meu Drive", "My Drive")
 
 # Um PDF cujo texto nativo renda menos que isto por pagina e, na pratica, um
 # escaneado: o pouco texto costuma ser so carimbo/rodape do sistema.
@@ -72,14 +81,40 @@ def aprox_tokens(texto):
     return len(texto) // 4
 
 
+def achar_google_drive():
+    """Procura a raiz do Google Drive nesta maquina, varrendo as letras.
+
+    Devolve None se nao houver — o chamador cai no cache local. Um cache local
+    funciona igual; so nao e compartilhado com as outras maquinas.
+    """
+    for letra in "GHIJKLDEFNOPQRSTUVWXYZ":
+        for nome in _NOMES_DRIVE:
+            raiz = Path(f"{letra}:/") / nome
+            try:
+                if raiz.is_dir():
+                    return raiz
+            except OSError:
+                continue  # drive listado mas indisponivel
+    return None
+
+
 def resolver_cache_dir(escolhido=None):
     if escolhido:
         d = Path(escolhido)
-    elif CACHE_DRIVE.parent.exists():
-        d = CACHE_DRIVE
+    elif os.environ.get(CACHE_ENV):
+        d = Path(os.environ[CACHE_ENV])
     else:
+        raiz = achar_google_drive()
+        d = (raiz / _SUBPASTA_DRIVE) if raiz else CACHE_LOCAL
+
+    try:
+        d.mkdir(parents=True, exist_ok=True)
+    except OSError as e:
+        # Drive montado mas sem escrita (offline, sem espaco): nao vale abortar
+        # a extracao por causa do cache.
+        log(f"aviso: nao consegui usar {d} ({e}); caindo no cache local")
         d = CACHE_LOCAL
-    d.mkdir(parents=True, exist_ok=True)
+        d.mkdir(parents=True, exist_ok=True)
     return d
 
 
@@ -345,6 +380,9 @@ def main():
     cache_dir = resolver_cache_dir(args.cache_dir)
     if not args.info:
         log(f"cache em: {cache_dir}")
+        if cache_dir == CACHE_LOCAL:
+            log("  (cache LOCAL — Google Drive nao encontrado; as outras "
+                "maquinas vao reprocessar estes arquivos)")
 
     gerados = []
     for a in args.arquivos:
