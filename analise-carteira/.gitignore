@@ -1,0 +1,8 @@
+# ATENCAO: claude-skills e um repo PUBLICO.
+#
+# O estado real da carteira do Andre (posicoes, metas, saldo, watchlist de
+# tickers) NAO pode ser publicado: reune perfil financeiro pessoal com nome,
+# cargo e comarca de um Delegado de Policia. A fonte de verdade fica no repo
+# PRIVADO delegacia-claude-workspace, em PESSOAL/estado-carteira.md, e e
+# espelhada para ca em cada maquina (ver skill sync-skills).
+references/estado-carteira.md

@@ -63,6 +63,74 @@ The `run.py` wrapper automatically:
 3. Activates environment
 4. Executes script properly
 
+## ⚠️ CRITICAL: Custo de Tokens — Script Primeiro, Browser MCP por Último
+
+**Regra:** para PERGUNTAR ao notebook, use SEMPRE `ask_question.py` via Bash. NUNCA dirija o
+NotebookLM na mão com as ferramentas de browser MCP (`mcp__claude-in-chrome__*`).
+
+Motivo, medido em sessão real (21/07/2026, revisão MPSP): extrair 3 respostas do notebook
+via automação MCP custou **~14k tokens e 15 minutos**. As mesmas 3 respostas via
+`ask_question.py` seriam ~3 chamadas Bash com texto puro no stdout.
+
+O que queima tokens na automação MCP:
+
+| Ferramenta | Custo aprox. | Observação |
+|---|---|---|
+| `computer{action:"screenshot"}` | ~1.500 tokens cada | O maior vilão — evitar |
+| `read_page` / `get_page_text` | centenas | Aceitável |
+| `javascript_tool` | dezenas | Barato, MAS trunca o retorno em ~1000 caracteres |
+
+O truncamento do `javascript_tool` é a armadilha: uma resposta de 9.000 caracteres do
+NotebookLM exige ~10 chamadas fatiadas (`.slice(0,950)`, `.slice(950,1900)`, ...). Foi isso
+que estourou o custo.
+
+### Quando o browser MCP é inevitável
+
+O `ask_question.py` só PERGUNTA. Gerenciar fontes exige o browser MCP (a sessão Google logada):
+adicionar/re-subir vídeos do YouTube, ver quais fontes falharam, marcar/desmarcar fontes,
+usar recursos do Estúdio.
+
+Nesses casos:
+
+1. **Não tire screenshot para ler conteúdo.** Use `javascript_tool` com seletores.
+   Screenshot só para localizar coordenada de clique que você não consegue de outro jeito.
+2. **Para extrair texto longo, baixe em arquivo em vez de fatiar.** O usuário André autorizou
+   downloads para esse fim (21/07/2026). Padrão:
+
+```javascript
+// no javascript_tool: dispara download do texto para a pasta de Downloads
+const m=[...document.querySelectorAll('chat-message,[class*="message-text"]')];
+const t=m[m.length-1].innerText;
+const a=document.createElement('a');
+a.href=URL.createObjectURL(new Blob([t],{type:'text/plain'}));
+a.download='notebooklm-resposta.txt'; a.click();
+'ok: '+t.length+' chars'
+```
+
+   Depois leia com uma única chamada `Read` em `E:\Users\andre\Downloads\notebooklm-resposta.txt`.
+   Troca ~10 idas ao browser por 2.
+3. **Listar fontes e detectar falhas** — uma chamada, sem screenshot:
+
+```javascript
+const it=[...document.querySelectorAll('.single-source-container')];
+const r=it.map(e=>{const b=e.querySelector('button[aria-label]');return b?b.getAttribute('aria-label'):''});
+// fontes que falharam aparecem com a URL crua como aria-label, não com o título do vídeo
+JSON.stringify({ok:r.filter(x=>!/youtube\.com/i.test(x)), falhas:r.filter(x=>/youtube\.com/i.test(x))})
+```
+
+4. **Não brigue com a UI de seleção de fontes.** Os checkboxes do NotebookLM perdem estado ao
+   rolar a lista ou filtrar. Em vez de isolar fontes, ancore a pergunta no título:
+   *"Baseie-se EXCLUSIVAMENTE na fonte intitulada '[título exato]'. Ignore todas as demais."*
+   Funciona de forma confiável e custa zero cliques.
+
+### Vídeos do YouTube recém-enviados
+
+O NotebookLM recusa vídeo cuja transcrição automática ainda não foi gerada pelo YouTube
+("Não é possível importar este vídeo. A transcrição está indisponível"). Não é erro do
+usuário nem da skill — é o YouTube ainda processando. **Não delete a fonte com falha:**
+re-tente no dia seguinte. Re-submeter a URL cria uma entrada nova; se falhar de novo,
+o notebook fica com linhas vermelhas duplicadas (limpar só depois que o vídeo entrar).
+
 ## Core Workflow
 
 ### Step 1: Check Authentication Status

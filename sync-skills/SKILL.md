@@ -28,6 +28,22 @@ Remove-Item "$sk\assets\modelos\catalogo-modelos.md" -ErrorAction SilentlyContin
 
 Se o usuário editar modelos na skill, copie-os de volta para `MODELOS-REPRESENTACAO/` antes de sincronizar: o repo privado é a fonte de verdade.
 
+### Estado da carteira (skill `analise-carteira`)
+
+Mesmo esquema, mesma razão: `references/estado-carteira.md` reúne posições, metas,
+saldo e watchlist de tickers do André junto com nome, cargo e comarca. Não pode ir
+para o `claude-skills`, que é público (está no `.gitignore` da skill desde 21/07/2026).
+Fonte de verdade: `~/Documents/DELEGACIA/PESSOAL/estado-carteira.md`.
+
+```powershell
+$src = "$env:USERPROFILE\Documents\DELEGACIA\PESSOAL\estado-carteira.md"
+$dst = "$env:USERPROFILE\.claude\skills\analise-carteira\references\"
+Copy-Item $src $dst -Force
+```
+
+Se o usuário atualizar o estado da carteira pela skill (revisão de tese,
+rebalanceamento, nova prioridade), copie de volta para `PESSOAL/` antes de sincronizar.
+
 ## Extração de documentos (Docling)
 
 As skills que leem PDF/DOCX/imagem usam um extrator comum, documentado em `references/extracao-documentos.md`. Duas peças, com destinos diferentes:
