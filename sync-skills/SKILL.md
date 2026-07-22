@@ -44,6 +44,12 @@ Copy-Item $src $dst -Force
 Se o usuário atualizar o estado da carteira pela skill (revisão de tese,
 rebalanceamento, nova prioridade), copie de volta para `PESSOAL/` antes de sincronizar.
 
+### Prompt pronto para as outras máquinas
+
+Depois de mudar skills numa máquina, `references/prompt-outras-maquinas.md` tem um
+bloco autocontido para colar no Claude Code das outras duas — sincroniza, espelha o
+`estado-carteira.md` e confere se a proteção do `.gitignore` chegou.
+
 ## Extração de documentos (Docling)
 
 As skills que leem PDF/DOCX/imagem usam um extrator comum, documentado em `references/extracao-documentos.md`. Duas peças, com destinos diferentes:
