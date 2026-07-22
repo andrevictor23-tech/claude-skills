@@ -69,7 +69,7 @@ Pergunte ao usuário apenas o essencial que falta. NÃO bloqueie a análise por 
 
 ## 2. FILOSOFIA APLICADA
 
-Antes de analisar, leia o arquivo `references/filosofia.md` para os princípios detalhados.
+Antes de analisar, leia o arquivo `references/filosofia.md` para os princípios detalhados e `references/estado-carteira.md` para as prioridades, watchlist de teses em revisão e regras de filtragem ATUAIS do André (mantenha esse arquivo atualizado quando o usuário informar mudança de tese, rebalanceamento ou nova prioridade).
 
 ### Resumo Executivo das 3 Filosofias
 

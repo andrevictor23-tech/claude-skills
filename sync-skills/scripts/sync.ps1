@@ -5,11 +5,88 @@
 # Seguro por padrao: commit local -> pull --rebase --autostash -> push.
 # Em conflito, aborta o rebase e reporta, sem perder nada.
 
-$ErrorActionPreference = 'Stop'
+param([switch]$AllowNew)
+
+# 'Continue', nao 'Stop': o git escreve avisos normais no stderr (ex.: "LF will be
+# replaced by CRLF") e, sob 'Stop', o PowerShell 5.1 os promove a NativeCommandError
+# e aborta o sync no meio. A corretude vem da checagem de $LASTEXITCODE apos cada
+# chamada, que ja existe abaixo.
+$ErrorActionPreference = 'Continue'
 $global:exitCode = 0
 
+# Padroes de alto sinal para dado sensivel. Usados apenas no repo PUBLICO.
+# Deliberadamente estreitos: falso positivo trava o sync do usuario.
+$global:sensivel = @(
+    @{ nome = 'CPF';            re = '\d{3}\.\d{3}\.\d{3}-\d{2}' },
+    @{ nome = 'CNPJ';           re = '\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}' },
+    @{ nome = 'processo CNJ';   re = '\d{7}-\d{2}\.\d{4}\.\d\.\d{2}\.\d{4}' },
+    @{ nome = 'telefone';       re = '\(\d{2}\)\s?9?\d{4}-\d{4}' },
+    @{ nome = 'valor em reais'; re = 'R\$\s?\d{1,3}(\.\d{3})+' },
+    @{ nome = 'chave/API key';  re = '(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{20,}|AIza[A-Za-z0-9_\-]{20,})' },
+    @{ nome = 'chave privada';  re = '-----BEGIN [A-Z ]*PRIVATE KEY-----' }
+)
+
+# Nao escaneia a si mesmo: os regex acima viveriam como "achados" literais.
+$global:isentos = @('sync-skills/scripts/sync.ps1')
+
+# Portao de auditoria do repo PUBLICO. Roda ANTES do `git add -A`, porque
+# depois de publicado o estrago nao se desfaz (o GitHub indexa e cacheia).
+# Criado em 21/07/2026, depois que estado-carteira.md (perfil financeiro do
+# usuario + nome, cargo e comarca) quase foi publicado por um `git add -A`.
+# ATENCAO ao mexer aqui: nao use Write-Output dentro desta funcao. No PowerShell
+# tudo que vai para o pipeline compoe o valor de retorno, entao as mensagens
+# fariam a funcao devolver um array (sempre "verdadeiro") e o portao NUNCA
+# bloquearia. Bug real, pego em teste no dia em que o portao foi escrito.
+# As mensagens sao acumuladas em $global:auditMsgs e impressas pelo chamador.
+function Test-Publicavel {
+    param([string]$repo)
+
+    $global:auditMsgs = @()
+    $novos = @(git ls-files --others --exclude-standard)
+    $modificados = @(git diff --name-only)
+    $candidatos = @($novos + $modificados | Where-Object { $_ -and ($global:isentos -notcontains $_) } | Select-Object -Unique)
+
+    $bloqueios = @()
+
+    # (a) Arquivo novo nunca visto: exige decisao consciente.
+    if ($novos.Count -gt 0 -and -not $AllowNew) {
+        $global:auditMsgs += ""
+        $global:auditMsgs += "!!! ARQUIVOS NOVOS (nao rastreados) no repo PUBLICO:"
+        foreach ($n in $novos) { $global:auditMsgs += "      + $n" }
+        $bloqueios += "arquivos novos sem classificacao"
+    }
+
+    # (b) Varredura de conteudo do que seria publicado.
+    foreach ($f in $candidatos) {
+        if (-not (Test-Path $f -PathType Leaf)) { continue }
+        $info = Get-Item $f
+        if ($info.Length -gt 2MB) { continue }
+        $txt = Get-Content $f -Raw -ErrorAction SilentlyContinue
+        if (-not $txt) { continue }
+        foreach ($p in $global:sensivel) {
+            if ($txt -match $p.re) {
+                $global:auditMsgs += ""
+                $global:auditMsgs += "!!! POSSIVEL DADO SENSIVEL: $f  [$($p.nome)]"
+                $global:auditMsgs += "      trecho: $($Matches[0])"
+                $bloqueios += "$f ($($p.nome))"
+            }
+        }
+    }
+
+    if ($bloqueios.Count -gt 0) {
+        $global:auditMsgs += ""
+        $global:auditMsgs += "=== SYNC BLOQUEADO: claude-skills e um repo PUBLICO ==="
+        $global:auditMsgs += "Antes de sincronizar, para CADA item acima decida:"
+        $global:auditMsgs += "  - e sigiloso?   -> mova para o repo privado e liste no .gitignore da skill"
+        $global:auditMsgs += "  - e publicavel? -> rode de novo com -AllowNew (so libera o item (a))"
+        $global:auditMsgs += "Nao basta olhar o nome do arquivo: leia o conteudo."
+        return $false
+    }
+    return $true
+}
+
 function Sync-Repo {
-    param([string]$repo, [string]$label)
+    param([string]$repo, [string]$label, [switch]$Public)
 
     Write-Output ""
     Write-Output "########## $label ##########"
@@ -21,6 +98,15 @@ function Sync-Repo {
     }
 
     Set-Location $repo
+
+    if ($Public) {
+        $ok = Test-Publicavel -repo $repo
+        foreach ($m in $global:auditMsgs) { Write-Output $m }
+        if (-not $ok) {
+            $global:exitCode = 4
+            return
+        }
+    }
 
     # 1. Commit local, se houver mudancas
     $dirty = git status --porcelain
@@ -74,8 +160,8 @@ function Sync-Repo {
     git status --short --branch | Select-Object -First 3
 }
 
-# --- Repo 1: skills ---
-Sync-Repo -repo (Join-Path $env:USERPROFILE '.claude\skills') -label 'claude-skills'
+# --- Repo 1: skills (PUBLICO: passa pelo portao de auditoria) ---
+Sync-Repo -repo (Join-Path $env:USERPROFILE '.claude\skills') -label 'claude-skills' -Public
 
 # --- Repo 2: workspace DELEGACIA (clona se ainda nao existir nesta maquina) ---
 $delegacia = Join-Path $env:USERPROFILE 'Documents\DELEGACIA'
