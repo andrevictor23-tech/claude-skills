@@ -6,7 +6,7 @@ Este repositório é **público** e trata de fluxos de trabalho de Polícia Judi
 
 - Dados de casos reais: nomes de investigados, vítimas ou testemunhas, números de procedimento (IP, APF, TCO, BOC, RIF), endereços, documentos
 - Peças processuais reais, ainda que parcialmente editadas
-- Credenciais, tokens, chaves de API (inclusive do Windsor.ai, NotebookLM ou GitHub)
+- Credenciais, tokens, chaves de API (inclusive do NotebookLM ou GitHub)
 - Qualquer informação coberta por sigilo funcional, segredo de justiça ou protegida pela LGPD (Lei 13.709/2018)
 
 O acervo de modelos reais fica em repositório privado separado; aqui são versionados apenas os arquivos `LEIA-ME` que explicam essa separação. A política está documentada nos comentários do `.gitignore` da raiz.

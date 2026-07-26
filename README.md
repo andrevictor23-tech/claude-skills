@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Skills](https://img.shields.io/badge/skills-20-8A2BE2.svg)](#skills)
+[![Skills](https://img.shields.io/badge/skills-17-8A2BE2.svg)](#skills)
 [![Idioma](https://img.shields.io/badge/idioma-pt--BR-009c3b.svg)](#o-que-é)
 [![Claude Code](https://img.shields.io/badge/feito%20para-Claude%20Code-d97757.svg)](https://code.claude.com/docs/en/skills)
 
@@ -28,8 +28,6 @@ Cada skill é uma pasta com um `SKILL.md` (instruções que o Claude carrega sob
 | [relatorio-final-ip](relatorio-final-ip/) | Relatórios finais de inquérito policial, com templates por unidade (NEAMV × Delegacia) e checklist por tipo penal, incluindo violência doméstica sob a Lei 14.994/2024 |
 | [representacao-cautelar](representacao-cautelar/) | Representações da Autoridade Policial ao Juízo: preventiva, temporária, busca e apreensão, quebras de sigilo, interceptação e medidas assecuratórias |
 | [analise-rif](analise-rif/) | Análise de Relatórios de Inteligência Financeira do COAF (CSVs de envolvidos, comunicações e ocorrências), com Relatório de Análise Financeira em .docx segundo as tipologias da Carta Circular BACEN 4.001/2020 |
-| [instagram-autoridade](instagram-autoridade/) | Relatório estratégico e dashboard do Instagram institucional, com salvaguardas de sigilo investigativo, LGPD e Corregedoria (dados via Windsor.ai) |
-| [reels-delegado](reels-delegado/) | Fluxo de publicação de reels institucionais: edição com ffmpeg, capa por grade de frames, texto do post e respostas a comentários |
 
 ### Estudo jurídico e concursos
 
@@ -37,7 +35,6 @@ Cada skill é uma pasta com um `SKILL.md` (instruções que o Claude carrega sob
 |---|---|
 | [mapa-mental](mapa-mental/) | Mapas mentais interativos em HTML/SVG (metodologia Buzan) para revisão de conteúdo jurídico |
 | [simulado-quiz](simulado-quiz/) | Converte PDFs de simulado em quiz HTML interativo ou caderno de erros, com cache de extração |
-| [revisao-espacada](revisao-espacada/) | Revisão espaçada com caderno de erros para concursos (intervalos 1/3/7/15/30 dias) |
 | [sabatina](sabatina/) | Entrevista socrática pergunta a pergunta até haver entendimento compartilhado, antes de produzir qualquer peça |
 | [vocabulario-kindle](vocabulario-kindle/) | Converte o `vocab.db` do Kindle Vocabulary Builder em baralho Anki com frases reais dos livros |
 
@@ -79,10 +76,8 @@ Para uso restrito a um projeto, copie a pasta para `.claude/skills/` na raiz do 
 
 O Claude Code é o único requisito comum. Algumas skills usam ferramentas adicionais, sempre documentadas no `README.md` da própria skill:
 
-- **Python 3** — `analise-rif`, `relatorio-final-ip`, `simulado-quiz`, `vocabulario-kindle`, `revisao-espacada`, `representacao-cautelar` (scripts auxiliares) e `notebooklm` (ver `notebooklm/requirements.txt`)
-- **ffmpeg** — `reels-delegado`
-- **PowerShell** — `reels-delegado`, `sync-skills` (fluxos pensados para Windows)
-- **Conector Windsor.ai (MCP)** — `instagram-autoridade`
+- **Python 3** — `analise-rif`, `relatorio-final-ip`, `simulado-quiz`, `vocabulario-kindle`, `representacao-cautelar` (scripts auxiliares) e `notebooklm` (ver `notebooklm/requirements.txt`)
+- **PowerShell** — `sync-skills` (fluxo pensado para Windows)
 - **Docling + EasyOCR** — extrator de documentos da `sync-skills`
 
 ## Uso
