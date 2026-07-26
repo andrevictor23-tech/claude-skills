@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 Dúvidas e troca de experiências
+    url: https://github.com/andrevictor23-tech/claude-skills/discussions
+    about: Para perguntas de uso, ideias em estágio inicial e conversa com a comunidade, use as Discussions.
+  - name: 🔒 Reportar dado sensível ou vulnerabilidade
+    url: https://github.com/andrevictor23-tech/claude-skills/blob/main/SECURITY.md
+    about: NÃO abra issue pública para dados sigilosos — siga a política de segurança.

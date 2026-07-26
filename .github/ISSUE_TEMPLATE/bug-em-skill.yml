@@ -1,0 +1,58 @@
+name: "🐛 Bug em skill"
+description: "Uma skill produziu resultado errado, quebrou ou não ativou quando deveria"
+title: "[bug] nome-da-skill: resumo do problema"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar! **Atenção:** este repositório é público. Não cole dados de casos reais, nomes de investigados, números de procedimento nem qualquer informação sigilosa. Use dados fictícios para reproduzir o problema. Se o bug envolve dado sensível, siga o [SECURITY.md](../../blob/main/SECURITY.md) em vez de abrir issue.
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill afetada
+      options:
+        - despacho-plantao
+        - relatorio-final-ip
+        - representacao-cautelar
+        - analise-rif
+        - instagram-autoridade
+        - reels-delegado
+        - mapa-mental
+        - simulado-quiz
+        - revisao-espacada
+        - sabatina
+        - vocabulario-kindle
+        - analise-carteira
+        - sync-skills
+        - outra / skill de terceiro
+    validations:
+      required: true
+  - type: textarea
+    id: o-que-aconteceu
+    attributes:
+      label: O que aconteceu
+      description: Descreva o comportamento errado. Se possível, cole o trecho da resposta do Claude (com dados fictícios/anonimizados).
+    validations:
+      required: true
+  - type: textarea
+    id: o-que-esperava
+    attributes:
+      label: O que você esperava
+    validations:
+      required: true
+  - type: textarea
+    id: como-reproduzir
+    attributes:
+      label: Como reproduzir
+      description: O prompt usado (anonimizado) e os passos até o problema.
+      placeholder: |
+        1. Instalei a skill em ~/.claude/skills/
+        2. Pedi "despacha esse flagrante: ..."
+        3. A skill não ativou / fundamentou no artigo errado / etc.
+  - type: input
+    id: ambiente
+    attributes:
+      label: Ambiente
+      description: Sistema operacional e onde roda o Claude Code (CLI, desktop, web).
+      placeholder: "Windows 11, Claude Code CLI"
