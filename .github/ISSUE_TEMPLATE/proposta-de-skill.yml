@@ -1,0 +1,40 @@
+name: "💡 Proposta de skill ou melhoria"
+description: "Sugerir uma nova skill jurídica/de estudo ou uma melhoria em skill existente"
+title: "[proposta] resumo da ideia"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Ideias são bem-vindas — especialmente de colegas de outras unidades e comarcas. Para conversas mais abertas (dúvidas, troca de experiências), prefira as [Discussions](../../discussions).
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Tipo
+      options:
+        - Nova skill
+        - Melhoria em skill existente
+        - Adaptação para outra unidade/comarca/estado
+    validations:
+      required: true
+  - type: textarea
+    id: problema
+    attributes:
+      label: Que problema resolve
+      description: O fluxo de trabalho ou necessidade de estudo que a ideia atende.
+    validations:
+      required: true
+  - type: textarea
+    id: proposta
+    attributes:
+      label: Proposta
+      description: Como você imagina que funcione — entrada, saída, fundamentação legal envolvida.
+    validations:
+      required: true
+  - type: checkboxes
+    id: disposicao
+    attributes:
+      label: Disposição para contribuir
+      options:
+        - label: Posso escrever a skill/mudança eu mesmo e abrir um PR
+        - label: Posso testar e dar feedback

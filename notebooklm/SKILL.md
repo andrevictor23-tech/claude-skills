@@ -1,4 +1,4 @@
-﻿---
+---
 name: notebooklm
 description: Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini. Browser automation, library management, persistent auth. Drastically reduced hallucinations through document-only responses.
 ---
@@ -9,7 +9,7 @@ Interact with Google NotebookLM to query documentation with Gemini's source-grou
 
 ## Idioma / Language
 
-Formule as perguntas **sempre no mesmo idioma dos documentos** do notebook consultado. Para o usuÃ¡rio AndrÃ© (Delegado de PolÃ­cia Civil / PCMT), use **portuguÃªs do Brasil** em todas as queries. As respostas do NotebookLM espelharÃ£o o idioma da pergunta.
+Formule as perguntas **sempre no mesmo idioma dos documentos** do notebook consultado. Para o usuário André (Delegado de Polícia Civil / PCMT), use **português do Brasil** em todas as queries. As respostas do NotebookLM espelharão o idioma da pergunta.
 
 ## When to Use This Skill
 
@@ -22,14 +22,14 @@ Trigger when user:
 - Needs source-grounded research for police reports, legal briefs, or concurso prep
 - Needs content research for Instagram/social media posts
 
-## âš ï¸ CRITICAL: Add Command - Smart Discovery
+## ⚠️ CRITICAL: Add Command - Smart Discovery
 
 When user wants to add a notebook without providing details:
 
 **SMART ADD (Recommended)**: Query the notebook first to discover its content:
 ```bash
 # Step 1: Query the notebook about its content
-python scripts/run.py ask_question.py --question "Qual Ã© o conteÃºdo deste notebook? Quais temas sÃ£o abordados? ForneÃ§a uma visÃ£o geral completa de forma breve e concisa." --notebook-url "[URL]"
+python scripts/run.py ask_question.py --question "Qual é o conteúdo deste notebook? Quais temas são abordados? Forneça uma visão geral completa de forma breve e concisa." --notebook-url "[URL]"
 
 # Step 2: Use the discovered information to add it
 python scripts/run.py notebook_manager.py add --url "[URL]" --name "[Based on content]" --description "[Based on content]" --topics "[Based on content]"
@@ -48,12 +48,12 @@ NEVER guess or use generic descriptions! If details missing, use Smart Add to di
 **NEVER call scripts directly. ALWAYS use `python scripts/run.py [script]`:**
 
 ```bash
-# âœ… CORRECT - Always use run.py:
+# ✅ CORRECT - Always use run.py:
 python scripts/run.py auth_manager.py status
 python scripts/run.py notebook_manager.py list
 python scripts/run.py ask_question.py --question "..."
 
-# âŒ WRONG - Never call directly:
+# ❌ WRONG - Never call directly:
 python scripts/auth_manager.py status  # Fails without venv!
 ```
 
@@ -150,7 +150,7 @@ python scripts/run.py auth_manager.py setup
 - Browser is VISIBLE for authentication
 - Browser window opens automatically
 - User must manually log in to Google
-- Tell user: "Uma janela do navegador serÃ¡ aberta para login no Google"
+- Tell user: "Uma janela do navegador será aberta para login no Google"
 
 ### Step 3: Manage Notebook Library
 
@@ -162,7 +162,7 @@ python scripts/run.py notebook_manager.py list
 python scripts/run.py notebook_manager.py add \
   --url "https://notebooklm.google.com/notebook/..." \
   --name "Nome Descritivo" \
-  --description "O que este notebook contÃ©m" \
+  --description "O que este notebook contém" \
   --topics "topico1,topico2,topico3"
 
 # Search notebooks by topic
@@ -208,55 +208,55 @@ Every NotebookLM answer ends with: **"EXTREMELY IMPORTANT: Is that ALL you need 
 
 ## Domain-Specific Query Templates
 
-### DomÃ­nio JurÃ­dico-Policial (Delegacia de Alta Floresta/PCMT)
+### Domínio Jurídico-Policial (Delegacia de Alta Floresta/PCMT)
 
 ```bash
-# Pesquisar jurisprudÃªncia sobre tipificaÃ§Ã£o penal
+# Pesquisar jurisprudência sobre tipificação penal
 python scripts/run.py ask_question.py \
-  --question "Qual Ã© o entendimento do STJ e STF sobre [tipo penal]? Inclua sÃºmulas aplicÃ¡veis e teses fixadas em recursos repetitivos." \
+  --question "Qual é o entendimento do STJ e STF sobre [tipo penal]? Inclua súmulas aplicáveis e teses fixadas em recursos repetitivos." \
   --notebook-id juridico
 
 # Verificar procedimento para tipo de caso
 python scripts/run.py ask_question.py \
-  --question "Qual o procedimento correto para [flagrante/APF/TCO/IP] em caso de [situaÃ§Ã£o]? Fundamente no CPP." \
+  --question "Qual o procedimento correto para [flagrante/APF/TCO/IP] em caso de [situação]? Fundamente no CPP." \
   --notebook-id juridico
 
 # Consultar Lei Maria da Penha / Lei Henry Borel
 python scripts/run.py ask_question.py \
-  --question "Quais os requisitos legais e procedimentos para [medida protetiva/APF/representaÃ§Ã£o] em caso de violÃªncia domÃ©stica contra [mulher/crianÃ§a]?" \
+  --question "Quais os requisitos legais e procedimentos para [medida protetiva/APF/representação] em caso de violência doméstica contra [mulher/criança]?" \
   --notebook-id violencia-domestica
 
-# Pesquisar trÃ¡fico/drogas
+# Pesquisar tráfico/drogas
 python scripts/run.py ask_question.py \
-  --question "Qual a distinÃ§Ã£o entre trÃ¡fico e uso pessoal segundo a Lei 11.343/2006 e a jurisprudÃªncia atual? Quais os critÃ©rios objetivos utilizados?" \
+  --question "Qual a distinção entre tráfico e uso pessoal segundo a Lei 11.343/2006 e a jurisprudência atual? Quais os critérios objetivos utilizados?" \
   --notebook-id drogas
 ```
 
-### DomÃ­nio Concurso PÃºblico
+### Domínio Concurso Público
 
 ```bash
 # Gerar flashcards de estudo
 python scripts/run.py ask_question.py \
-  --question "Gere 10 questÃµes de mÃºltipla escolha no estilo CESPE sobre [tema], com gabarito e justificativa de cada alternativa." \
+  --question "Gere 10 questões de múltipla escolha no estilo CESPE sobre [tema], com gabarito e justificativa de cada alternativa." \
   --notebook-id concurso
 
 # Resumo de ponto do edital
 python scripts/run.py ask_question.py \
-  --question "FaÃ§a um resumo esquemÃ¡tico e didÃ¡tico do tema [X] para concurso de Delegado, destacando os pontos mais cobrados em provas." \
+  --question "Faça um resumo esquemático e didático do tema [X] para concurso de Delegado, destacando os pontos mais cobrados em provas." \
   --notebook-id concurso
 
-# DistinÃ§Ãµes e pegadinhas
+# Distinções e pegadinhas
 python scripts/run.py ask_question.py \
-  --question "Quais sÃ£o as principais distinÃ§Ãµes e 'pegadinhas' de prova sobre [tema]? Liste em formato comparativo." \
+  --question "Quais são as principais distinções e 'pegadinhas' de prova sobre [tema]? Liste em formato comparativo." \
   --notebook-id concurso
 ```
 
-### DomÃ­nio ConteÃºdo Digital (Instagram/TikTok/YouTube)
+### Domínio Conteúdo Digital (Instagram/TikTok/YouTube)
 
 ```bash
-# Pesquisar ideias de conteÃºdo viral
+# Pesquisar ideias de conteúdo viral
 python scripts/run.py ask_question.py \
-  --question "Quais formatos e ganchos de conteÃºdo sobre [tema] tÃªm maior potencial viral no Instagram Reels e TikTok segundo as fontes?" \
+  --question "Quais formatos e ganchos de conteúdo sobre [tema] têm maior potencial viral no Instagram Reels e TikTok segundo as fontes?" \
   --notebook-id conteudo
 
 # Script para Reels
@@ -264,64 +264,53 @@ python scripts/run.py ask_question.py \
   --question "Crie um roteiro de 60 segundos para Reels sobre [tema], com gancho inicial impactante, desenvolvimento e CTA final." \
   --notebook-id conteudo
 
-# EstratÃ©gia de autoridade institucional
+# Estratégia de autoridade institucional
 python scripts/run.py ask_question.py \
-  --question "Quais estratÃ©gias de conteÃºdo sÃ£o recomendadas para construir autoridade digital como Delegado de PolÃ­cia no Instagram?" \
+  --question "Quais estratégias de conteúdo são recomendadas para construir autoridade digital como Delegado de Polícia no Instagram?" \
   --notebook-id conteudo
 ```
 
-### DomÃ­nio IA e Produtividade (Claude/Skills/ECC)
+### Domínio IA e Produtividade (Claude/Skills/ECC)
 
 ```bash
 # Pesquisar como usar Skills do Claude Code
 python scripts/run.py ask_question.py \
-  --question "Como criar e estruturar uma skill para o Claude Code? Quais sÃ£o os componentes obrigatÃ³rios do SKILL.md?" \
+  --question "Como criar e estruturar uma skill para o Claude Code? Quais são os componentes obrigatórios do SKILL.md?" \
   --notebook-id claude-skills
 
-# Pesquisar loops e automaÃ§Ãµes
+# Pesquisar loops e automações
 python scripts/run.py ask_question.py \
-  --question "O que sÃ£o loops no contexto de agentes IA? Como projetar um loop eficiente para [tarefa]?" \
+  --question "O que são loops no contexto de agentes IA? Como projetar um loop eficiente para [tarefa]?" \
   --notebook-id claude-skills
 
-# ECC e configuraÃ§Ã£o avanÃ§ada
+# ECC e configuração avançada
 python scripts/run.py ask_question.py \
-  --question "O que o ECC (Everything Claude Code) oferece alÃ©m das funcionalidades padrÃ£o? Quais sÃ£o os principais harnesses disponÃ­veis?" \
+  --question "O que o ECC (Everything Claude Code) oferece além das funcionalidades padrão? Quais são os principais harnesses disponíveis?" \
   --notebook-id claude-skills
 ```
 
 ## Integration Patterns with Other Skills
 
-### Pipeline: NotebookLM â†’ relatorio-final-ip
+### Pipeline: NotebookLM → relatorio-final-ip
 
-Use NotebookLM para pesquisa jurÃ­dica antes de redigir um relatÃ³rio de inquÃ©rito:
+Use NotebookLM para pesquisa jurídica antes de redigir um relatório de inquérito:
 
 ```bash
-# 1. Pesquisar tipificaÃ§Ã£o e jurisprudÃªncia
+# 1. Pesquisar tipificação e jurisprudência
 python scripts/run.py ask_question.py \
-  --question "Qual a tipificaÃ§Ã£o correta e os requisitos probatÃ³rios para [crime] segundo CP, jurisprudÃªncia STJ e STF?" \
+  --question "Qual a tipificação correta e os requisitos probatórios para [crime] segundo CP, jurisprudência STJ e STF?" \
   --notebook-id juridico
 
-# 2. Com as referÃªncias obtidas, acionar a skill relatorio-final-ip
-# A pesquisa do NotebookLM fornece fundamento jurÃ­dico sÃ³lido para o relatÃ³rio
+# 2. Com as referências obtidas, acionar a skill relatorio-final-ip
+# A pesquisa do NotebookLM fornece fundamento jurídico sólido para o relatório
 ```
 
-### Pipeline: NotebookLM â†’ instagram-autoridade
-
-```bash
-# 1. Pesquisar tendÃªncias e melhores prÃ¡ticas
-python scripts/run.py ask_question.py \
-  --question "Quais tipos de conteÃºdo sobre seguranÃ§a pÃºblica e direito tÃªm maior engajamento no Instagram segundo as fontes?" \
-  --notebook-id conteudo
-
-# 2. Com os insights, acionar instagram-autoridade para anÃ¡lise do perfil
-```
-
-### Pipeline: NotebookLM â†’ mapa-mental
+### Pipeline: NotebookLM → mapa-mental
 
 ```bash
 # 1. Extrair estrutura do tema
 python scripts/run.py ask_question.py \
-  --question "Liste todos os tÃ³picos, subtÃ³picos e conceitos-chave sobre [tema] de forma hierÃ¡rquica." \
+  --question "Liste todos os tópicos, subtópicos e conceitos-chave sobre [tema] de forma hierárquica." \
   --notebook-id concurso
 
 # 2. Passar o resultado para a skill mapa-mental para gerar o mapa visual
@@ -359,16 +348,16 @@ python scripts/run.py cleanup_manager.py --confirm          # Execute cleanup
 python scripts/run.py cleanup_manager.py --preserve-library # Keep notebooks
 ```
 
-## Recommended Notebook Library Structure (AndrÃ© - PCMT)
+## Recommended Notebook Library Structure (André - PCMT)
 
-| ID sugerido | Nome | TÃ³picos | ConteÃºdo |
+| ID sugerido | Nome | Tópicos | Conteúdo |
 |---|---|---|---|
-| `juridico` | Direito Penal e Processual | cp,cpp,stj,stf,jurisprudencia | CP, CPP, sÃºmulas, jurisprudÃªncia |
-| `violencia-domestica` | ViolÃªncia DomÃ©stica e Familiar | lmp,henry-borel,vitimas | Lei 11.340, Lei 14.344, Lei 13.431 |
-| `drogas` | Lei de Drogas | trafico,uso,11343 | Lei 11.343/2006, jurisprudÃªncia |
+| `juridico` | Direito Penal e Processual | cp,cpp,stj,stf,jurisprudencia | CP, CPP, súmulas, jurisprudência |
+| `violencia-domestica` | Violência Doméstica e Familiar | lmp,henry-borel,vitimas | Lei 11.340, Lei 14.344, Lei 13.431 |
+| `drogas` | Lei de Drogas | trafico,uso,11343 | Lei 11.343/2006, jurisprudência |
 | `concurso` | Concurso Delegado | edital,questoes,cespe | Material de estudo, editais, provas anteriores |
-| `conteudo` | ConteÃºdo Digital | instagram,reels,tiktok,viral | EstratÃ©gias de criaÃ§Ã£o de conteÃºdo |
-| `claude-skills` | Claude Code e IA | ecc,skills,loops,agentes | DocumentaÃ§Ã£o Claude, ECC, skills |
+| `conteudo` | Conteúdo Digital | instagram,reels,tiktok,viral | Estratégias de criação de conteúdo |
+| `claude-skills` | Claude Code e IA | ecc,skills,loops,agentes | Documentação Claude, ECC, skills |
 | `financeiro` | Lavagem e Crime Financeiro | coaf,rif,bacen,lavagem | Carta BACEN 4001, tipologias COAF |
 
 ## Environment Management
@@ -411,49 +400,49 @@ DEFAULT_NOTEBOOK_ID=     # Default notebook
 ## Decision Flow
 
 ```
-UsuÃ¡rio menciona NotebookLM / compartilha URL / pergunta sobre documentos
-    â†“
-Verificar auth â†’ python scripts/run.py auth_manager.py status
-    â†“
-Se nÃ£o autenticado â†’ python scripts/run.py auth_manager.py setup
-    â†“
-Verificar/Adicionar notebook â†’ python scripts/run.py notebook_manager.py list/add
-    â†“
-Identificar domÃ­nio â†’ jurÃ­dico? concurso? conteÃºdo? IA/skills?
-    â†“
-Usar template de query do domÃ­nio correspondente
-    â†“
-Perguntar â†’ python scripts/run.py ask_question.py --question "..."
-    â†“
-Ver "Is that ALL you need?" â†’ Fazer follow-ups atÃ© completar
-    â†“
-Sintetizar em portuguÃªs â†’ Responder ao usuÃ¡rio
-    â†“
-Integrar com outra skill se necessÃ¡rio (relatorio-final-ip, mapa-mental, etc.)
+Usuário menciona NotebookLM / compartilha URL / pergunta sobre documentos
+    ↓
+Verificar auth → python scripts/run.py auth_manager.py status
+    ↓
+Se não autenticado → python scripts/run.py auth_manager.py setup
+    ↓
+Verificar/Adicionar notebook → python scripts/run.py notebook_manager.py list/add
+    ↓
+Identificar domínio → jurídico? concurso? conteúdo? IA/skills?
+    ↓
+Usar template de query do domínio correspondente
+    ↓
+Perguntar → python scripts/run.py ask_question.py --question "..."
+    ↓
+Ver "Is that ALL you need?" → Fazer follow-ups até completar
+    ↓
+Sintetizar em português → Responder ao usuário
+    ↓
+Integrar com outra skill se necessário (relatorio-final-ip, mapa-mental, etc.)
 ```
 
 ## Troubleshooting
 
-| Problema | SoluÃ§Ã£o |
+| Problema | Solução |
 |---------|----------|
 | ModuleNotFoundError | Use o wrapper `run.py` |
-| Falha de autenticaÃ§Ã£o | Browser deve estar visÃ­vel no setup! --show-browser |
+| Falha de autenticação | Browser deve estar visível no setup! --show-browser |
 | Rate limit (50/dia) | Aguardar ou trocar conta Google |
 | Browser trava | `python scripts/run.py cleanup_manager.py --preserve-library` |
-| Notebook nÃ£o encontrado | Verificar com `notebook_manager.py list` |
-| Resposta em inglÃªs | Formular a pergunta em portuguÃªs |
+| Notebook não encontrado | Verificar com `notebook_manager.py list` |
+| Resposta em inglês | Formular a pergunta em português |
 
 ## Best Practices
 
 1. **Sempre use run.py** - Gerencia o ambiente automaticamente
-2. **Verifique auth primeiro** - Antes de qualquer operaÃ§Ã£o
-3. **Perguntas de acompanhamento** - NÃ£o pare na primeira resposta
-4. **Browser visÃ­vel para auth** - ObrigatÃ³rio no login manual
-5. **Inclua contexto** - Cada pergunta Ã© independente; inclua contexto relevante
-6. **Sintetize respostas** - Combine mÃºltiplas respostas antes de responder
-7. **Use templates de domÃ­nio** - Queries especÃ­ficas dÃ£o respostas mais precisas
-8. **Organize por domÃ­nio** - Separe jurÃ­dico, concurso, conteÃºdo e IA em notebooks distintos
-9. **Integre com outras skills** - NotebookLM Ã© a fase de pesquisa; outras skills produzem o output
+2. **Verifique auth primeiro** - Antes de qualquer operação
+3. **Perguntas de acompanhamento** - Não pare na primeira resposta
+4. **Browser visível para auth** - Obrigatório no login manual
+5. **Inclua contexto** - Cada pergunta é independente; inclua contexto relevante
+6. **Sintetize respostas** - Combine múltiplas respostas antes de responder
+7. **Use templates de domínio** - Queries específicas dão respostas mais precisas
+8. **Organize por domínio** - Separe jurídico, concurso, conteúdo e IA em notebooks distintos
+9. **Integre com outras skills** - NotebookLM é a fase de pesquisa; outras skills produzem o output
 
 ## Limitations
 
