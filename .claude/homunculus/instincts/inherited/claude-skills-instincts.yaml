@@ -1,0 +1,293 @@
+# Instincts generated from https://github.com/andrevictor23-tech/claude-skills
+# Generated: 2026-07-26T00:38:13.745Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: claude-skills-commit-conventional
+trigger: "when writing a commit message"
+confidence: 0.85
+domain: git
+source: repo-analysis
+source_repo: https://github.com/andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Commit Conventional
+
+## Action
+
+Use conventional commit format with prefixes: docs, fix
+
+## Evidence
+
+- 5 commits analyzed
+- Detected conventional commit pattern
+- Examples: docs: reescreve README com badges, catálogo completo das 20 skills e requisitos, fix(notebooklm): corrige mojibake do bloco em português e remove BOM UTF-8
+
+---
+id: claude-skills-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Commit Length
+
+## Action
+
+Write moderate-length commit messages (~69 characters)
+
+## Evidence
+
+- Average commit message length: 69 chars
+- Based on 5 commits
+
+---
+id: claude-skills-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Naming Files
+
+## Action
+
+Use PascalCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: PascalCase
+
+---
+id: claude-skills-import-relative
+trigger: "when importing modules"
+confidence: 0.75
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Import Relative
+
+## Action
+
+Use relative imports for project files
+
+## Evidence
+
+- Import analysis shows relative import pattern
+- Example: import { x } from '../lib/x'
+
+---
+id: claude-skills-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: claude-skills-test-separate
+trigger: "when writing tests"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: https://github.com/andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Test Separate
+
+## Action
+
+Place tests in the tests/ or __tests__/ directory, mirroring src structure
+
+## Evidence
+
+- Separate test directory pattern detected
+- Tests live in dedicated test folders
+
+---
+id: claude-skills-workflow-add-or-update-skill-readme
+trigger: "when doing add or update skill readme"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Workflow Add Or Update Skill Readme
+
+## Action
+
+Follow the add-or-update-skill-readme workflow:
+1. Create or update README.md inside the skill's directory.
+2. Follow the standardized template: what it does, when to use, prompt examples, deliverables, folder structure, requirements, and compliance notes.
+3. If reorganizing, update existing README.md to match the new pattern.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: */README.md
+
+---
+id: claude-skills-workflow-repository-wide-documentation-update
+trigger: "when doing repository wide documentation update"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Workflow Repository Wide Documentation Update
+
+## Action
+
+Follow the repository-wide-documentation-update workflow:
+1. Edit or create documentation files at the repository root (README.md, CLAUDE.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md).
+2. Optionally add or update issue and pull request templates under .github/.
+3. Group and cross-link documentation as needed.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: README.md, CLAUDE.md, CONTRIBUTING.md
+
+---
+id: claude-skills-instinct-naming-conventions
+trigger: "When creating or renaming files, functions, classes, or constants in TypeScript code"
+confidence: 0.9
+domain: code-style
+source: repo-analysis
+source_repo: andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Instinct Naming Conventions
+
+## Action
+
+Use PascalCase for files and classes, camelCase for functions, and SCREAMING_SNAKE_CASE for constants
+
+## Evidence
+
+- Pattern in codeStyle.namingConventions
+- Consistent naming in skill folders and code examples
+
+---
+id: claude-skills-instinct-import-export-style
+trigger: "When importing or exporting modules in TypeScript files"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Instinct Import Export Style
+
+## Action
+
+Use relative import paths and named exports
+
+## Evidence
+
+- Pattern in codeStyle.importStyle and exportStyle
+
+---
+id: claude-skills-instinct-git-commit-format
+trigger: "When writing a commit message"
+confidence: 0.9
+domain: git
+source: repo-analysis
+source_repo: andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Instinct Git Commit Format
+
+## Action
+
+Use conventional commit prefixes (e.g., docs:, fix:) followed by a concise description
+
+## Evidence
+
+- Seen in commit: docs: reescreve README com badges, catálogo completo das 20 skills e requisitos
+- Seen in commit: fix(notebooklm): corrige mojibake do bloco em português e remove BOM UTF-8
+
+---
+id: claude-skills-instinct-test-location
+trigger: "When adding or updating tests"
+confidence: 0.7
+domain: testing
+source: repo-analysis
+source_repo: andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Instinct Test Location
+
+## Action
+
+Place test files in a separate directory from source code
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation: separate
+
+---
+id: claude-skills-instinct-add-or-update-skill-readme
+trigger: "When a new skill is created or documentation for an existing skill is updated"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Instinct Add Or Update Skill Readme
+
+## Action
+
+Create or update README.md inside the skill's directory using the standardized template (usage, examples, requirements, compliance notes)
+
+## Evidence
+
+- Workflow: add-or-update-skill-readme
+- Seen in commit: docs: adiciona guia de uso (README) para cada skill autoral
+
+---
+id: claude-skills-instinct-repo-wide-docs-update
+trigger: "When improving or standardizing repository-wide documentation"
+confidence: 0.85
+domain: workflow
+source: repo-analysis
+source_repo: andrevictor23-tech/claude-skills
+---
+
+# Claude Skills Instinct Repo Wide Docs Update
+
+## Action
+
+Edit or create top-level documentation files (README.md, CLAUDE.md, CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md) and optionally update .github templates
+
+## Evidence
+
+- Workflow: repository-wide-documentation-update
+- Seen in commit: docs: estrutura para comunidade (CONTRIBUTING, conduta, segurança, templates)
+
