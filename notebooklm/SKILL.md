@@ -305,17 +305,6 @@ python scripts/run.py ask_question.py \
 # A pesquisa do NotebookLM fornece fundamento jurídico sólido para o relatório
 ```
 
-### Pipeline: NotebookLM → instagram-autoridade
-
-```bash
-# 1. Pesquisar tendências e melhores práticas
-python scripts/run.py ask_question.py \
-  --question "Quais tipos de conteúdo sobre segurança pública e direito têm maior engajamento no Instagram segundo as fontes?" \
-  --notebook-id conteudo
-
-# 2. Com os insights, acionar instagram-autoridade para análise do perfil
-```
-
 ### Pipeline: NotebookLM → mapa-mental
 
 ```bash
