@@ -1,17 +1,17 @@
 ---
 name: sync-skills
-description: Sincroniza as skills do Claude entre as máquinas do usuário via git (repo andrevictor23-tech/claude-skills em ~/.claude/skills). Use SEMPRE que o usuário pedir para sincronizar, atualizar, puxar ou enviar skills entre computadores, mencionar "git pull das skills", "sync das skills", "atualiza minhas skills", "manda pro git", "as skills estão atualizadas?", ou quando ele digitar comandos git relacionados a ~/.claude/skills no chat. Também use ao final de qualquer sessão em que skills foram criadas ou editadas, para oferecer o envio das mudanças às outras máquinas.
+description: Sincroniza as skills do Claude entre as máquinas do usuário via git (repo andrevictor23-tech/delta-skills em ~/.claude/skills). Use SEMPRE que o usuário pedir para sincronizar, atualizar, puxar ou enviar skills entre computadores, mencionar "git pull das skills", "sync das skills", "atualiza minhas skills", "manda pro git", "as skills estão atualizadas?", ou quando ele digitar comandos git relacionados a ~/.claude/skills no chat. Também use ao final de qualquer sessão em que skills foram criadas ou editadas, para oferecer o envio das mudanças às outras máquinas.
 ---
 
 # Sync de skills entre máquinas
 
-O usuário mantém `~/.claude/skills` como clone de `https://github.com/andrevictor23-tech/claude-skills.git` em 3 máquinas. A pasta `ecc/` é subpasta rastreada do mesmo repo (não é repo separado).
+O usuário mantém `~/.claude/skills` como clone de `https://github.com/andrevictor23-tech/delta-skills.git` em 3 máquinas.
 
 O script também sincroniza um segundo repo: `~/Documents/DELEGACIA`, clone de `https://github.com/andrevictor23-tech/delegacia-claude-workspace.git` (**privado** — workspace institucional com CLAUDE.md aninhados). Se a pasta ainda não existir na máquina, o script clona automaticamente. O `.gitignore` desse repo é lista branca (só `.md`, mais `MODELOS-REPRESENTACAO/lexico-semente.txt`), então arquivos de casos reais na pasta nunca são enviados.
 
 Um terceiro repo também é sincronizado: `~/Documents/OSINT`, clone de `https://github.com/andrevictor23-tech/osint-investigacao.git`. Mesmo comportamento de clone automático caso a pasta ainda não exista na máquina.
 
-**Atenção: `claude-skills` é público.** Nada de sigiloso pode entrar nele. Em particular, o acervo da skill `representacao-cautelar` (modelos reais, catálogo e léxico) vive **apenas** no repo privado, em `MODELOS-REPRESENTACAO/`.
+**Atenção: `delta-skills` é público.** Nada de sigiloso pode entrar nele. Em particular, o acervo da skill `representacao-cautelar` (modelos reais, catálogo e léxico) vive **apenas** no repo privado, em `MODELOS-REPRESENTACAO/`.
 
 ## Depois de clonar numa máquina nova
 
@@ -32,7 +32,7 @@ Se o usuário editar modelos na skill, copie-os de volta para `MODELOS-REPRESENT
 
 Mesmo esquema, mesma razão: `references/estado-carteira.md` reúne posições, metas,
 saldo e watchlist de tickers do André junto com nome, cargo e comarca. Não pode ir
-para o `claude-skills`, que é público (está no `.gitignore` da skill desde 21/07/2026).
+para o `delta-skills`, que é público (está no `.gitignore` da skill desde 21/07/2026).
 Fonte de verdade: `~/Documents/DELEGACIA/PESSOAL/estado-carteira.md`.
 
 ```powershell
