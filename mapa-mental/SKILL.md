@@ -105,10 +105,10 @@ Gerar arquivo `.html` autocontido com:
 - **Layout radial** com centro na tela
 - **Interatividade**: zoom (scroll), pan (drag), colapsar/expandir ramos (click)
 - **Responsivo**: adapta ao tamanho da tela
-- **Exportável**: botão para salvar como PNG (usando html2canvas ou similar)
+- **Exportável**: botão para salvar como PNG usando só APIs nativas do navegador (serializar o SVG → `Image` → `canvas.toBlob`) — nunca biblioteca de CDN, o arquivo deve funcionar offline
 - **Modo escuro/claro**: toggle no canto superior
 - **Legenda de cores**: exibida no canto inferior
-- Salvar como `mapa-mental-[TEMA].html` na pasta de saída da sessão (não use caminho fixo de sistema; ele varia conforme o ambiente)
+- Salvar como `mapa-mental-[TEMA].html`. **Onde:** se o contexto for a pasta de estudos (a que contém `wiki\`), salve em `<pasta de estudos>\mapas\` (crie se não existir — fica no Drive e sincroniza entre as máquinas) e **acrescente o link do mapa na nota da disciplina** em `wiki/disciplinas/`, como já se faz com os quizzes. Fora do contexto de estudo, salve na pasta de trabalho atual.
 
 ### Saída Alternativa: Texto Estruturado
 Se o usuário pedir "mapa mental em texto", "mapa simples" ou "mapa no chat":
@@ -155,8 +155,9 @@ O input pode ser:
 - Adicionar interatividade (zoom, pan, collapse)
 
 ### Passo 4: Entregar
-- Salvar o arquivo HTML na pasta de saída da sessão
-- Apresentar ao usuário com `present_files`
+- Salvar o arquivo HTML conforme a convenção de saída (ver "Formato de Saída")
+- Informar o caminho completo do arquivo como link clicável e sugerir abrir no navegador
+- No contexto de estudo, linkar o mapa na nota da disciplina da wiki
 - Oferecer versão em texto no chat se solicitado
 
 ---
@@ -208,6 +209,19 @@ Esse arquivo contém o template HTML completo com:
 
 ### Legislação Extravagante / Especial
 - Adaptar ramos ao diploma específico (Lei Maria da Penha, ECA, CDC, etc.)
+
+---
+
+## Modo "Mapa do Erro" (integração com a wiki de estudos)
+
+Ative quando o usuário pedir "mapa dos meus erros", "mapa do que eu confundo", ou citar revisão de fraquezas. Fonte: `wiki/revisao/erros.md` da pasta de estudos (e as notas de disciplina referenciadas nas entradas).
+
+1. Leia as entradas do `erros.md` (uma disciplina ou todas) e a seção "Padrões recorrentes".
+2. O centro do mapa é o padrão de erro (ex.: ⚠️ REQUISITO ACRESCIDO) ou a disciplina, conforme o pedido.
+3. **Pares simétricos confundidos** (ex.: encampação × caducidade) viram dois ramos lado a lado, com os atributos contrastados em sub-ramos espelhados — o objetivo visual é fixar qual atributo pertence a qual instituto.
+4. **Requisitos enumerados** ganham a contagem em destaque no ramo (ex.: "IDC: 2 pressupostos ⏰") — a contagem é a arma contra a pegadinha de requisito acrescido.
+5. Cada folha terminal traz a citação exata do fundamento (artigo, súmula, tema, Info) vinda da entrada do `erros.md` — nunca invente fundamento que não esteja registrado.
+6. Inclua os macetes registrados nas entradas como folhas com 💡.
 
 ---
 

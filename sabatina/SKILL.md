@@ -26,6 +26,8 @@ E a divisão é inegociável:
 
 **Toda pergunta vem com sua recomendação.** Não pergunte no vácuo. Apresente a opção que você adotaria e por quê — assim o usuário confirma, corrige ou refina, em vez de partir do zero. Se você não tem recomendação, provavelmente ainda não pesquisou o suficiente.
 
+**Use o seletor de opções quando as alternativas forem enumeráveis.** Se a pergunta tem 2–4 respostas plausíveis, faça-a com a ferramenta de pergunta com opções clicáveis (AskUserQuestion), com a sua recomendação como primeira opção rotulada "(Recomendado)" e uma linha de justificativa em cada opção — responder vira um clique, e o "Other" fica disponível para nuance. Pergunta genuinamente aberta (narrar o fato, expor a tese) continua em texto livre; não esprema resposta aberta em múltipla escolha.
+
 **Desça a árvore de decisões.** Cada resposta abre ou fecha ramos. Resolva as dependências na ordem: decisões que condicionam outras vêm primeiro. Não pule para o detalhe de execução enquanto a decisão-mãe estiver aberta.
 
 **Persiga a resposta vaga.** "Acho que sim", "mais ou menos", "depende" — nenhuma dessas fecha um ramo. Refaça a pergunta de outro ângulo ou com um caso concreto.
@@ -55,6 +57,10 @@ Quando um ramo fechar, sinalize brevemente e siga para o próximo.
 Quando não restar decisão relevante em aberto, apresente a **síntese do entendimento compartilhado**: o que foi decidido, com que fundamento, e o que ficou deliberadamente de fora.
 
 Pergunte se está correto. **Só depois da confirmação explícita** parta para a execução — ou proponha qual skill assume dali em diante (`representacao-cautelar`, `relatorio-final-ip`, `despacho-plantao`, etc.).
+
+### Passo 5 — Ata da sabatina
+
+Confirmada a síntese, grave-a como **ata**: arquivo `sabatina-<tema>-AAAA-MM-DD.md` na pasta de trabalho do assunto (a pasta dos autos, do projeto ou de estudos — nunca o scratchpad temporário), com três seções: **Decidido** (cada decisão com seu fundamento), **Deliberadamente fora** (o que se decidiu não fazer, e por quê) e **Lacunas de fato** (os `[VERIFICAR]` que sobraram). A skill executora e as sessões futuras partem da ata, não da memória do chat. Se a sabatina foi curta e trivial, pergunte antes se ele quer a ata; nas complexas, grave por padrão e informe o caminho.
 
 ## Modo jurídico / investigativo
 

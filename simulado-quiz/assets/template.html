@@ -53,7 +53,7 @@
     <span>Acertos: <b class="ok" id="nOk">0</b></span>
     <span>Erros: <b class="err" id="nErr">0</b></span>
     <select id="fMat" class="hid"><option value="">Todas as matérias</option></select>
-    <button onclick="exportarErros()">Exportar erros</button>
+    <button onclick="exportarResultado()">Exportar resultado</button>
     <button onclick="zerar()">Zerar progresso</button>
   </div>
   <div class="nav" id="nav"></div>
@@ -153,13 +153,31 @@ function marcar(uid, L) {
   state[uid] = L; save(); render();
 }
 
-function exportarErros() {
-  const erros = all.filter(q => state[q.uid] && state[q.uid] !== q.gabarito)
-                   .map(q => ({sim: q.sim, numero: q.numero, marcada: state[q.uid], gabarito: q.gabarito}));
-  const blob = new Blob([JSON.stringify(erros, null, 1)], {type: "application/json"});
+function exportarResultado() {
+  const resp = all.filter(q => state[q.uid]);
+  const erros = resp.filter(q => state[q.uid] !== q.gabarito)
+                    .map(q => ({sim: q.sim, numero: q.numero, marcada: state[q.uid], gabarito: q.gabarito}));
+  const porMateria = {};
+  resp.forEach(q => {
+    const m = q.materia || "Sem matéria";
+    porMateria[m] = porMateria[m] || {respondidas: 0, acertos: 0};
+    porMateria[m].respondidas++;
+    if (state[q.uid] === q.gabarito) porMateria[m].acertos++;
+  });
+  const payload = {
+    quiz: KEY,
+    data: new Date().toISOString().slice(0, 10),
+    bancos: DATA.map(s => s.id),
+    total: all.length,
+    respondidas: resp.length,
+    acertos: resp.length - erros.length,
+    por_materia: porMateria,
+    erros: erros
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 1)], {type: "application/json"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = KEY + "-erros.json";
+  a.download = KEY + "-resultado.json";
   a.click();
 }
 

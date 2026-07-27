@@ -6,7 +6,7 @@ Referência para gerar o arquivo `.html` autocontido do mapa mental: HTML único
 1. Monte a árvore como objeto `data` (centro + ramos + sub-ramos + folhas).
 2. Cole o `data` no lugar indicado no template.
 3. Ajuste título e ícones.
-4. Salve como `mapa-mental-[TEMA].html` na pasta de saída e apresente com `present_files`.
+4. Salve como `mapa-mental-[TEMA].html` conforme a convenção de saída do SKILL.md e informe o caminho como link clicável.
 
 O algoritmo distribui ramos por ângulo (360°/nº de ramos), desenha curvas de Bézier do centro a cada nó e posiciona o texto na ponta. Zoom por scroll, pan por arraste, clique colapsa/expande nós com filhos.
 

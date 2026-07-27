@@ -74,7 +74,7 @@ def q_hash(q):
 
 
 def load_quiz_data(qdir):
-    banks, exports, avisos = {}, [], []
+    banks, exports, resumos, avisos = {}, [], [], []
     unicas = {}  # materia -> set de hashes (dedup de bancos que se sobrepõem)
     for p in sorted(qdir.glob("*.json")):
         try:
@@ -101,12 +101,16 @@ def load_quiz_data(qdir):
                         qmap[q["numero"]] = mat
                     unicas.setdefault(mat, set()).add(q_hash(q))
                 banks[bid] = qmap
+        elif isinstance(data, dict) and isinstance(data.get("erros"), list):
+            # formato novo (-resultado.json): resumo + lista de erros
+            exports.append((p.name, data["erros"]))
+            resumos.append(data)
         elif (isinstance(data, list) and data
               and all(isinstance(x, dict) and "sim" in x and "numero" in x for x in data)):
             exports.append((p.name, data))
         else:
             avisos.append(f"{p.name}: formato não reconhecido — ignorado")
-    return banks, unicas, exports, avisos
+    return banks, unicas, exports, resumos, avisos
 
 
 def cruza_erros(banks, exports):
@@ -270,8 +274,9 @@ def build_html(ctx):
 <div class="kpis">{kpi}</div>
 <section><h2>Taxa de erro por disciplina (quizzes com erros exportados)</h2>
 {ctx["svg_taxa"]}
-<p class="caption">Denominador: questões dos bancos citados em algum export de erros
-({ctx["n_respondidas"]} questões). Quiz sem export não conta.</p></section>
+<p class="caption">Denominador ({ctx["n_respondidas"]} questões): respondidas reais dos
+exports de resultado; para exports antigos (só erros), aproximação pelas questões dos
+bancos citados. Quiz sem export não conta.</p></section>
 <section><h2>Prioridade de revisão — erros × peso na prova</h2>
 {ctx["svg_prio"]}
 <p class="caption">Prioridade = (erros no erros.md + erros de quiz) × peso da disciplina
@@ -296,16 +301,22 @@ def main():
     if not qdir.is_dir():
         sys.exit(f"ERRO: {qdir} não existe — confira --base.")
 
-    banks, unicas, exports, avisos = load_quiz_data(qdir)
+    banks, unicas, exports, resumos, avisos = load_quiz_data(qdir)
     err_quiz, respondidos, sem_vinculo = cruza_erros(banks, exports)
     entradas, padroes, avisos_md = parse_erros_md(base / "wiki" / "revisao" / "erros.md")
     avisos += avisos_md
     if sem_vinculo:
         avisos.append(f"{sem_vinculo} erro(s) de export sem banco correspondente")
 
-    # denominador: questões (por matéria) dos bancos citados em exports
+    # denominador: respondidas reais (exports novos, com resumo por matéria);
+    # para exports antigos (só erros), aproximação pelas questões dos bancos citados
     denom = Counter()
-    for bid in respondidos & set(banks):
+    banks_com_resumo = set()
+    for r in resumos:
+        banks_com_resumo.update(r.get("bancos") or [])
+        for mat, st in (r.get("por_materia") or {}).items():
+            denom[canon(mat)] += st.get("respondidas", 0)
+    for bid in (respondidos - banks_com_resumo) & set(banks):
         for mat in banks[bid].values():
             denom[mat] += 1
 
