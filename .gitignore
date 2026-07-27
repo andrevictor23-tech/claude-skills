@@ -25,3 +25,7 @@ docling-venv/
 *-venv/
 .venv/
 cache/extracao/
+
+# officecli e skill de terceiro instalada localmente; nao redistribuir neste
+# repo publico sem conferir a licenca. Remova a linha se decidir publicar.
+officecli/

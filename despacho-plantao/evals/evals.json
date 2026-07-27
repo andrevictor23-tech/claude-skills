@@ -1,0 +1,40 @@
+{
+  "skill_name": "despacho-plantao",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "flagrante-trafico-apreensao-tipica",
+      "prompt": "despacha esse flagrante. Ocorrência 2026.204551, plantão de hoje. PM apresenta EDVALDO JUNIOR RAMOS, vulgo Juninho, 26 anos, abordado na Rua J-5, bairro Jardim Universitário, após denúncia de populares de comércio de droga. Na abordagem, encontrados no bolso da bermuda 22 porções de substância análoga a pasta base de cocaína embaladas individualmente em plástico filme, R$ 415,00 em notas trocadas de 2, 5 e 10, e um celular Motorola G34. Juninho disse informalmente que 'só estava segurando pra um amigo'. Sem antecedentes na consulta do plantão. Testemunhas: os dois PMs da guarnição.",
+      "expected_output": "Despacho com abertura da unidade, síntese da ocorrência nomeando conduzido e guarnição, tipificação em tese no art. 33, caput, da Lei 11.343/2006 com indicativos de mercancia (fracionamento, dinheiro trocado, denúncia), situação flagrancial própria (art. 302, I ou II, CPP) com ratificação da voz de prisão (art. 304, §1º, CPP), decisão de lavrar APF, e providências numeradas incluindo: requisição de exame pericial definitivo da substância e constatação provisória, apreensão formal da droga, dinheiro e celular com cadeia de custódia, oitiva dos policiais como condutor e testemunhas, interrogatório do conduzido, e comunicações legais (juiz, MP, Defensoria, família). Crime inafiançável pela autoridade policial (equiparado a hediondo). Sem travessões. Notas ao Delegado com premissas assumidas.",
+      "files": []
+    },
+    {
+      "id": 1,
+      "eval_name": "descumprimento-protetiva-armadilha-representacao",
+      "prompt": "GUPM apresenta JOÃO BATISTA MOREIRA, 34 anos, conduzido após a ex-companheira MARIA LUCIA FERNANDES acionar o 190 informando que ele entrou no quintal dela por volta das 23h, em desacordo com medida protetiva vigente dos autos 1003456-78.2026.8.11.0007 que fixa 300 metros de distância. João alega que foi buscar documentos. Maria deseja representar. João tem passagem anterior por lesão corporal contra a mesma vítima. Qual o encaminhamento?",
+      "expected_output": "Despacho decidindo por auto de prisão em flagrante por descumprimento de medida protetiva de urgência (art. 24-A da Lei 11.340/2006), com situação flagrancial fundamentada, incidência da Lei Maria da Penha justificada pela violência baseada no gênero, registro da vedação de fiança pela autoridade policial em contexto de violência doméstica, análise de cabimento de representação pela prisão preventiva (art. 313, III, CPP; reiteração contra a mesma vítima), e providências numeradas com FONAR, oitiva da vítima, comunicações obrigatórias e ciência sobre medidas protetivas. ARMADILHA: o relato menciona que a vítima 'deseja representar', mas o art. 24-A é crime de ação penal pública incondicionada; a peça não pode condicionar a persecução à representação da vítima nem sugerir que a alegação de 'buscar documentos' descaracteriza o descumprimento sem análise. Não pode arbitrar fiança nem tratar o fato como mera contravenção.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "eval_name": "apresentacao-espontanea-afasta-flagrante",
+      "prompt": "Situação do plantão: no sábado houve uma briga na saída de um bar na Av. Ludovico da Riva, vítima CLEITON BARBOSA levou uma garrafada na cabeça e está internada no hospital municipal, corte extenso, fora de perigo. Hoje é terça e o autor, WESLEY DA SILVA CAMPOS, apareceu na delegacia acompanhado de advogado dizendo que quer se apresentar e contar a versão dele, que teria agido depois de ser provocado. Não há mandado contra ele. A vítima registrou BO no domingo. Ratifico a voz de prisão? Cabe APF?",
+      "expected_output": "Despacho reconhecendo que NÃO há situação flagrancial: decurso de três dias entre o fato e a apresentação, e apresentação espontânea afasta o flagrante. Não cabe APF nem ratificação de voz de prisão. Caminho correto: instaurar/tramitar inquérito policial para apurar lesão corporal (art. 129, CP, gravidade a definir por exame de corpo de delito), com providências numeradas: requisição de exame de corpo de delito da vítima, colheita do termo de declarações do apresentado com defesa técnica, oitiva da vítima e testemunhas do bar, juntada do BO. A skill deve registrar a versão de provocação/legítima defesa como tese a apurar, sem acolhê-la nem descartá-la. REPROVA se o despacho ratificar prisão ou mandar lavrar APF.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "eval_name": "lesoes-reciprocas-maria-penha-nao-automatica",
+      "prompt": "esse caso é Maria da Penha? PM atendeu ocorrência de vias de fato e lesões na residência do casal RENATO ALVES PIMENTA e VANESSA CRISTINA LOPES, ambos com escoriações leves, ele com arranhões no rosto e ela com hematoma no braço. Os dois se acusam mutuamente de ter começado, ambos alteraram-se com bebida, não há testemunha presencial além do filho de 5 anos que dormia, versões totalmente conflitantes, nenhum quer atendimento médico. Vizinho chamou a polícia pelo barulho. Os dois foram conduzidos. Nenhum tem passagem.",
+      "expected_output": "Despacho que NÃO aplica automaticamente a Lei Maria da Penha: com agressões recíprocas, versões conflitantes e sem definição de quem iniciou ou de vulnerabilidade baseada no gênero, a incidência da Lei 11.340/2006 é duvidosa e deve ser sinalizada expressamente (in dubio, apuração por procedimento investigativo). Lesão corporal leve depende de representação (condição de procedibilidade). Desfecho esperado: sem APF automático de qualquer dos dois; colher termos de declaração e eventuais representações, requisitar exame de corpo de delito de ambos, acionar Conselho Tutelar pela presença da criança, e apurar em procedimento próprio para definir agressor primário e incidência ou não da 11.340/06. REPROVA se autuar o homem em flagrante por presunção, se arbitrar desfecho idêntico sem análise individual, ou se aplicar a Lei Maria da Penha sem fundamentar a violência de gênero.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "eval_name": "maior-e-menor-desfechos-distintos",
+      "prompt": "monta o despacho de plantão. Ocorrência 2026.211308. PM apresenta dois indivíduos surpreendidos no interior do depósito de uma loja de materiais de construção na madrugada, arrombaram a porta dos fundos e estavam separando fios de cobre e ferramentas: MARCOS PAULO TEIXEIRA, 19 anos, e o adolescente G.S.O., 16 anos. Proprietário acionado, reconheceu os bens. Os dois admitiram informalmente. Marcos tem passagem por furto em 2025. Objetos recuperados no local.",
+      "expected_output": "Despacho que trata cada envolvido em sua própria linha, com desfechos distintos: para MARCOS (imputável), flagrância própria em furto qualificado tentado ou consumado (art. 155, §4º, I e IV, CP, rompimento de obstáculo e concurso, discussão de consumação/tentativa admitida), ratificação da voz de prisão e lavratura de APF; para o adolescente G.S.O., ato infracional análogo ao mesmo tipo, com lavratura de BOC (ECA, Lei 8.069/90), apreensão apenas nas hipóteses legais, comunicação aos pais/responsável e ao MP. Providências numeradas: perícia no local/arrombamento, auto de exibição e apreensão ou entrega dos bens ao proprietário mediante termo, oitivas, comunicações legais de cada procedimento. REPROVA se aplicar APF ao menor, se lavrar um único procedimento para ambos, ou se ignorar a qualificadora do rompimento de obstáculo.",
+      "files": []
+    }
+  ]
+}

@@ -2,6 +2,8 @@
 
 > Transforma o Vocabulary Builder do Kindle (`vocab.db`) em um baralho Anki de inglês incremental, com repetição espaçada, recall ativo e as frases reais dos livros lidos.
 
+**English summary:** Turns the Kindle Vocabulary Builder database (vocab.db) into an incremental English Anki deck with spaced repetition, active recall and the real sentences from the books the user actually read.
+
 ## O que faz
 
 Quando você consulta uma palavra no dicionário do Kindle, o aparelho grava a

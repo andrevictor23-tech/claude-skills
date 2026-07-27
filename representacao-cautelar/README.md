@@ -2,6 +2,8 @@
 
 > Redige representações da Autoridade Policial dirigidas ao Juízo (preventiva, temporária, busca e apreensão, quebras de sigilo, interceptação), no padrão real da Delegacia de Alta Floresta/MT e do NEAMV.
 
+**English summary:** Drafts the police authority's motions to the criminal court — pretrial detention, temporary arrest, search and seizure, telecom/telematic data disclosure, wiretaps, bank and tax records, access to seized devices — following the real structure and phrasing of the unit. Grounded in a private bank of the author's real motions, which is deliberately kept out of this public repository. Always a draft for human review and signature.
+
 ## O que faz
 
 A skill produz o rascunho das **representações cautelares que o Delegado assinaria**: prisão preventiva, prisão temporária, busca e apreensão domiciliar, afastamento de sigilo de dados telefônicos e telemáticos, interceptação de comunicações, sigilo bancário e fiscal, acesso a dados de dispositivos apreendidos, medidas assecuratórias e destinação de bens. Fecha o ciclo com as skills irmãs: `despacho-plantao` decide o plantão, esta materializa a medida, e `relatorio-final-ip` encerra o inquérito.

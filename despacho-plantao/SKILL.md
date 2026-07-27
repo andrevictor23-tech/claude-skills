@@ -90,9 +90,26 @@ Use a estrutura e a fraseologia reais (ver `references/modelos.md`). Esqueleto:
 [Fecho]  Quando não instaura: "concluso para análise" / "aguarde-se o prazo decadencial... arquive-se".
 ```
 
-### Passo 7 — Notas ao Delegado (fora do corpo do despacho)
+### Passo 7 — Autoverificação (antes de entregar)
 
-Após o despacho, em seção separada e enxuta, liste: as **premissas assumidas** por falta de dado; os **pontos de atenção jurídica** (dúvida de tipificação, fiança, competência); e as **diligências que dependem de informação que o usuário não trouxe**. Isso preserva a honestidade sobre lacunas sem poluir a peça.
+Depois de redigir e **antes** de entregar, confira a minuta contra o checklist abaixo. Item reprovado se corrige; item que não pode ser verificado com os dados disponíveis se lista nas Notas ao Delegado. Não entregue sem rodar esta conferência.
+
+- [ ] Situação flagrancial analisada com inciso do art. 302 do CPP (ou afastamento fundamentado: apresentação espontânea, decurso de tempo, dúvida de autoria)
+- [ ] Tipificação em tese com artigo e diploma para cada conduta
+- [ ] Condição de procedibilidade verificada (representação em ameaça e lesão simples; nunca condicionar o art. 24-A à representação, que é ação pública incondicionada)
+- [ ] Incidência ou não da Lei 11.340/2006 fundamentada na violência de gênero, nunca presumida
+- [ ] Em VD: sem arbitramento de fiança; FONAR e ciência de protetivas nas providências
+- [ ] Cada envolvido com seu próprio desfecho (maior ≠ adolescente; autor ≠ usuário)
+- [ ] Antes de qualquer liberação: checagem de mandados em aberto determinada
+- [ ] Providências numeradas, dirigidas ao escrivão, cobrindo perícias, apreensões, oitivas e comunicações legais
+- [ ] Sem travessões; fraseologia da unidade; abertura e fecho corretos
+- [ ] Nenhum placeholder esquecido no texto
+
+O resultado da conferência é reportado nas Notas ao Delegado (Passo 8): itens corrigidos, itens não verificáveis e por quê.
+
+### Passo 8 — Notas ao Delegado (fora do corpo do despacho)
+
+Após o despacho, em seção separada e enxuta, liste: as **premissas assumidas** por falta de dado; os **pontos de atenção jurídica** (dúvida de tipificação, fiança, competência); as **diligências que dependem de informação que o usuário não trouxe**; e o **resultado da autoverificação** do Passo 7 (o que foi conferido e o que não pôde ser). Isso preserva a honestidade sobre lacunas sem poluir a peça.
 
 ## Formato de saída
 

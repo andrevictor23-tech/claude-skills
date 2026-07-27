@@ -2,6 +2,8 @@
 
 > Sincroniza as skills do Claude entre as máquinas do usuário via git, mantendo `~/.claude/skills` como clone do repo `andrevictor23-tech/delta-skills`, junto com dois repos auxiliares.
 
+**English summary:** Keeps the user's Claude skills synchronized across three machines via git, managing ~/.claude/skills as a clone of the delta-skills repository plus two auxiliary repos.
+
 ## O que faz
 
 Mantém três repositórios sincronizados entre as 3 máquinas do usuário por meio do script `sync.ps1`:

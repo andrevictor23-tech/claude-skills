@@ -378,9 +378,9 @@ Se o usuário pedir arquivo Word:
 - Rodapé: endereço e contatos
 - Gerar o arquivo, salvá-lo na pasta de saída da sessão e apresentá-lo ao usuário com `present_files`
 
-## Checklist de Qualidade Final
+## Checklist de Qualidade Final (autoverificação obrigatória)
 
-Antes de entregar o relatório, verificar TODOS os itens:
+Antes de entregar o relatório, rodar a conferência completa contra TODOS os itens abaixo. O ciclo é fechado: item reprovado se **corrige antes de entregar** (não se entrega com pendência conhecida); item que não pode ser verificado com o material dos autos disponível se **lista expressamente na entrega**, nos pontos de atenção para revisão. Não entregar sem rodar esta conferência.
 
 ### Forma
 - [ ] Cabeçalho com identificação da delegacia
@@ -467,6 +467,7 @@ Após processar todos os lotes:
 ### Na Entrega
 
 - Entregar o relatório **no chat** (padrão) ou em .docx (se solicitado)
+- Reportar o resultado da autoverificação (Checklist de Qualidade Final): itens corrigidos durante a conferência e itens que não puderam ser verificados, com o motivo
 - Indicar pontos de atenção para revisão
 - Sugerir diligências complementares (se necessário)
 

@@ -121,9 +121,23 @@ Verifique sempre se a medida principal pede acessórios, e inclua-os no pedido:
 - **Quebra de sigilo**: período delimitado, linhas/contas/perfis individualizados, e ofício direto da autoridade policial às operadoras/instituições para agilizar o cumprimento.
 - **Temporária**: prazo requerido (5 dias, ou 30 em hediondos), condução à unidade e comunicações legais.
 
-### Passo 6 — Notas ao Delegado (fora do corpo da peça)
+### Passo 6 — Autoverificação (antes de entregar)
 
-Após a peça, em seção separada e enxuta, liste: **premissas assumidas** por falta de dado; **pontos de atenção jurídica** (cabimento duvidoso, jurisprudência a conferir, risco de indeferimento); **dados a completar** antes do protocolo (`[VERIFICAR: ...]` deixados no texto); e **diligências recomendadas** para robustecer a representação se houver tempo.
+Depois de redigir e **antes** de entregar, confira a peça contra o checklist abaixo. Item reprovado se corrige; item não verificável com os dados disponíveis se lista nas Notas ao Delegado. Não entregue sem rodar esta conferência.
+
+- [ ] Requisitos legais da medida integralmente cobertos na fundamentação (preventiva: fumus commissi delicti + periculum libertatis do art. 312 + hipótese do art. 313 + contemporaneidade + insuficiência das cautelares do art. 319; busca: fundadas razões + individualização do imóvel e do morador; sigilo: linhas/contas/perfis individualizados + período delimitado; temporária: hipótese da Lei 7.960/89 + prazo)
+- [ ] Se falta requisito no caso concreto, a fragilidade está apontada nas Notas, não maquiada na peça
+- [ ] Endereçamento ao Juízo competente e estrutura I. Dos Fatos / II. Do Direito / III. Do Pedido
+- [ ] Pedidos numerados, com os acessórios da medida (Passo 5) incluídos
+- [ ] Cada afirmação de fato lastreada no que o usuário trouxe; lacuna marcada como `[VERIFICAR: ...]`, nunca preenchida por inferência
+- [ ] Dispositivos citados conferidos (artigo, parágrafo, inciso); jurisprudência sinalizada para conferência quando não verificada
+- [ ] Sem travessões; fecho da unidade; nenhum placeholder esquecido além dos `[VERIFICAR]` intencionais
+
+O resultado da conferência é reportado nas Notas ao Delegado (Passo 7): itens corrigidos, itens não verificáveis e por quê.
+
+### Passo 7 — Notas ao Delegado (fora do corpo da peça)
+
+Após a peça, em seção separada e enxuta, liste: **premissas assumidas** por falta de dado; **pontos de atenção jurídica** (cabimento duvidoso, jurisprudência a conferir, risco de indeferimento); **dados a completar** antes do protocolo (`[VERIFICAR: ...]` deixados no texto); **diligências recomendadas** para robustecer a representação se houver tempo; e o **resultado da autoverificação** do Passo 6.
 
 ## Formato de saída
 

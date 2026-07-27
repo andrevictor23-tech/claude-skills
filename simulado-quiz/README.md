@@ -2,6 +2,8 @@
 
 > Transforma PDFs de simulado de concurso (MPSP/VadeFocus) em quiz HTML interativo ou caderno de revisão de erros, com cache das questões extraídas para nunca reprocessar o mesmo PDF.
 
+**English summary:** Converts Brazilian public-exam mock test PDFs (question booklet + answer key) into an interactive HTML quiz or an error-review notebook, caching extracted questions so the same PDF is never reprocessed.
+
 ## O que faz
 
 A partir do par de PDFs de um simulado — `Enunciado.pdf` e `Espelho.pdf` (o

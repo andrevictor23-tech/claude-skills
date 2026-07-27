@@ -2,6 +2,8 @@
 
 > Gera mapas mentais visuais e interativos em HTML/SVG, no padrão da metodologia Buzan, para estudo e revisão de conteúdos jurídicos e de concursos públicos.
 
+**English summary:** Generates interactive HTML/SVG mind maps (Buzan-style radial layout, with zoom and pan) from any study material — statutes, syllabus topics, class notes or free text — aimed at Brazilian law exam preparation.
+
 ## O que faz
 
 Transforma qualquer conteúdo de estudo (tema livre, artigos de lei, tópicos de

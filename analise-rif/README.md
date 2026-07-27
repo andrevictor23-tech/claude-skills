@@ -2,6 +2,8 @@
 
 > Analisa Relatórios de Inteligência Financeira (RIF) do COAF a partir dos 3 CSVs oficiais e gera o Relatório de Análise Financeira (RAF) em .docx profissional.
 
+**English summary:** Parses the three official CSV files of a Financial Intelligence Report (RIF) issued by COAF (Brazil's financial intelligence unit), cross-references entities by index key, deduplicates communications, applies money-laundering typologies from Central Bank Circular Letter 4.001/2020, and generates a professional Financial Analysis Report (.docx) for criminal investigations. Ships with a fully fictional evaluation dataset.
+
 ## O que faz
 
 A skill assume a persona de Investigador Financeiro Policial Sênior e processa os dados brutos do COAF com metodologia relacional rigorosa. A entrada são os **três CSVs do RIF**: `RIF_[Nº]_Envolvidos.csv` (pessoas físicas/jurídicas, dados cadastrais e tipo de envolvimento), `RIF_[Nº]_Comunicacoes.csv` (comunicações financeiras, valores e períodos) e `RIF_[Nº]_Ocorrencias.csv` (irregularidades e normativas aplicáveis).

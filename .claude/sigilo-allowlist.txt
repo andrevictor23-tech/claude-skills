@@ -1,0 +1,29 @@
+# sigilo-allowlist.txt — arquivos/prefixos LIBERADOS pelo scan-sigilo.sh.
+#
+# Regra de inclusão: só entra aqui caminho cujo conteúdo foi REVISADO POR HUMANO
+# e confirmado como 100% fictício ou anonimizado. Prefixo de caminho por linha
+# (ex.: "analise-rif/evals/" libera a pasta inteira). Comentários com #.
+#
+# NUNCA adicionar linha nova sem revisão do Delegado. O scanner existe porque
+# este repo é público e o auto-sync faz push a cada sessão.
+
+# Infraestrutura do próprio controle (o scanner e esta lista contêm os padrões
+# como exemplo em comentários)
+.claude/
+
+# Baterias de avaliação — casos e fixtures declaradamente fictícios
+analise-rif/evals/
+despacho-plantao/evals/
+relatorio-final-ip/evals/
+representacao-cautelar/evals/
+
+# Documentação com exemplos fictícios de formato
+analise-rif/references/csv_structure_examples.md
+analise-rif/README.md
+relatorio-final-ip/README.md
+representacao-cautelar/README.md
+
+# Templates da unidade com números de exemplo
+# [VERIFICAR] confirmar que 55.4.2026.6275 e 392.4.2026.8635 sao ficticios
+relatorio-final-ip/templates/modelo_delegacia.md
+relatorio-final-ip/templates/modelo_neamv.md

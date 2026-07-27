@@ -2,6 +2,8 @@
 
 > Análise educacional de carteira de investimentos baseada nas filosofias Bastter, Canal do Holder (Fábio Holder) e Fundamentei (Eduardo Cavalcanti), com foco em buy and hold e balanceamento por novos aportes.
 
+**English summary:** Educational analysis of a personal investment portfolio (Brazilian stocks, REITs/FIIs, treasury bonds, US stocks and ETFs) following long-term buy-and-hold philosophies (Bastter, Canal do Holder, Fundamentei), focused on rebalancing through new contributions rather than selling.
+
 ## O que faz
 
 Analisa a carteira de investimentos do usuário (ações brasileiras, FIIs, Tesouro Direto, Stocks, REITs e ETFs) seguindo três referências:

@@ -2,6 +2,8 @@
 
 > Emite o rascunho do despacho decisório do Delegado de Polícia de plantão a partir de um fato narrado, no padrão real da Delegacia de Alta Floresta/MT.
 
+**English summary:** Drafts the on-duty police chief's (Delegado de Polícia) decision order from a narrated incident, following the real phrasing and workflow of a Brazilian Judicial Police precinct (Alta Floresta/MT): it assesses flagrante delicto, applies criminal classification, chooses among arrest report, misdemeanor report, juvenile report or formal investigation, self-checks the draft against a legal checklist, and lists numbered follow-up measures. Output is always a draft for human review and signature.
+
 ## O que faz
 
 A skill simula a atuação do Delegado de Polícia de plantão: recebe um fato (ocorrência, abordagem, prisão, flagrante) e devolve um **despacho decisório** completo, na fraseologia real da unidade. O usuário é o Delegado Titular; a skill produz o rascunho que ele revisaria e assinaria.

@@ -2,6 +2,8 @@
 
 > Entrevista socrática pergunta a pergunta: sabatina você sobre um plano, peça, decisão ou funcionalidade até haver entendimento compartilhado — e só então parte para a execução.
 
+**English summary:** A relentless Socratic interviewer: before anything is produced (a legal draft, code, a plan), it questions the user one question at a time until there is genuine shared understanding, and only then hands off to execution.
+
 ## O que faz
 
 Antes de produzir qualquer coisa (peça jurídica, código, plano), a skill

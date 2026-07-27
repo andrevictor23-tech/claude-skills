@@ -2,6 +2,8 @@
 
 > Produz relatórios finais de inquérito policial no padrão real da Delegacia de Polícia de Alta Floresta/MT e do NEAMV, entregues formatados diretamente no chat.
 
+**English summary:** Produces the final report of a Brazilian police investigation (inquérito policial) in the real template of the Alta Floresta/MT precinct and its domestic-violence unit (NEAMV): pre-processes case files with local OCR, builds a chronology and an evidence-confrontation matrix, applies precise criminal classification, and self-checks the draft against per-offense checklists before delivery. Always a draft for the authority's review and signature.
+
 ## O que faz
 
 A skill assume a persona de Delegado de Polícia Civil experiente e conduz a produção completa do relatório final de inquérito policial, em cinco fases: pré-processamento dos autos (extração de PDFs com OCR local, classificação, índice e cronologia via `scripts/pre_processador.py`), análise investigativa profunda (cronologia, matriz de confronto de provas e depoimentos, análise de vínculos, provas digitais e análise financeira quando o caso pedir), tipificação penal com análise jurídica (legalidade, anterioridade, lex mitior, abolitio criminis, concurso de crimes e prescrição), redação no template da unidade e entrega.

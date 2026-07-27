@@ -27,6 +27,10 @@ As skills incluem scripts Python e PowerShell executados localmente. Se encontra
 
 O `.claude/settings.json` deste repo registra um hook que faz **commit e push automáticos** ao final de sessões do Claude Code abertas na pasta. Quem clona o repositório inteiro deve remover o hook ou garantir que nunca deixe arquivos sensíveis na árvore de trabalho — eles seriam publicados automaticamente.
 
+## Barreira anti-vazamento (scan-sigilo)
+
+Antes de qualquer commit automático, o hook executa `.claude/hooks/scan-sigilo.sh`, que escaneia os arquivos alterados em busca de padrões de dado sensível — CPF, CNPJ, número de processo (padrão CNJ), número de IP/ocorrência da PJC/MT e telefone celular. Qualquer ocorrência fora da allowlist (`.claude/sigilo-allowlist.txt`, que libera apenas arquivos revisados por humano e declaradamente fictícios) **bloqueia o commit inteiro**: nada é publicado até o autor revisar — anonimizar, mover ao acervo privado ou, se o dado for fictício, incluir o arquivo na allowlist. A detecção é por padrão de texto e não é infalível (nomes, por exemplo, não são detectáveis); a barreira complementa, não substitui, a regra de nunca usar a árvore de trabalho como rascunho de caso real.
+
 ## Escopo de suporte
 
 Projeto pessoal, sem SLA. Reportes de segurança são priorizados sobre qualquer outra demanda.
