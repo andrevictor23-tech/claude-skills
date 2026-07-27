@@ -18,6 +18,8 @@ Biblioteca de skills para o [Claude Code](https://code.claude.com/docs/en/skills
 
 Cada skill é uma pasta com um `SKILL.md` (instruções que o Claude carrega sob demanda) e, quando necessário, `references/`, `scripts/`, `templates/` e `assets/` de apoio. As skills autorais têm um `README.md` próprio com guia de uso detalhado — clique no nome da skill na tabela abaixo.
 
+Todas as skills seguem a [especificação oficial Agent Skills](https://github.com/anthropics/skills) da Anthropic: frontmatter com gatilhos de ativação concretos, corpo enxuto e material de referência carregado sob demanda.
+
 ## Skills
 
 ### Polícia Judiciária
