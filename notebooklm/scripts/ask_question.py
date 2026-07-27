@@ -37,6 +37,13 @@ FOLLOW_UP_REMINDER = (
 )
 
 
+# Ritmo da espera pela resposta. O balao muda varias vezes durante a geracao
+# (raciocinio interno, depois a resposta), entao a janela de estabilidade
+# precisa de folga: 5 leituras iguais a cada 3s = 15s parado.
+POLL_SECONDS = 3
+STABLE_POLLS = 5
+
+
 def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> str:
     """
     Ask a question to NotebookLM
@@ -153,45 +160,44 @@ def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> s
         answer = None
         stable_count = 0
         last_text = None
-        deadline = time.time() + 300  # 5 minutes timeout (long answers stream slowly)
+        deadline = time.time() + 600  # 10 min (respostas longas transmitem devagar)
 
         while time.time() < deadline:
-            # Check if NotebookLM is still thinking (most reliable indicator)
-            try:
-                thinking_element = page.query_selector('div.thinking-message')
-                if thinking_element and thinking_element.is_visible():
-                    time.sleep(1)
-                    continue
-            except:
-                pass
-
-            # Try to find response with MCP selectors
+            # Le o texto via page.evaluate, NAO por handle de elemento.
+            #
+            # O NotebookLM (Angular) re-renderiza o balao da resposta a cada
+            # trecho transmitido e, desde 2026, exibe ali o raciocinio interno
+            # antes da resposta final. Um handle obtido por query_selector_all
+            # fica stale no meio disso e inner_text() levanta excecao, que o
+            # `except: continue` engolia -- dando "Timeout waiting for answer"
+            # mesmo com a resposta pronta e visivel na tela. Diagnosticado em
+            # 22/07/2026: via evaluate a mesma pergunta retorna em 45s.
+            text = ""
             for selector in RESPONSE_SELECTORS:
                 try:
-                    elements = page.query_selector_all(selector)
-                    # Only accept a response whose text did not exist before our
-                    # question (the chat list may be virtualized, so element count
-                    # is unreliable — compare by text instead)
-                    if elements:
-                        latest = elements[-1]
-                        text = latest.inner_text().strip()
+                    text = page.evaluate(
+                        "(s) => { const e = [...document.querySelectorAll(s)];"
+                        " return e.length ? e[e.length - 1].innerText.trim() : ''; }",
+                        selector,
+                    )
+                except Exception:
+                    text = ""
+                if text:
+                    break
 
-                        if text and text not in baseline_texts:
-                            if text == last_text:
-                                stable_count += 1
-                                if stable_count >= 3:  # Stable for 3 polls
-                                    answer = text
-                                    break
-                            else:
-                                stable_count = 0
-                                last_text = text
-                except:
-                    continue
+            # So aceita texto que nao existia antes da pergunta (a lista de chat
+            # e virtualizada, entao contar elementos e pouco confiavel).
+            if text and text not in baseline_texts:
+                if text == last_text:
+                    stable_count += 1
+                    if stable_count >= STABLE_POLLS:
+                        answer = text
+                        break
+                else:
+                    stable_count = 0
+                    last_text = text
 
-            if answer:
-                break
-
-            time.sleep(1)
+            time.sleep(POLL_SECONDS)
 
         if not answer:
             print("  ❌ Timeout waiting for answer")
