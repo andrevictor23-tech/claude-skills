@@ -20,6 +20,11 @@ desse banco, um baralho Anki incremental:
    **Produção** (frase com lacuna + dica em PT → palavra), aplicando *sentence
    mining* — o contexto pessoal da leitura fixa melhor que exemplo genérico.
 
+O título do livro no cartão é um **link de volta à fonte**: clicar abre o
+aplicativo do Kindle na posição exata em que a palavra foi consultada (montado
+com o ASIN do livro e a posição gravada no `vocab.db`). Livro sem ASIN no banco
+aparece como texto simples.
+
 Palavras marcadas como dominadas no próprio Kindle (category=100) ficam fora do
 baralho (a flag `--incluir-dominadas` reverte). Só entram palavras em inglês
 (`lang='en'`); o banco também guarda consultas em PT, que são ignoradas.
@@ -81,5 +86,9 @@ vocabulario-kindle/
 - Não edite `vocab-master.json` manualmente fora do fluxo da skill.
 - Frases vindas de sumário/índice do livro geram cartões ruins: se um cartão
   estiver estranho, corrija o campo `exemplos` da palavra no master e regenere.
+- O link `kindle://` do cartão depende de o aplicativo do Kindle estar instalado
+  no aparelho onde você revisa; sem ele, o título continua legível, só não abre.
+  Palavras já extraídas antes desta melhoria só ganham link quando o `vocab.db`
+  for reprocessado (o link vem do ASIN, que passou a ser gravado agora).
 - Confira as traduções/definições geradas — elas são produzidas pelo Claude a
   partir do contexto do livro e podem precisar de ajuste fino.

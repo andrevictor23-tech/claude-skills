@@ -12,10 +12,12 @@ sem duplicar e sem perder o agendamento da repeticao espacada.
 Requer: pip install genanki
 """
 import argparse
+import html
 import json
 import re
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 try:
     import genanki
@@ -101,6 +103,24 @@ def achar_data_dir(cli_value):
     sys.exit("ERRO: pasta de dados nao encontrada; passe --data-dir.")
 
 
+def link_livro(exemplo):
+    """Titulo do livro, virando link kindle:// quando o master tem asin + pos.
+
+    O link abre o app do Kindle na posicao exata em que a palavra foi consultada
+    (o equivalente, na leitura, do timestamp de um video). Vai dentro do proprio
+    campo `Livro` — de proposito: acrescentar campo mudaria o schema do modelo e
+    bagunçaria a reimportacao dos cartoes ja existentes.
+    """
+    titulo = html.escape(exemplo.get("livro") or "")
+    asin, pos = exemplo.get("asin"), exemplo.get("pos")
+    if not titulo or not asin:
+        return titulo
+    href = f"kindle://book?action=open&amp;asin={quote(str(asin))}"
+    if pos:
+        href += f"&amp;location={quote(str(pos))}"
+    return f'<a href="{href}">{titulo}</a>'
+
+
 def destacar(frase, formas, stem):
     """Retorna (frase com <b>palavra</b>, frase com lacuna) usando a forma presente na frase."""
     candidatos = sorted(set(formas + [stem]), key=len, reverse=True)
@@ -139,7 +159,7 @@ def main():
         exemplo = e["exemplos"][-1] if e["exemplos"] else None
         if exemplo:
             frase, cloze = destacar(exemplo["frase"], e.get("formas", []), stem)
-            livro = exemplo["livro"]
+            livro = link_livro(exemplo)
         else:
             frase, cloze, livro = "", "", ""
         deck.add_note(VocabNote(model=MODEL, fields=[

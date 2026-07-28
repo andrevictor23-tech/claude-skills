@@ -88,7 +88,8 @@ def main():
     con = sqlite3.connect(str(db_path))
     cur = con.cursor()
     rows = cur.execute(
-        """SELECT w.stem, w.word, w.category, l.usage, b.title, l.timestamp
+        """SELECT w.stem, w.word, w.category, l.usage, b.title, l.timestamp,
+                  b.asin, l.pos
            FROM WORDS w
            LEFT JOIN LOOKUPS l ON l.word_key = w.id
            LEFT JOIN BOOK_INFO b ON l.book_key = b.id
@@ -100,7 +101,7 @@ def main():
     palavras = master["palavras"]
     novas = []
     contagem_rodada = {}
-    for stem, word, category, usage, title, ts in rows:
+    for stem, word, category, usage, title, ts, asin, pos in rows:
         stem = (stem or word or "").strip().lower()
         if not stem or not re.match(r"^[a-z][a-z' -]*$", stem):
             continue
@@ -129,7 +130,14 @@ def main():
         if frase:
             ja_tem = any(e["frase"] == frase for e in entry["exemplos"])
             if not ja_tem:
-                entry["exemplos"].append({"frase": frase, "livro": limpar_titulo(title)})
+                # asin + pos permitem montar o link kindle:// que abre o livro
+                # na posicao exata da consulta (ver generate_anki.link_livro)
+                entry["exemplos"].append({
+                    "frase": frase,
+                    "livro": limpar_titulo(title),
+                    "asin": (asin or "").strip() or None,
+                    "pos": str(pos) if pos not in (None, "") else None,
+                })
                 # mantem so os exemplos mais recentes
                 entry["exemplos"] = entry["exemplos"][-MAX_EXEMPLOS:]
 
