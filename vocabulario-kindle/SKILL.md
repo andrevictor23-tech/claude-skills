@@ -20,6 +20,9 @@ outras pode ser `G:\Meu Drive` — os scripts detectam sozinhos).
   + dica em PT → palavra).
 - **Sentence mining**: a frase do cartão é a frase REAL do livro onde o usuário
   tropeçou na palavra — contexto pessoal fixa melhor que exemplo genérico.
+- **Volta à fonte**: o título do livro no cartão é um link `kindle://` que abre o
+  aplicativo na posição exata da consulta (montado com `asin` + `pos` do
+  `vocab.db`). Livro sem ASIN no banco fica como texto simples.
 - Palavras marcadas como **dominadas no próprio Kindle** (category=100) ficam
   fora do baralho (flag `--incluir-dominadas` reverte).
 
@@ -79,3 +82,6 @@ revisão** (GUIDs estáveis por palavra). Baralho: `Ingles::Kindle Vocabulario`.
 4. Frases de exemplo vindas de sumário/índice do livro geram cartões ruins —
    se o usuário reclamar de um cartão, corrija o campo `exemplos` da palavra no
    master e regenere.
+5. O link do livro vai DENTRO do campo `Livro` (HTML), nunca em campo novo —
+   acrescentar campo muda o schema do modelo e bagunça a reimportação dos
+   cartões já existentes.
