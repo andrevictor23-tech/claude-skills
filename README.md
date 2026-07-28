@@ -37,6 +37,7 @@ Todas as skills seguem a [especificação oficial Agent Skills](https://github.c
 |---|---|
 | [mapa-mental](mapa-mental/) | Mapas mentais interativos em HTML/SVG (metodologia Buzan) para revisão de conteúdo jurídico |
 | [simulado-quiz](simulado-quiz/) | Converte PDFs de simulado em quiz HTML interativo ou caderno de erros, com cache de extração |
+| [anki](anki/) | Converte os erros dos quizzes e da wiki de revisão em baralho Anki incremental, com um subbaralho por disciplina |
 | [sabatina](sabatina/) | Entrevista socrática pergunta a pergunta até haver entendimento compartilhado, antes de produzir qualquer peça |
 | [vocabulario-kindle](vocabulario-kindle/) | Converte o `vocab.db` do Kindle Vocabulary Builder em baralho Anki com frases reais dos livros |
 
@@ -78,7 +79,7 @@ Para uso restrito a um projeto, copie a pasta para `.claude/skills/` na raiz do 
 
 O Claude Code é o único requisito comum. Algumas skills usam ferramentas adicionais, sempre documentadas no `README.md` da própria skill:
 
-- **Python 3** — `analise-rif`, `relatorio-final-ip`, `simulado-quiz`, `vocabulario-kindle`, `representacao-cautelar` (scripts auxiliares) e `notebooklm` (ver `notebooklm/requirements.txt`)
+- **Python 3** — `analise-rif`, `relatorio-final-ip`, `simulado-quiz`, `anki`, `vocabulario-kindle`, `representacao-cautelar` (scripts auxiliares) e `notebooklm` (ver `notebooklm/requirements.txt`)
 - **PowerShell** — `sync-skills` (fluxo pensado para Windows)
 - **Docling + EasyOCR** — extrator de documentos da `sync-skills`
 
