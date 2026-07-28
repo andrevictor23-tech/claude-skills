@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Skills](https://img.shields.io/badge/skills-17-8A2BE2.svg)](#skills)
+[![Skills](https://img.shields.io/badge/skills-21-8A2BE2.svg)](#skills)
 [![Idioma](https://img.shields.io/badge/idioma-pt--BR-009c3b.svg)](#o-que-é)
 [![Claude Code](https://img.shields.io/badge/feito%20para-Claude%20Code-d97757.svg)](https://code.claude.com/docs/en/skills)
 
@@ -37,7 +37,10 @@ Todas as skills seguem a [especificação oficial Agent Skills](https://github.c
 |---|---|
 | [mapa-mental](mapa-mental/) | Mapas mentais interativos em HTML/SVG (metodologia Buzan) para revisão de conteúdo jurídico |
 | [simulado-quiz](simulado-quiz/) | Converte PDFs de simulado em quiz HTML interativo ou caderno de erros, com cache de extração |
+| [treino-wiki](treino-wiki/) | Revisão relâmpago com perguntas inéditas geradas a partir das notas da wiki de estudos, com correção imediata e registro dos erros |
+| [prova-oral](prova-oral/) | Simulador de banca examinadora: arguição oral com sorteio de ponto, follow-ups de pressão, espelho de resposta e nota por questão |
 | [anki](anki/) | Converte os erros dos quizzes e da wiki de revisão em baralho Anki incremental, com um subbaralho por disciplina |
+| [desempenho](desempenho/) | Dashboard HTML dos estudos: taxa de erro por disciplina, motivos de erro e prioridade de revisão ponderada pelo peso da prova |
 | [sabatina](sabatina/) | Entrevista socrática pergunta a pergunta até haver entendimento compartilhado, antes de produzir qualquer peça |
 | [vocabulario-kindle](vocabulario-kindle/) | Converte o `vocab.db` do Kindle Vocabulary Builder em baralho Anki com frases reais dos livros |
 
