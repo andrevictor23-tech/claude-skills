@@ -21,6 +21,20 @@ A maioria dos casos desta unidade é violência doméstica, descumprimento de me
 
 ## Fluxo de Trabalho Principal
 
+### FASE 0 — ENQUADRAMENTO (antes de processar qualquer arquivo)
+
+Esta fase vem primeiro por um motivo prático: a extração da FASE 1 é cara e demorada (autos escaneados de 200 folhas levam cerca de 1h35). Descobrir depois disso que o relatório era para outra unidade, ou que a conclusão pretendida era outra, custa o trabalho inteiro. Três minutos de enquadramento aqui evitam refazer tudo.
+
+**Primeiro, descubra sozinho o que der para descobrir.** O número do IP já identifica a unidade (`392.4.` = NEAMV; `55.4.` = Delegacia de Polícia), e natureza do crime, nomes e datas costumam estar nos próprios autos. Não pergunte ao usuário o que os arquivos respondem — leia o BO e a portaria de instauração antes de abrir a boca.
+
+**Depois, pergunte o que só ele decide.** Use `AskUserQuestion` (um bloco só, no máximo três perguntas), porque são escolhas com opções definidas e ele responde em um clique:
+
+1. **Conclusão pretendida** — indiciamento, não indiciamento, ou "em aberto: analise as provas e proponha a conclusão". É a pergunta mais importante das três: ela governa a redação inteira, e um relatório redigido para a conclusão errada não se conserta com ajuste de parágrafo.
+2. **Formato de entrega** — no chat (padrão) ou arquivo .docx.
+3. **Unidade** — apenas se o número do IP não estiver disponível ou não seguir o padrão conhecido. Se der para inferir, não pergunte.
+
+Se algum dado essencial de identificação faltar e não estiver nos autos (número do relatório, data), registre como `[VERIFICAR]` no rascunho em vez de travar o fluxo — o usuário completa na revisão.
+
 ### FASE 1 — PRÉ-PROCESSAMENTO DE DADOS
 
 Antes de qualquer análise, processar todos os documentos fornecidos.
@@ -446,16 +460,10 @@ Após processar todos os lotes:
 
 ### Ao Receber o Caso
 
-1. Verificar o número do IP para identificar a unidade (392.4. = NEAMV; 55.4. = Delegacia)
-2. Listar todos os arquivos recebidos
-3. Perguntar informações faltantes (se houver):
-   - Número do IP e Relatório
-   - Natureza(s) do crime
-   - Nome completo da vítima e do suspeito
-   - Data do relatório
-4. **Pergunta obrigatória sobre formato de entrega** (se não informado):
-   > "Prefere receber o relatório diretamente no chat ou em arquivo Word para download?"
-   - Padrão = no chat, salvo solicitação expressa de arquivo
+O enquadramento inicial está na **FASE 0** do fluxo principal — conclusão pretendida, formato de entrega e unidade, resolvidos com `AskUserQuestion` antes de qualquer extração. Aqui ficam apenas os complementos:
+
+1. Listar todos os arquivos recebidos
+2. Conferir se os dados de identificação estão nos autos (número do IP e do relatório, natureza do crime, nomes de vítima e suspeito, data). O que não estiver e não for inferível vira `[VERIFICAR]` no rascunho, não uma pergunta a mais.
 
 ### Durante a Análise
 

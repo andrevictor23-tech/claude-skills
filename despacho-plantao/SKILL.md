@@ -21,6 +21,25 @@ A precisão jurídica é inegociável. Quando houver dúvida sobre tipificação
 
 Do relato do usuário, extraia: número da ocorrência/BO (se houver), conduzido(s) e demais envolvidos (vítima, testemunhas, menores), conduta narrada, quem conduziu (PM/GUPM), objetos apreendidos, e qualquer dado de vida pregressa, representação ou medida anterior. Se vier um arquivo (BO, termo, vídeo transcrito), leia-o antes de despachar.
 
+### Passo 1-B — Checar as lacunas que mudam o desfecho (sem travar)
+
+O relato de plantão chega cru e quase sempre omite dois ou três dados que **não detalham o despacho: mudam o desfecho**. São dados que o Delegado obtém em segundos — uma consulta no sistema, uma pergunta à vítima que está ali — mas que ninguém pensa em colar junto com o fato. Perguntar por eles antes de despachar custa trinta segundos; descobrir depois custa o despacho inteiro.
+
+Isto não contradiz o princípio de não travar. A regra continua valendo: **pergunte, mas nunca espere**. Toda pergunta aqui leva a opção "não sei / não consultado", e essa resposta não impede o despacho — ela vira premissa explícita no texto e diligência no Passo 5.
+
+Depois de ler o fato, verifique quais destas lacunas são **decisivas neste caso concreto** e pergunte apenas essas, com `AskUserQuestion`, em um bloco só, no máximo três:
+
+| Lacuna | Por que muda o desfecho |
+|---|---|
+| **Representação da vítima** | Ameaça (art. 147 CP) e lesão simples (art. 129 caput) dependem dela. Sem representação o caminho não é APF nem IP, é deixar de instaurar. |
+| **Antecedentes / reincidência dolosa** | Governa o art. 313 do CPP. É o que separa "APF" de "APF + representação pela preventiva". |
+| **Medida protetiva anterior em vigor** | Desloca a tipificação para descumprimento (art. 24-A da Lei 11.340/06) e reforça a preventiva. |
+| **Mandado de prisão em aberto** | O Passo 5 já exige a checagem antes de qualquer liberação; se o desfecho tende à liberação, confirme antes de redigir, não depois. |
+
+Não pergunte o que o próprio relato já responde, nem o que é análise sua (flagrância, tipificação, cabimento). Se o caso for simples e nenhuma lacuna for decisiva, pule este passo e despache direto — a maior parte dos plantões não precisa dele.
+
+Quando a resposta vier "não sei", registre no despacho na forma que a casa já usa (premissa explícita) e converta a lacuna em providência: consulta ao sistema, oitiva da vítima com termo de representação, checagem de mandados.
+
 ### Passo 2 — Decidir a situação flagrancial
 
 Avalie se há flagrância e em qual modalidade do art. 302 do CPP:
