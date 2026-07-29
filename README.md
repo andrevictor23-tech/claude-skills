@@ -1,4 +1,4 @@
-# delta-skills
+# claude-skills
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -70,8 +70,8 @@ Mantidas aqui por conveniência de sincronização, com licenças e créditos pr
 Para skills pessoais, disponíveis em todos os projetos:
 
 ```bash
-git clone https://github.com/andrevictor23-tech/delta-skills.git
-cp -r delta-skills/nome-da-skill ~/.claude/skills/
+git clone https://github.com/andrevictor23-tech/claude-skills.git
+cp -r claude-skills/nome-da-skill ~/.claude/skills/
 ```
 
 Para uso restrito a um projeto, copie a pasta para `.claude/skills/` na raiz do projeto. Documentação oficial: https://code.claude.com/docs/en/skills

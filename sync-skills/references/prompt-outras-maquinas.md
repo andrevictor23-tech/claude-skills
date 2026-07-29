@@ -12,14 +12,14 @@ máquina. Faça na ordem e me mostre o resultado de cada etapa:
 1. SINCRONIZAR
    Rode: & "$env:USERPROFILE\.claude\skills\sync-skills\scripts\sync.ps1"
 
-   O sync.ps1 agora tem um portão de auditoria no repo delta-skills (que é PÚBLICO).
+   O sync.ps1 agora tem um portão de auditoria no repo claude-skills (que é PÚBLICO).
    Se ele bloquear com "ARQUIVOS NOVOS (nao rastreados)", NÃO use -AllowNew às cegas:
    me mostre a lista e o conteúdo de cada arquivo primeiro. Só depois de eu confirmar
    que nenhum é sigiloso é que você roda de novo com -AllowNew.
 
 2. ESPELHAR O ESTADO DA CARTEIRA
    O arquivo references/estado-carteira.md da skill analise-carteira deixou de ser
-   versionado no delta-skills (repo público) porque reúne meu perfil financeiro com
+   versionado no claude-skills (repo público) porque reúne meu perfil financeiro com
    meu nome, cargo e comarca. A fonte de verdade passou para o repo privado. Copie:
 
    Copy-Item "$env:USERPROFILE\Documents\DELEGACIA\PESSOAL\estado-carteira.md" "$env:USERPROFILE\.claude\skills\analise-carteira\references\" -Force

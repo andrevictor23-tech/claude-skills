@@ -1,14 +1,14 @@
 # sync-skills
 
-> Sincroniza as skills do Claude entre as máquinas do usuário via git, mantendo `~/.claude/skills` como clone do repo `andrevictor23-tech/delta-skills`, junto com dois repos auxiliares.
+> Sincroniza as skills do Claude entre as máquinas do usuário via git, mantendo `~/.claude/skills` como clone do repo `andrevictor23-tech/claude-skills`, junto com dois repos auxiliares.
 
-**English summary:** Keeps the user's Claude skills synchronized across three machines via git, managing ~/.claude/skills as a clone of the delta-skills repository plus two auxiliary repos.
+**English summary:** Keeps the user's Claude skills synchronized across three machines via git, managing ~/.claude/skills as a clone of the claude-skills repository plus two auxiliary repos.
 
 ## O que faz
 
 Mantém três repositórios sincronizados entre as 3 máquinas do usuário por meio do script `sync.ps1`:
 
-1. `~/.claude/skills` — clone de `andrevictor23-tech/delta-skills` (**público**, este repositório).
+1. `~/.claude/skills` — clone de `andrevictor23-tech/claude-skills` (**público**, este repositório).
 2. `~/Documents/DELEGACIA` — clone de `andrevictor23-tech/delegacia-claude-workspace` (**privado**, workspace institucional). O `.gitignore` é lista branca (só `.md` e o léxico), então arquivos de casos reais nunca sobem.
 3. `~/Documents/OSINT` — clone de `andrevictor23-tech/osint-investigacao`.
 
@@ -67,7 +67,7 @@ Comando principal executado pela skill:
 
 ## Avisos
 
-- **`delta-skills` é público: nada sigiloso pode entrar nele.** O acervo da skill `representacao-cautelar` (modelos reais, catálogo, léxico) e o `estado-carteira.md` da `analise-carteira` vivem apenas no repo privado, que é a fonte de verdade; nas skills, esses caminhos são ignorados pelo git e apenas espelhados por cópia.
+- **`claude-skills` é público: nada sigiloso pode entrar nele.** O acervo da skill `representacao-cautelar` (modelos reais, catálogo, léxico) e o `estado-carteira.md` da `analise-carteira` vivem apenas no repo privado, que é a fonte de verdade; nas skills, esses caminhos são ignorados pelo git e apenas espelhados por cópia.
 - Antes de rodar o sync, conferir `git status --porcelain --untracked-files=all`: se algo sob `representacao-cautelar/assets/modelos/`, `references/catalogo-modelos.md` ou `scripts/lexico-semente.txt` aparecer, o `.gitignore` foi quebrado — consertar antes de sincronizar.
 - Auditar o **conteúdo**, não só os nomes: um comentário ou resumo pode expor tática tanto quanto a peça inteira.
 - **Nunca** usar `push --force`. `.venv/` e caches não entram no repo.
