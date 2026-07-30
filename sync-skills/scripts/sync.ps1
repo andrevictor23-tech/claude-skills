@@ -2,6 +2,7 @@
 #   1. ~/.claude/skills            (claude-skills)
 #   2. ~/Documents/DELEGACIA       (delegacia-claude-workspace, privado)
 #   3. ~/.claude/skills/osint-investigacao  (osint-investigacao)
+#   4. ~/.claude/scheduled-tasks   (claude-briefings, privado)
 # Seguro por padrao: commit local -> pull --rebase --autostash -> push.
 # Em conflito, aborta o rebase e reporta, sem perder nada.
 
@@ -197,6 +198,28 @@ if (-not (Test-Path (Join-Path $osint '.git'))) {
     }
 } else {
     Sync-Repo -repo $osint -label 'osint-investigacao'
+}
+
+# --- Repo 4: claude-briefings (clona se ainda nao existir nesta maquina) ---
+# Rotinas de briefing agendado. Mora em ~/.claude/scheduled-tasks porque e de
+# la que o Claude Code as executa: o clone e o proprio local de execucao, nao
+# uma copia. PRIVADO por necessidade -- somados, os briefings descrevem nome,
+# cargo, comarca, e-mail, rotina de treino, carteira e concursos. Nao passa
+# pelo portao de auditoria porque nao e publico (mesmo tratamento do DELEGACIA).
+$briefings = Join-Path $env:USERPROFILE '.claude\scheduled-tasks'
+if (-not (Test-Path (Join-Path $briefings '.git'))) {
+    Write-Output ""
+    Write-Output "########## claude-briefings ##########"
+    Write-Output "Repo ainda nao existe nesta maquina. Clonando..."
+    git clone https://github.com/andrevictor23-tech/claude-briefings.git $briefings
+    if ($LASTEXITCODE -ne 0) {
+        Write-Output "ERRO ao clonar claude-briefings. Verifique credenciais (repo privado)."
+        $global:exitCode = 3
+    } else {
+        Write-Output "Clonado em $briefings"
+    }
+} else {
+    Sync-Repo -repo $briefings -label 'claude-briefings'
 }
 
 exit $global:exitCode
