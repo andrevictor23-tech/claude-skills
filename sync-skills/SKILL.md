@@ -9,7 +9,9 @@ O usuário mantém `~/.claude/skills` como clone de `https://github.com/andrevic
 
 O script também sincroniza um segundo repo: `~/Documents/DELEGACIA`, clone de `https://github.com/andrevictor23-tech/delegacia-claude-workspace.git` (**privado** — workspace institucional com CLAUDE.md aninhados). Se a pasta ainda não existir na máquina, o script clona automaticamente. O `.gitignore` desse repo é lista branca (só `.md`, mais `MODELOS-REPRESENTACAO/lexico-semente.txt`), então arquivos de casos reais na pasta nunca são enviados.
 
-Um terceiro repo também é sincronizado: `~/Documents/OSINT`, clone de `https://github.com/andrevictor23-tech/osint-investigacao.git`. Mesmo comportamento de clone automático caso a pasta ainda não exista na máquina.
+Um terceiro repo também é sincronizado: `~/.claude/skills/osint-investigacao`, clone de `https://github.com/andrevictor23-tech/osint-investigacao.git`. Ele mora **dentro** de `~/.claude/skills` para o Claude enxergar a skill; o `.gitignore` do `claude-skills` exclui essa pasta, então o `git add -A` do primeiro repo não a engole. Mesmo comportamento de clone automático caso não exista na máquina.
+
+E um quarto: `~/.claude/scheduled-tasks`, clone de `https://github.com/andrevictor23-tech/claude-briefings.git` (**privado**, desde 30/07/2026) — as cinco rotinas de briefing agendado. O clone é o próprio local de execução, não uma cópia: é de lá que o Claude Code lê as tarefas. É privado por necessidade, não por preferência: somados, os briefings descrevem nome, cargo, comarca, e-mail, rotina de treino, carteira e concursos do usuário. Cargo e comarca de autoridade policial em repo público é risco de segurança pessoal. **Nunca torne esse repo público.**
 
 **Atenção: `claude-skills` é público.** Nada de sigiloso pode entrar nele. Em particular, o acervo da skill `representacao-cautelar` (modelos reais, catálogo e léxico) vive **apenas** no repo privado, em `MODELOS-REPRESENTACAO/`.
 
