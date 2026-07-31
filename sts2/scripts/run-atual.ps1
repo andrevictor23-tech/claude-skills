@@ -168,7 +168,10 @@ if ($Historico) {
             $res = if ($h.win) { "VITORIA" }
                    elseif ($h.was_abandoned) { "abandonada" }
                    else { "morreu p/ " + (Nice $h.killed_by_encounter) }
-            "  {0:dd/MM}  {1,-12} A{2}  {3}" -f (Get-Date $_.LastWriteTime), (Nice $h.players[0].character_id), $h.ascension, $res
+            # nos arquivos de historico o campo chama "character" (no save ativo e "character_id")
+            $ch = $h.players[0].character
+            if (-not $ch) { $ch = $h.players[0].character_id }
+            "  {0:dd/MM}  {1,-12} A{2}  {3}" -f (Get-Date $_.LastWriteTime), (Nice $ch), $h.ascension, $res
         } catch {}
     }
 }

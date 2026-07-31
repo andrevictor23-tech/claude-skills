@@ -12,14 +12,18 @@ Modelo de acabamento: líder dos benchmarks 2026 em realismo, materiais e compos
 | Docs | https://ai.google.dev/gemini-api/docs/image-generation |
 | Custo | ~US$ 0,03–0,05 por imagem (~R$ 0,20–0,30) |
 
+## Rota preferida: Vertex AI (crédito grátis até 30/10/2026)
+
+Enquanto durar o crédito do teste grátis do Google Cloud, rodar este modelo pelo **Vertex**, não pelo AI Studio (ver seção "Provedores e rotas" no SKILL.md — endpoint, token via `gcloud auth print-access-token` e o `"role": "user"` obrigatório em `contents`). Testado e funcionando em 31/07/2026. Depois de 30/10/2026, voltar para a rota AI Studio prepay.
+
 ## Pré-condições (verificar antes de rodar)
 
-1. Billing ativo na conta do AI Studio — sem billing a chamada falha com erro de cota/permissão. Se falhar, avisar o André que o passo é ativar billing no console (o gasto real continua sendo centavos).
-2. Cotar em R$ e obter OK explícito. Uma aprovação = uma execução.
+1. Na rota Vertex: `gcloud auth print-access-token` retorna token (a conta de `GCLOUD_ACCOUNT` do `.env` ativa no gcloud). Na rota AI Studio: crédito pré-pago disponível.
+2. É a etapa de acabamento: rodar só na imagem favorita já aprovada no rascunho.
 
 ## Endpoint e formato
 
-Idênticos ao Nano Banana (ver `nano-banana.md`), trocando o model id na URL. Diferença: aceita resolução maior via `imageConfig` — pedir 2K para imagem de listing (zoom da Amazon precisa de 1.600px+ no lado maior):
+Ver `nano-banana.md` (formato) e SKILL.md (endpoint Vertex), trocando o model id. Diferença: aceita resolução maior via `imageConfig` — pedir 2K para imagem de listing (zoom da Amazon precisa de 1.600px+ no lado maior):
 
 ```json
 "generationConfig": {

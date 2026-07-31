@@ -9,13 +9,19 @@ Skill de geração de mídia. Padrão: rascunho grátis → final paga só na im
 
 ## Modelos
 
-| Tarefa | Modelo padrão | Receita |
-|---|---|---|
-| Imagem (rascunho, padrão) | Nano Banana 2 Lite (gemini-3.1-flash-lite-image) — ~R$ 0,10/img, exige billing | models/nano-banana.md |
-| Imagem (final, 2K) | Nano Banana 2 (gemini-3.1-flash-image) — ~R$ 0,25/img, exige billing | models/nano-banana-2.md |
-| Vídeo | ainda não configurado — quando chegar a hora do Instagram da loja, criar receita (Seedance/Kling/Veo) e cotar custo antes | — |
+| Tarefa | Modelo padrão | Rota | Receita |
+|---|---|---|---|
+| Imagem (rascunho, padrão) | Nano Banana 2 Lite (gemini-3.1-flash-lite-image) — ~R$ 0,10/img | AI Studio (prepay) | models/nano-banana.md |
+| Imagem (final, 2K) | Nano Banana 2 (gemini-3.1-flash-image) | **Vertex AI** (crédito grátis até 30/10/2026) | models/nano-banana-2.md |
+| Vídeo | Veo 3.1 | **Vertex AI** (crédito grátis até 30/10/2026) — sempre cotar e esperar OK | models/veo-3-1.md |
 
-**Atenção (verificado em 31/07/2026):** contas novas do AI Studio NÃO têm cota grátis de imagem na API (`limit: 0`); só texto continua grátis. Enquanto o billing não estiver ativo, o caminho grátis é manual: a skill prepara o prompt em inglês + separa as referências de `generations\refs\`, o André gera na interface web do AI Studio (cota gratuita própria) e salva em `generations\`; a skill grava o sidecar JSON.
+## Provedores e rotas
+
+Duas rotas para os mesmos modelos Google; escolher pela regra acima:
+
+1. **AI Studio (API Gemini direta)** — chave `GOOGLE_AI_STUDIO_KEY` no `.env`, crédito pré-pago pequeno. Usar para rascunhos (barato, simples). Contas novas NÃO têm cota grátis de imagem na API (`limit: 0`, verificado 31/07/2026); só texto é grátis.
+2. **Vertex AI** — mesmos modelos + Veo, consumindo o **crédito do teste grátis do Google Cloud (~US$ 300, expira 30/10/2026)**. Projeto e conta ficam no `.env` local (`GOOGLE_CLOUD_PROJECT` e `GCLOUD_ACCOUNT`) — nunca escrever esses valores nesta skill, que vive em repo público. Auth: token OAuth via `gcloud auth print-access-token` (a conta de `GCLOUD_ACCOUNT` precisa estar ativa no gcloud; token dura ~1h, gerar a cada execução). Testado e funcionando em 31/07/2026. **Peculiaridade:** o Vertex exige `"role": "user"` em cada item de `contents` (sem isso, erro 400 "Please use a valid role"). Endpoint: `https://aiplatform.googleapis.com/v1/projects/{GOOGLE_CLOUD_PROJECT}/locations/global/publishers/google/models/{MODEL}:generateContent` com header `Authorization: Bearer {token}`.
+3. Após 30/10/2026 (ou crédito esgotado), o Vertex passa a cobrar por uso na conta — reavaliar rotas nessa data.
 
 Leia o arquivo de receita antes de cada geração.
 
