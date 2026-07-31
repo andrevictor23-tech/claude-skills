@@ -1,11 +1,11 @@
 # Nano Banana 2 (linha Gemini 3.x Image)
 
-Modelo de acabamento: líder dos benchmarks 2026 em realismo, materiais e composição para foto de produto. Usar SOMENTE na imagem favorita já escolhida no rascunho grátis — é pago.
+Modelo de acabamento: líder dos benchmarks 2026 em realismo, materiais e composição para foto de produto. Usar SOMENTE na imagem favorita já escolhida no rascunho — é pago (o rascunho também é, só que ~3x mais barato).
 
 | Campo | Valor |
 |---|---|
 | Model ID | `gemini-3.1-flash-image` (estável, confirmado na lista de modelos da chave em 31/07/2026; existe também `-preview`) |
-| Provedor | Google AI Studio (API Gemini direta) |
+| Provedor | **Vertex AI** (ver rota preferida abaixo); AI Studio é reserva |
 | Método | Sync |
 | Tipo | Imagem |
 | Chave | mesma do Nano Banana (`GOOGLE_AI_STUDIO_KEY`) — **exige billing ativado no projeto Google** |
@@ -32,11 +32,18 @@ Ver `nano-banana.md` (formato) e SKILL.md (endpoint Vertex), trocando o model id
 }
 ```
 
-(Campo de tamanho: confirmar o nome exato — `imageSize` — na página de docs na primeira chamada; ajustar esta receita se tiver mudado.)
+`imageSize: "2K"` **confirmado funcionando em 31/07/2026** nas duas rotas: devolveu 2048x2048, acima do mínimo de 1.600px que o zoom da Amazon exige.
 
 ## Tratamento da resposta
 
-Igual ao Nano Banana: `candidates[0].content.parts[*].inlineData.data` em base64 → salvar `.png`.
+Igual ao Nano Banana: `candidates[0].content.parts[*].inlineData.data` em base64 → salvar **com a extensão do `inlineData.mimeType`**, nunca presumindo o formato. O formato muda conforme a rota e o modelo, medido em 31/07/2026 com o mesmo prompt e `imageSize: "2K"`:
+
+| Rota | mimeType | Dimensões | Tamanho |
+|---|---|---|---|
+| Vertex | `image/png` | 2048x2048 | ~5,0 MB |
+| AI Studio | `image/jpeg` | 2048x2048 | ~2,2 MB |
+
+Ou seja: no modelo de acabamento o Vertex entrega PNG sem perdas e o AI Studio entrega JPEG já comprimido. Mais um motivo para o acabamento sair pelo Vertex — vale mesmo depois que o crédito expirar, se a peça for para listing.
 
 ## Notas
 
