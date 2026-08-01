@@ -177,29 +177,32 @@ No arquivo **Ocorrências**:
 
 ### FASE 3 — DEDUPLICAÇÃO POR idComunicacao
 
-**ZERO TOLERÂNCIA para contagem dupla.**
+**ZERO TOLERÂNCIA para contagem dupla.** Duas regras estruturais:
+
+1. **idComunicacao vazio/nulo NÃO deduplica**: linhas sem id são comunicações distintas — todas ficam. O `drop_duplicates` do pandas trata NaN como iguais entre si e eliminaria comunicações reais silenciosamente.
+2. **Dupla semântica da deduplicação**: deduplicar APENAS em agregações de nível-caso (volume total, ranking de envolvidos, contagem geral). No **detalhamento por RIF** (tabela "comunicações do RIF X", breakdown com "RIF de Origem"), a comunicação compartilhada aparece em CADA RIF de propósito — ela integra ambos os relatórios do COAF. Deduplicar ali esconderia a comunicação de um dos RIFs.
 
 ```python
 def deduplicar_comunicacoes(df_com):
     """
-    Elimina comunicações duplicadas por idComunicacao.
+    Elimina comunicações duplicadas por idComunicacao — usar SOMENTE para
+    agregações de nível-caso (ver dupla semântica acima).
     Quando múltiplos RIFs referem a mesma comunicação, mantém a mais completa.
+    Linhas com idComunicacao vazio/nulo são únicas por definição: todas ficam.
     """
-    # Verificar duplicatas
-    duplicadas = df_com[df_com.duplicated(subset=['idComunicacao'], keep=False)]
-    
-    if len(duplicadas) > 0:
-        # Priorizar comunicação com mais dados em informacoesAdicionais
-        df_com['info_len'] = df_com['informacoesAdicionais'].fillna('').str.len()
-        df_dedup = df_com.sort_values('info_len', ascending=False).drop_duplicates(
-            subset=['idComunicacao'], keep='first'
-        )
-        df_dedup = df_dedup.drop(columns=['info_len'])
-        
-        eliminadas = len(df_com) - len(df_dedup)
-        return df_dedup, eliminadas
-    
-    return df_com, 0
+    ids = df_com['idComunicacao'].fillna('').astype(str).str.strip()
+    sem_id = df_com[ids == '']
+    com_id = df_com[ids != ''].copy()
+
+    # Priorizar comunicação com mais dados em informacoesAdicionais
+    com_id['_info_len'] = com_id['informacoesAdicionais'].fillna('').str.len()
+    com_id = com_id.sort_values('_info_len', ascending=False).drop_duplicates(
+        subset=['idComunicacao'], keep='first'
+    ).drop(columns=['_info_len'])
+
+    df_dedup = pd.concat([com_id, sem_id]).sort_index()
+    eliminadas = len(df_com) - len(df_dedup)
+    return df_dedup, eliminadas
 ```
 
 ### FASE 4 — ANÁLISE RELACIONAL INTEGRADA
@@ -237,14 +240,33 @@ def identificar_titulares(df_env):
 #### 4.3 Conversão de Valores Monetários
 
 ```python
+import re
+
 def converter_valor_br(valor_str):
-    """Converte valor no formato brasileiro (1.234,56) para float."""
+    """Converte valor monetário para float, tolerando formato brasileiro E americano.
+
+    Regras (na ordem):
+    - ponto E vírgula → ponto é milhar, vírgula é decimal ("10.000,50" → 10000.5)
+    - só vírgula → decimal ("10000,50" → 10000.5)
+    - só ponto em grupos de 3 → milhar ("10.000" → 10000; "1.234.567" → 1234567)
+    - só ponto fora do padrão milhar → decimal ("1500.75" → 1500.75)
+    Sem essas regras, "1500.75" viraria 150075 (erro ×100) e "10.000" com
+    replace ingênuo de vírgula viraria 10.0 em fonte americana.
+    """
     if pd.isna(valor_str) or str(valor_str).strip() in ['', '0', '-']:
         return 0.0
-    valor_str = str(valor_str).strip()
-    valor_str = valor_str.replace('.', '').replace(',', '.')
+    s = re.sub(r'\s|R\$', '', str(valor_str), flags=re.IGNORECASE)
+    if not s:
+        return 0.0
+    tem_ponto, tem_virgula = '.' in s, ',' in s
+    if tem_ponto and tem_virgula:
+        s = s.replace('.', '').replace(',', '.')
+    elif tem_virgula:
+        s = s.replace(',', '.')
+    elif tem_ponto and re.fullmatch(r'-?\d{1,3}(\.\d{3})+', s):
+        s = s.replace('.', '')
     try:
-        return float(valor_str)
+        return float(s)
     except ValueError:
         return 0.0
 
@@ -257,21 +279,14 @@ def formatar_valor_br(valor):
 
 #### 4.4 Cálculo de Valores por Titular
 
-Os campos de valores nos CSVs do COAF seguem esta estrutura para o segmento 42 (SFN - Espécie):
-- **CampoA**: Valor Total
-- **CampoB**: Valor a Crédito (depósitos)
-- **CampoC**: Valor a Débito (saques)
-- **CampoD**: Valor de Créditos em Espécie
-- **CampoE**: Valor de Débitos em Espécie
+Os campos de valores nos CSVs do COAF seguem esta estrutura para os segmentos 41 (SFN - Atípicas / COS) e 42 (SFN - Espécie / COE):
+- **CampoA**: Total
+- **CampoB**: Valor do Crédito
+- **CampoC**: Valor do Débito
+- **CampoD**: Valor do Provisionamento
+- **CampoE**: Valor da Proposta
 
-Para o segmento 41 (SFN - Atípicas):
-- **CampoA**: Valor Total
-- **CampoB**: Valor a Crédito
-- **CampoC**: Valor a Débito
-- **CampoD**: Valor de Créditos em Espécie
-- **CampoE**: Valor de Débitos em Espécie
-
-**IMPORTANTE**: O significado dos campos varia por CodigoSegmento. As legendas estão nas linhas não-indexadoras do próprio CSV de Comunicações. SEMPRE consultar essas legendas antes de interpretar os valores.
+**IMPORTANTE**: O significado dos campos varia por CodigoSegmento. A tabela completa por segmento está em `references/legenda_campos_segmento.md`. Se o próprio CSV de Comunicações trouxer linhas de legenda (linhas não-indexadoras), a legenda do arquivo prevalece; a tabela de referência é o fallback autoritativo. SEMPRE consultar a legenda antes de interpretar os valores.
 
 #### 4.5 Verificação de Alvos da Investigação
 
@@ -452,9 +467,9 @@ Quando o usuário enviar dados de mais de um RIF:
 
 1. Identificar cada RIF pela numeração dos arquivos
 2. Consolidar por CPF/CNPJ dos titulares
-3. **Deduplicar por idComunicacao** entre RIFs (mesma comunicação = contar uma só vez)
-4. Incluir campo "RIF de Origem" nas tabelas
-5. Somar valores APENAS após eliminação de repetições
+3. **Deduplicar por idComunicacao** entre RIFs nas agregações de nível-caso (mesma comunicação = contar uma só vez em totais e rankings)
+4. Incluir campo "RIF de Origem" nas tabelas — e no detalhamento POR RIF a comunicação compartilhada aparece em cada RIF a que pertence (ver dupla semântica na FASE 3)
+5. Somar valores de nível-caso APENAS após eliminação de repetições
 6. Manter rastreabilidade completa (qual dado veio de qual RIF)
 
 ## Guardrails Críticos
@@ -525,13 +540,15 @@ Além das [Diretrizes Éticas Invioláveis](#diretrizes-éticas-invioláveis) de
 
 ### Legendas dos Campos de Valores por CodigoSegmento (mais comuns)
 
-- **42 (SFN - Espécie)**: A=Total, B=Crédito, C=Débito, D=Crédito Espécie, E=Débito Espécie
-- **41 (SFN - Atípicas)**: A=Total, B=Crédito, C=Débito, D=Crédito Espécie, E=Débito Espécie
-- **21 (Cartões de crédito)**: A=Valor da(s) operação(ões)
-- **24 (Imobiliária)**: A=Valor estimado
-- **19 (Jóias/metais)**: A=Valor Total
+- **42 (SFN - Espécie / COE)**: A=Total, B=Crédito, C=Débito, D=Provisionamento, E=Proposta
+- **41 (SFN - Atípicas / COS)**: A=Total, B=Crédito, C=Débito, D=Provisionamento, E=Proposta
+- **21 (Cartões)**: A=Valor da(s) ocorrência(s)
+- **24 (Imobiliária)**: A=Valor do Imóvel objeto da operação, B=Valor da transação/operação
+- **19 (Jóias/metais)**: A=Valor da operação ou proposta, B=Pagamento(s) em espécie
 
-**NOTA**: As legendas completas ficam nas linhas não-indexadoras do próprio arquivo Comunicações.csv. O script de limpeza deve extraí-las antes de descartá-las.
+**Tabela completa** (30+ segmentos): `references/legenda_campos_segmento.md`.
+
+**NOTA**: Quando o arquivo Comunicações.csv trouxer linhas de legenda (não-indexadoras), o script de limpeza deve extraí-las antes de descartá-las — elas prevalecem sobre a tabela de referência.
 
 ## Script Completo de Processamento
 
@@ -610,26 +627,39 @@ class ProcessadorRIF:
         return df_clean, removidos
     
     def deduplicar(self, df_com):
-        """Deduplica comunicações por idComunicacao."""
+        """Deduplica por idComunicacao (nível-caso; ids vazios são únicos — ver FASE 3)."""
         if 'idComunicacao' not in df_com.columns:
             return df_com, 0
-        
+
         antes = len(df_com)
-        df_com['_info_len'] = df_com.get('informacoesAdicionais', pd.Series(dtype=str)).fillna('').str.len()
-        df_dedup = df_com.sort_values('_info_len', ascending=False).drop_duplicates(
+        ids = df_com['idComunicacao'].fillna('').astype(str).str.strip()
+        sem_id = df_com[ids == '']
+        com_id = df_com[ids != ''].copy()
+        com_id['_info_len'] = com_id.get('informacoesAdicionais', pd.Series(dtype=str)).fillna('').str.len()
+        com_id = com_id.sort_values('_info_len', ascending=False).drop_duplicates(
             subset=['idComunicacao'], keep='first'
         ).drop(columns=['_info_len'])
+        df_dedup = pd.concat([com_id, sem_id]).sort_index()
         eliminadas = antes - len(df_dedup)
         return df_dedup, eliminadas
     
     def converter_valor(self, val):
-        """Converte valor brasileiro para float."""
+        """Converte valor monetário para float (regras de converter_valor_br — ver FASE 4.3)."""
         if pd.isna(val) or str(val).strip() in ['', '0', '-']:
             return 0.0
-        s = str(val).strip().replace('.', '').replace(',', '.')
+        s = re.sub(r'\s|R\$', '', str(val), flags=re.IGNORECASE)
+        if not s:
+            return 0.0
+        tem_ponto, tem_virgula = '.' in s, ',' in s
+        if tem_ponto and tem_virgula:
+            s = s.replace('.', '').replace(',', '.')
+        elif tem_virgula:
+            s = s.replace(',', '.')
+        elif tem_ponto and re.fullmatch(r'-?\d{1,3}(\.\d{3})+', s):
+            s = s.replace('.', '')
         try:
             return float(s)
-        except:
+        except ValueError:
             return 0.0
     
     def processar(self):
