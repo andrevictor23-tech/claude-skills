@@ -1,6 +1,6 @@
 ---
 name: generate
-description: Gera imagens (e futuramente vídeos) via API de modelos de IA. Gatilhos - /generate, gera imagem, gerar imagem, criar imagem, imagem de anúncio, imagem do produto, foto do kit, thumbnail, infográfico do anúncio, gerar vídeo, animar imagem.
+description: Gera imagens (e futuramente vídeos) via API de modelos de IA do Google — Gemini / Nano Banana para imagem e Veo para vídeo — pela rota Vertex AI, consumindo o crédito do Google Cloud. Gatilhos - /generate, gera imagem, gerar imagem, criar imagem, imagem de anúncio, imagem do produto, foto do kit, thumbnail, infográfico do anúncio, gerar vídeo, animar imagem, nano banana, veo, vertex, imagem pelo Gemini, usar o crédito do Google.
 ---
 
 # /generate

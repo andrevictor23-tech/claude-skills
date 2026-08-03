@@ -17,7 +17,7 @@ E um quarto: `~/.claude/scheduled-tasks`, clone de `https://github.com/andrevict
 
 ## Depois de clonar numa máquina nova
 
-O sync traz os dois repos, mas o acervo da `representacao-cautelar` precisa ser espelhado para dentro da skill, pois lá os caminhos são ignorados pelo git:
+O sync traz os quatro repos, mas o acervo da `representacao-cautelar` precisa ser espelhado para dentro da skill, pois lá os caminhos são ignorados pelo git. **Confira se o espelho existe mesmo numa máquina já configurada** — em 31/07/2026 uma delas tinha só o `LEIA-ME.md` em `assets/modelos/`, sem catálogo nem léxico, e a skill teria rodado sem base:
 
 ```powershell
 $src = "$env:USERPROFILE\Documents\DELEGACIA\MODELOS-REPRESENTACAO"
@@ -82,11 +82,27 @@ Execute o script pronto:
 
 Não use `-ExecutionPolicy Bypass`: a política `RemoteSigned` do usuário já permite rodar este script local, e a flag faz o classificador de permissões bloquear a execução.
 
-Para cada um dos três repos, o script faz nesta ordem:
-1. `git add -A` + commit automático das mudanças locais (mensagem `sync: <data>`), se houver.
-2. `git pull --rebase --autostash`.
-3. `git push`.
-4. Imprime resumo (commits recebidos, skills novas ou alteradas).
+Para cada um dos quatro repos, o script faz nesta ordem:
+1. **Só no `claude-skills`** (o público): portão de auditoria antes de qualquer `git add`.
+2. `git add -A` + commit automático das mudanças locais (mensagem `sync: <data>`), se houver.
+3. `git pull --rebase --autostash`.
+4. `git push`.
+5. Imprime resumo (commits recebidos, skills novas ou alteradas).
+
+Códigos de saída: `1` erro no commit (identidade git), `2` conflito no rebase, `3` erro no push ou no clone, `4` bloqueio da auditoria.
+
+### O portão de auditoria (só no repo público)
+
+`Test-Publicavel` roda **antes** do `git add -A`, porque depois de publicado o estrago não se desfaz — o GitHub indexa e cacheia. Ele bloqueia o sync em dois casos:
+
+- **(a) arquivo novo, não rastreado.** Qualquer arquivo que o repo nunca viu exige decisão consciente. Para liberar, rode com `-AllowNew` — que destrava **apenas** este caso.
+- **(b) conteúdo com cara de dado sensível** nos arquivos novos ou modificados: CPF, CNPJ, número de processo CNJ, telefone, valor em reais, chave de API (`sk-`, `ghp_`, `AIza`) e chave privada PEM. Não há flag que libere: é para mover o arquivo para o repo privado e listá-lo no `.gitignore` da skill.
+
+```powershell
+& "$env:USERPROFILE\.claude\skills\sync-skills\scripts\sync.ps1" -AllowNew
+```
+
+Os padrões são deliberadamente estreitos — falso positivo trava o sync do usuário. Por isso o portão **não substitui** a leitura do conteúdo (ver Regras); ele pega o descuido óbvio, não a tática descrita em prosa.
 
 ## Se der conflito
 
@@ -99,6 +115,7 @@ O script aborta o rebase automaticamente e deixa o repo como estava, imprimindo 
 
 - NUNCA usar `push --force`.
 - `.venv/` e caches não entram no repo (já cobertos por .gitignore das skills que os têm). Se `git status` mostrar `.venv` de alguma skill, adicione ao `.gitignore` dela antes de commitar.
-- O script usa `git add -A`. Antes de rodá-lo, confira `git status --porcelain --untracked-files=all` em `~/.claude/skills` e verifique se nada sob `representacao-cautelar/assets/modelos/`, `references/catalogo-modelos.md` ou `scripts/lexico-semente.txt` aparece. Se aparecer, o `.gitignore` foi quebrado: conserte antes de sincronizar, porque esse repo é público.
+- O script usa `git add -A`. Antes de rodá-lo, confira `git status --porcelain --untracked-files=all` em `~/.claude/skills` e verifique se nada sob `representacao-cautelar/assets/modelos/`, `references/catalogo-modelos.md` ou `scripts/lexico-semente.txt` aparece. Se aparecer, o `.gitignore` foi quebrado: conserte antes de sincronizar, porque esse repo é público. O portão de auditoria pega o caso (a) desses arquivos por serem novos, mas não confie só nele.
+- Identificadores de conta (ID de projeto Google Cloud, e-mail, número de conta) não entram em skill do repo público, nem em exemplo. Ficam no `.env` local de cada máquina, referenciados por placeholder — `{GOOGLE_CLOUD_PROJECT}`, não o valor. O portão não detecta esse tipo de vazamento.
 - Auditar o **conteúdo**, não só os nomes dos arquivos: um comentário ou um resumo pode expor tática tanto quanto a peça inteira.
 - Depois do sync, lembrar o usuário de rodar o sync nas outras máquinas para receber as mudanças.
