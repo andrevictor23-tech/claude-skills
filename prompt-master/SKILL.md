@@ -1,6 +1,6 @@
 ---
 name: prompt-master
-version: 1.5.0
+version: 1.5.1
 description: Generates optimized prompts for any AI tool. Use when writing, fixing, improving, or adapting a prompt for LLM, Cursor, Midjourney, image AI, video AI, coding agents, or any other AI tool.
 ---
 
@@ -63,7 +63,7 @@ Before writing any prompt, silently extract these 9 dimensions. Missing critical
 
 ### Tool Routing
 
-Identify the tool and route accordingly. Read full templates from [references/templates.md](references/templates.md) only for the category you need.
+Identify the tool and route accordingly. The bullets below are the whole rule set for each category; three cases point to [references/templates.md](references/templates.md) for a skeleton, and only those.
 
 ---
 
@@ -394,9 +394,10 @@ The user pastes the prompt into their target tool. It works on the first try. Ze
 ---
 
 ## Reference Files
-Read only when the task requires it. Do not load both at once.
+Read only when the task requires it.
 
 | File | Read When |
 |------|-----------|
-| [references/templates.md](references/templates.md) | You need the full template structure for any tool category |
-| [references/patterns.md](references/patterns.md) | User pastes a bad prompt to fix, or you need the complete 35-pattern reference |
+| [references/templates.md](references/templates.md) | Template J (image reference editing), K (ComfyUI), L (prompt decompiler) — the three cases that need more structure than the routing bullets carry |
+
+Every other tool category is fully covered by its bullets in Tool Routing. The Diagnostic Checklist above is the pattern reference for fixing a prompt the user pasted — there is no separate file.
