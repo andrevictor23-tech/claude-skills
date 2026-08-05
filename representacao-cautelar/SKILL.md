@@ -23,7 +23,7 @@ Dois modos de entrada:
 
 **a) O usuário nomeia a medida** ("representa pela preventiva", "monta a busca"): siga direto para a referência correspondente.
 
-**b) O usuário entrega os autos/fatos sem nomear a medida** ("olha esses autos e vê o que cabe"): leia o material, identifique TODAS as medidas cautelares cabíveis e os modelos aplicáveis do banco do usuário (consulte `references/catalogo-modelos.md`, somente o catálogo), e **apresente a lista ao usuário para confirmação antes de redigir qualquer peça**: cada medida com uma linha de justificativa e o modelo que seria usado. Use AskUserQuestion quando disponível (multiSelect, uma opção por medida). Só redija o que ele confirmar.
+**b) O usuário entrega os autos/fatos sem nomear a medida** ("olha esses autos e vê o que cabe"): leia o material, identifique TODAS as medidas cautelares cabíveis e os modelos aplicáveis do banco do usuário (consulte `references/catalogo-modelos.md`, somente o catálogo), e **apresente a lista ao usuário para confirmação antes de redigir qualquer peça**: cada medida com uma linha de justificativa e o modelo que seria usado. Use AskUserQuestion quando disponível (multiSelect, uma opção por medida). Só redija o que ele confirmar. Essa lista — uma linha de justificativa por medida — é o produto inteiro do turno: fraseologia, referências de medida e trechos de peça só entram depois da confirmação.
 
 Um mesmo caso pode cumular medidas (ex.: preventiva + busca e apreensão; busca + acesso aos dados dos celulares apreendidos). Carregue a referência correspondente **antes de redigir**:
 

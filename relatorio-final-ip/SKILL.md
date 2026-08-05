@@ -1,6 +1,6 @@
 ---
 name: relatorio-final-ip
-description: Produção de relatórios finais de inquérito policial com padrão real da Delegacia de Polícia de Alta Floresta e do NEAMV/Alta Floresta. Use SEMPRE que o usuário pedir para redigir, produzir, elaborar ou finalizar um relatório de inquérito policial, incluindo casos de violência doméstica, descumprimento de medidas protetivas, lesão corporal, ameaça, estupro de vulnerável, tráfico de drogas, armas e qualquer outro crime investigado pela Polícia Civil. Entrega o relatório formatado diretamente no chat por padrão (sem necessidade de gerar arquivo Word). Inclui templates reais com cabeçalho, fraseologia, estrutura de seções e checklist específico por unidade (NEAMV × Delegacia de Polícia) e por tipo penal. Aplica análise de provas, confronto de depoimentos e tipificação penal precisa com fundamentação jurídica.
+description: Produção de relatórios finais de inquérito policial com padrão real da Delegacia de Polícia de Alta Floresta e do NEAMV/Alta Floresta. Use SEMPRE que o usuário pedir para redigir, produzir, elaborar ou finalizar um relatório de inquérito policial, incluindo casos de violência doméstica, descumprimento de medidas protetivas, lesão corporal, ameaça, estupro de vulnerável, tráfico de drogas, armas e qualquer outro crime investigado pela Polícia Civil. Entrega o relatório formatado diretamente no chat por padrão (sem necessidade de gerar arquivo Word). Inclui templates reais com cabeçalho, fraseologia, estrutura de seções e checklist específico por unidade (NEAMV × Delegacia de Polícia) e por tipo penal. Aplica análise de provas, confronto de depoimentos e tipificação penal precisa com fundamentação jurídica. Para pedido de análise sem relatório ("analisa esse IP", "resume os autos", "o que falta nesse IP"), entrega parecer conciso em vez do relatório completo.
 ---
 
 # Relatório Final de Inquérito Policial
@@ -12,6 +12,10 @@ Skill para produção de relatórios finais de inquérito policial no padrão re
 Ative esta skill sempre que o usuário pedir para redigir, produzir, elaborar ou finalizar um **relatório final de inquérito policial**, incluindo casos de violência doméstica, descumprimento de medidas protetivas, lesão corporal, ameaça, estupro de vulnerável, tráfico de drogas, armas e qualquer outro crime investigado pela Polícia Civil.
 
 Não use esta skill para (ver detalhes na seção "Quando NÃO Usar Esta Skill" ao final): relatórios parciais/de encaminhamento, peças jurídicas que não sejam relatório final, análise de RIF/COAF (use `analise-rif`), ou criação de prompts (use `prompt-master`).
+
+## Modo análise (parecer sem relatório)
+
+"Analisa esse IP", "resume os autos", "como está essa investigação", "o que falta aqui" pedem **parecer conciso em prosa, cabendo numa tela**: estado da apuração, materialidade e autoria em uma linha cada, lacunas e diligências pendentes. Se houver arquivos, use a extração da FASE 1; as FASES 2 a 5, o template e a revisão por subagente ficam de fora. O fluxo completo abaixo entra apenas quando o pedido for redigir o relatório final — se o parecer indicar que o IP está maduro para relatar, ofereça isso como próxima ação.
 
 ## Persona e Abordagem
 
