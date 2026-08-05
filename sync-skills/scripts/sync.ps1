@@ -166,6 +166,27 @@ Sync-Repo -repo (Join-Path $env:USERPROFILE '.claude\skills') -label 'claude-ski
 
 # --- Repo 2: workspace DELEGACIA (clona se ainda nao existir nesta maquina) ---
 $delegacia = Join-Path $env:USERPROFILE 'Documents\DELEGACIA'
+
+# Espelho do CLAUDE.md global. O arquivo vive em ~/.claude/CLAUDE.md (fora de
+# qualquer repo) e e distribuido entre as maquinas via copia no repo PRIVADO
+# (contem nome, cargo e comarca — nunca no claude-skills). Antes do sync do
+# repo: edicao local mais nova sobe para a copia do repo (e sera commitada).
+# Depois do sync: copia do repo diferente da local desce para ~/.claude/.
+# Conflito real (as duas mudaram) e resolvido pelo proprio rebase do git.
+$globalMd = Join-Path $env:USERPROFILE '.claude\CLAUDE.md'
+$repoMd   = Join-Path $delegacia 'CONFIG-CLAUDE\CLAUDE-global.md'
+if ((Test-Path (Join-Path $delegacia '.git')) -and (Test-Path $globalMd)) {
+    if (-not (Test-Path $repoMd)) {
+        New-Item -ItemType Directory -Force (Split-Path $repoMd) | Out-Null
+        Copy-Item $globalMd $repoMd -Force
+        Write-Output "CLAUDE.md global: primeira copia criada no repo privado."
+    } elseif (((Get-FileHash $globalMd).Hash -ne (Get-FileHash $repoMd).Hash) -and
+              ((Get-Item $globalMd).LastWriteTime -gt (Get-Item $repoMd).LastWriteTime)) {
+        Copy-Item $globalMd $repoMd -Force
+        Write-Output "CLAUDE.md global: edicao local copiada para o repo privado."
+    }
+}
+
 if (-not (Test-Path (Join-Path $delegacia '.git'))) {
     Write-Output ""
     Write-Output "########## delegacia-claude-workspace ##########"
@@ -179,6 +200,14 @@ if (-not (Test-Path (Join-Path $delegacia '.git'))) {
     }
 } else {
     Sync-Repo -repo $delegacia -label 'delegacia-claude-workspace'
+}
+
+# Espelho do CLAUDE.md global, direcao repo -> maquina (apos pull ou clone).
+if (Test-Path $repoMd) {
+    if (-not (Test-Path $globalMd) -or ((Get-FileHash $globalMd).Hash -ne (Get-FileHash $repoMd).Hash)) {
+        Copy-Item $repoMd $globalMd -Force
+        Write-Output "CLAUDE.md global atualizado a partir do repo privado."
+    }
 }
 
 # --- Repo 3: osint-investigacao (clona se ainda nao existir nesta maquina) ---

@@ -46,6 +46,17 @@ Copy-Item $src $dst -Force
 Se o usuário atualizar o estado da carteira pela skill (revisão de tese,
 rebalanceamento, nova prioridade), copie de volta para `PESSOAL/` antes de sincronizar.
 
+### CLAUDE.md global (regras pessoais)
+
+O `~/.claude/CLAUDE.md` é distribuído entre as máquinas por espelho automático no
+repo **privado**: `CONFIG-CLAUDE/CLAUDE-global.md` no `delegacia-claude-workspace`
+(contém nome, cargo e comarca — jamais no `claude-skills`, que é público). O
+`sync.ps1` cuida das duas direções sozinho: edição local mais nova sobe antes do
+commit; versão nova vinda do pull desce para `~/.claude/`. Se as duas mudarem, o
+rebase do git acusa o conflito e o sync para, como em qualquer arquivo. O nome é
+`CLAUDE-global.md` de propósito, para não ser lido como instrução aninhada do
+workspace. Edite qualquer uma das duas cópias e rode o sync — nada manual.
+
 ### Prompt pronto para as outras máquinas
 
 Depois de mudar skills numa máquina, `references/prompt-outras-maquinas.md` tem um
