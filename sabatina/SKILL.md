@@ -1,6 +1,6 @@
 ---
 name: sabatina
-description: Sabatina relentless — entrevista o usuário pergunta por pergunta até haver entendimento compartilhado sobre um plano, peça, decisão ou funcionalidade, antes de produzir qualquer coisa. Use SEMPRE que o usuário pedir para ser "sabatinado", "grelhado", "interrogado", "me questiona", "me sabatina", "me grilla", "grill me", "pergunta tudo que precisar", "antes de escrever me pergunta", "quero pensar melhor nisso", "me ajuda a fechar essa ideia", "estressa esse plano", "me faz as perguntas". Use também ANTES de redigir peça jurídica complexa (representação cautelar, relatório final de inquérito, despacho difícil), antes de implementar funcionalidade não trivial em código, e sempre que o usuário trouxer uma ideia crua, ambígua ou com decisões em aberto. Detecta sozinha se o assunto é jurídico/investigativo ou técnico/código e adapta as perguntas. Não use quando o pedido já está completo e sem ambiguidade, nem para tarefas mecânicas de execução direta.
+description: Sabatina relentless — entrevista o usuário pergunta por pergunta até haver entendimento compartilhado sobre um plano, peça, decisão ou funcionalidade, antes de produzir qualquer coisa. Use quando o usuário pedir para ser sabatinado ("me sabatina", "grill me", "me faz as perguntas", "estressa esse plano", "quero pensar melhor nisso"), ANTES de redigir peça jurídica complexa (representação cautelar, relatório final de IP, despacho difícil) ou implementar funcionalidade não trivial, e sempre que a ideia chegar crua, ambígua ou com decisões em aberto. Detecta sozinha se o assunto é jurídico/investigativo ou técnico e adapta as perguntas. Não use quando o pedido já está completo e sem ambiguidade, nem para tarefa mecânica de execução direta.
 ---
 
 # Sabatina
@@ -28,7 +28,7 @@ E a divisão é inegociável:
 
 **Use o seletor de opções quando as alternativas forem enumeráveis.** Se a pergunta tem 2–4 respostas plausíveis, faça-a com a ferramenta de pergunta com opções clicáveis (AskUserQuestion), com a sua recomendação como primeira opção rotulada "(Recomendado)" e uma linha de justificativa em cada opção — responder vira um clique, e o "Other" fica disponível para nuance. Pergunta genuinamente aberta (narrar o fato, expor a tese) continua em texto livre; não esprema resposta aberta em múltipla escolha.
 
-**Desça a árvore de decisões.** Cada resposta abre ou fecha ramos. Resolva as dependências na ordem: decisões que condicionam outras vêm primeiro. Não pule para o detalhe de execução enquanto a decisão-mãe estiver aberta.
+**Trabalhe pela fronteira.** A fronteira é o conjunto das decisões cujos pré-requisitos já estão resolvidos — as perguntas que dá para fazer *agora* sem chutar respostas ainda não ouvidas. A próxima pergunta sai sempre da fronteira; pergunta que depende de outra ainda aberta espera a vez. Cada resposta empurra a fronteira: fecha ramos e desbloqueia perguntas que dependiam dela. A sabatina termina quando a fronteira esvazia.
 
 **Persiga a resposta vaga.** "Acho que sim", "mais ou menos", "depende" — nenhuma dessas fecha um ramo. Refaça a pergunta de outro ângulo ou com um caso concreto.
 
@@ -41,6 +41,8 @@ E a divisão é inegociável:
 Antes da primeira pergunta, esgote o que dá para descobrir sem incomodar o usuário: leia os autos, os arquivos anexados, o repositório, a legislação aplicável, os modelos já existentes nas outras skills. Chegue à entrevista já sabendo do que se trata.
 
 Se algo relevante for impossível de verificar sozinho, isso vira pergunta — mas identificada como lacuna de fato, não como decisão.
+
+Levantamento demorado não bloqueia a entrevista: para leitura pesada (autos longos, jurisprudência, repositório grande), dispare um subagente em segundo plano e comece pelas perguntas da fronteira que não dependem daquele fato. Só as perguntas a jusante do fato pendente esperam o subagente reportar.
 
 ### Passo 2 — Mapear os ramos em aberto
 
