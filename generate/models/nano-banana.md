@@ -66,6 +66,8 @@ candidates[0].content.parts[*].inlineData.data
 
 ## Notas
 
+- **Editar foto existente funciona bem.** Testado em 07/08/2026 com retrato real + foto de referência de corte de cabelo: trocou o cabelo, removeu um overlay de relógio e reconstruiu o fundo, mantendo pose, roupa e enquadramento. Duas limitações do Lite nesse uso: ele **suaviza a pele e rejuvenesce o rosto** (some marca de expressão e brilho natural) e tende a **ralear a barba** — pedir explicitamente textura de pele com poros, "no beautification" e densidade de barba idêntica reduz, mas não elimina. Também recompõe o enquadramento por conta própria se o prompt não travar isso ("keep the entire original framing, do not zoom in or recompose"). Para fidelidade de rosto, o acabamento no `gemini-3.1-flash-image` é obrigatório.
+- **Aspect não vira resolução alta neste modelo.** Com `aspectRatio: "9:16"` e sem `imageSize`, o Vertex devolveu 768x1376 (~280 KB). Suficiente para escolher composição, apertado para stories em tela grande.
 - **As duas rotas não entregam o mesmo arquivo.** Mesmo prompt, mesmo modelo, mesmo `aspectRatio`, ambas 1024x1024: AI Studio devolveu 585 KB e o Vertex 56 KB (31/07/2026). Resolução igual, compressão JPEG bem mais agressiva no Vertex. Para rascunho e escolha de composição tanto faz; se a imagem for virar peça final, conferir o arquivo antes de subir.
 - Erro 429 com `free_tier_requests, limit: 0`: billing não está ativo — é a condição desta conta, não um bug. Ver caminho manual acima ou ativar crédito pré-pago.
 - Erro 404 "model not found": o id mudou de versão — listar com `GET .../v1beta/models?key=...` e atualizar esta receita.

@@ -25,6 +25,27 @@ Duas rotas para os mesmos modelos Google. **Enquanto houver crédito do teste gr
 
 Leia o arquivo de receita antes de cada geração.
 
+## Como chamar (use o script, não monte a chamada à mão)
+
+`scripts\gerar-imagem.ps1` já resolve as três armadilhas abaixo, lê projeto/chave/pasta do `.env` e grava o sidecar. Preferir sempre ele:
+
+```powershell
+# rascunho
+.\scripts\gerar-imagem.ps1 -PromptFile prompt.txt -Refs foto.jpg,ref.jpg -OutName projeto_desc_1785600000 -Aspect 9:16
+# acabamento 2K
+.\scripts\gerar-imagem.ps1 -PromptFile prompt.txt -Refs foto.jpg -OutName projeto_desc_1785600000_2k -Model gemini-3.1-flash-image -ImageSize 2K
+```
+
+## Armadilhas do PowerShell 5.1 (medidas em 07/08/2026)
+
+Todas com o mesmo sintoma enganoso — parecem bloqueio, cota ou modelo errado, e não são. Se for montar a chamada fora do script, tratar as três:
+
+1. **`ConvertTo-Json` com base64 trava a máquina.** Ele escapa a string caractere a caractere; com uma referência de poucos MB o processo chegou a **12 GB de RAM e 19 minutos sem terminar**. Montar o JSON em streaming com `StreamWriter`, escrevendo o base64 direto no arquivo. Nenhum base64 pode passar por `ConvertTo-Json`.
+2. **`ConvertTo-Json` sobre string longa não devolve string.** Acima de ~1 KB ele retorna o objeto `{"value": "...", "Count": ...}`. O Vertex responde `400 Invalid value at 'contents[0].parts[0]' (text), Starting an object on a scalar field` — que parece prompt malformado, mas é o serializador. Prompt longo exige escape manual (função `ConvertTo-JsonString` no script).
+3. **`Invoke-RestMethod` também sufoca na resposta**, que traz a imagem em base64. Usar `curl.exe` (nativo no Windows 10+) gravando direto em arquivo e extrair `mimeType`/`data` por regex, sem materializar o objeto.
+
+Somam-se às duas já conhecidas: `Expect100Continue = $false` antes da chamada (senão `417`, com a página "Sorry..." do Google) e `"role": "user"` obrigatório em cada item de `contents` no Vertex.
+
 ## Chave de API
 
 - Ler de `~\.claude\.env` (`$env:USERPROFILE\.claude\.env`) → variável `GOOGLE_AI_STUDIO_KEY`. Caminho relativo ao perfil porque as três máquinas têm nomes de usuário diferentes.
