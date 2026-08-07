@@ -1,67 +1,100 @@
-# Prompt pronto — atualizar as outras máquinas (05/08/2026)
+# Prompt pronto — atualizar as outras máquinas (07/08/2026)
 
 Copie o bloco abaixo e cole no Claude Code da outra máquina. É autocontido: não
 depende do histórico da conversa em que as mudanças foram feitas.
 
-(A versão anterior deste arquivo descrevia a migração de 21/07/2026 — portão de
-auditoria e estado-carteira —, já aplicada nas três máquinas.)
+(A versão anterior deste arquivo descrevia a migração de 05/08/2026 — skill
+`conciso` e espelho do CLAUDE.md global —, já aplicada nas três máquinas.)
 
 ---
 
 ```
-Preciso atualizar esta máquina com mudanças feitas em 05/08/2026 em outra máquina
-(skill nova, edições em skills existentes e um espelho novo do CLAUDE.md global).
-Faça na ordem e me mostre o resultado de cada etapa:
+Preciso aplicar nesta máquina as mudanças feitas em 07/08/2026 em outra máquina:
+o sync das skills passou a rodar sozinho na abertura do Claude Code, via hook
+SessionStart. Faça na ordem e me mostre o resultado de cada etapa:
 
-1. SINCRONIZAR (primeira rodada)
+1. SINCRONIZAR
    Rode: & "$env:USERPROFILE\.claude\skills\sync-skills\scripts\sync.ps1"
    (sem -ExecutionPolicy Bypass). Se o portão de auditoria bloquear com "ARQUIVOS
    NOVOS (nao rastreados)" no repo público, NÃO use -AllowNew às cegas: me mostre
    a lista e o conteúdo de cada arquivo, e só rode de novo com -AllowNew depois
    que eu confirmar que nada é sigiloso.
 
-2. CONFERIR O CLAUDE.md LOCAL ANTES DA SEGUNDA RODADA
-   A partir de agora o ~/.claude/CLAUDE.md é espelhado entre as máquinas via repo
-   privado (Documents\DELEGACIA\CONFIG-CLAUDE\CLAUDE-global.md). A segunda rodada
-   do sync vai SOBRESCREVER o ~/.claude/CLAUDE.md desta máquina com a versão do
-   repo. Antes disso, compare os dois arquivos: se o local tiver algum trecho que
-   a versão do repo não tem, me mostre a diferença e PARE — decido eu.
+   Isso traz: scripts/auto-sync.ps1 (novo), sync.ps1 com o modo -PullOnly, e a
+   SKILL.md da sync-skills documentando o hook.
 
-3. SINCRONIZAR (segunda rodada)
-   Rode o mesmo sync.ps1 de novo. A primeira rodada só trouxe o script novo; é
-   esta que executa o espelho. Saída esperada: "CLAUDE.md global atualizado a
-   partir do repo privado."
+2. CONFERIR O CLAUDE.md GLOBAL
+   O ~/.claude/CLAUDE.md é espelhado entre as máquinas pelo repo privado. A regra
+   5 da seção Postura (modo conciso) tinha duas redações divergentes e foi fundida
+   em 07/08/2026. Depois do sync, o ~/.claude/CLAUDE.md desta máquina deve conter,
+   na regra 5: "resposta primeiro, prosa enxuta, zero preâmbulo e zero fecho, sem
+   tabelas nem seções salvo pedido expresso". Se estiver diferente, me mostre a
+   diferença e PARE — decido eu.
 
-4. VERIFICAR
-   - ~/.claude/CLAUDE.md deve ter a regra "4. Extensão sob medida" na seção Postura.
-   - Deve existir a skill nova: ~/.claude/skills/conciso/SKILL.md
-   - git log --oneline -5 em ~/.claude/skills, e me resuma o que chegou.
+3. INSTALAR O HOOK
+   Edite ~/.claude/settings.json (não substitua o arquivo: preserve tudo que já
+   existe) acrescentando a chave "hooks" no nível raiz:
 
-Contexto das mudanças que você vai receber:
-- conciso (skill nova): modo de resposta direto e enxuto sob demanda (/conciso),
-  porte auditado de ayghri/i-have-adhd (MIT). Não rege peças jurídicas — só a
-  conversa em volta delas.
-- relatorio-final-ip: nova seção "Modo análise" — "analisa esse IP" entrega
-  parecer conciso em prosa, sem template nem revisão por subagente; a description
-  ganhou esse gatilho.
-- representacao-cautelar: no modo "vê o que cabe nesses autos", a lista de
-  medidas com uma linha de justificativa é o produto inteiro do turno; peça só
-  depois da confirmação.
-- CLAUDE.md global: regra 4 de Postura (extensão sob medida: análise ≠ peça) e o
-  espelho automático descrito no passo 2 (documentado na SKILL.md da sync-skills).
-- notebooklm/scripts/auth_manager.py: passa a aceitar o domínio novo
-  notebook.google.com no login (redirect recente do Google).
+   "hooks": {
+     "SessionStart": [
+       {
+         "hooks": [
+           {
+             "type": "command",
+             "command": "powershell.exe",
+             "args": ["-NoProfile", "-File", "<CAMINHO>"],
+             "asyncRewake": true,
+             "timeout": 300,
+             "rewakeSummary": "Conflito no sync das skills",
+             "statusMessage": "Sincronizando skills..."
+           }
+         ]
+       }
+     ]
+   }
+
+   <CAMINHO> é absoluto e com barras normais — o nome de usuário do Windows muda
+   de máquina para máquina, então descubra o valor real desta antes de escrever:
+   rode `$env:USERPROFILE` e monte
+   <USERPROFILE com barras normais>/.claude/skills/sync-skills/scripts/auto-sync.ps1
+
+   NÃO use "shell": "powershell" — essa opção aponta para o pwsh (PowerShell 7),
+   que pode não existir aqui; o hook silenciosamente nunca rodaria.
+
+4. TESTAR
+   - Valide o JSON:
+     Get-Content "$env:USERPROFILE\.claude\settings.json" -Raw | ConvertFrom-Json |
+       Select-Object -ExpandProperty hooks | ConvertTo-Json -Depth 6
+   - Rode a invocação exata do hook, forçando fora da trava de tempo:
+     powershell.exe -NoProfile -File "<CAMINHO>" -Force
+   - Mostre o fim de ~/.claude/auto-sync.log e me diga o que cada repo reportou.
+     Repo com mudança local não commitada aparece como "PULADO" — é o esperado.
+   - Rode a invocação de novo SEM -Force e confirme que o log não cresceu (prova
+     de que a trava de 4h funciona).
+
+O hook só entra em vigor na próxima abertura do Claude Code.
+
+Contexto do que muda:
+- O automático SÓ RECEBE (sync.ps1 -PullOnly): nunca commita, nunca empurra e
+  pula repo com mudança pendente. Enviar continua ato deliberado meu, porque o
+  claude-skills é público.
+- Trava de 4h por carimbo em ~/.claude/.last-auto-sync, tocado antes do sync —
+  também evita corrida entre sessões abertas ao mesmo tempo.
+- Conflito de rebase sai com código 2 e acorda a sessão (asyncRewake); erro de
+  rede ou credencial fica só no log.
 ```
 
 ---
 
 ## Observações para quem for manter este arquivo
 
-- Use sempre `$env:USERPROFILE`, nunca caminho absoluto: o nome de usuário difere
-  entre as máquinas do André (`andre`, `PJC`).
-- O passo 2 é o que realmente importa nesta migração: é a única rodada em que uma
-  edição local divergente do CLAUDE.md poderia ser sobrescrita sem aviso, porque o
-  script antigo (da primeira rodada) ainda não tinha o espelho. Das rodadas
-  seguintes em diante, o próprio sync resolve as duas direções.
+- Use sempre `$env:USERPROFILE` no corpo dos comandos, nunca caminho absoluto: o
+  nome de usuário difere entre as máquinas do André (`andre`, `PJC`). A única
+  exceção é o `args` do hook, que não passa por shell e por isso não expande
+  variável — daí o passo 3 mandar descobrir o valor real antes de escrever.
+- O passo 2 existe porque a regra 5 do CLAUDE.md nasceu com duas redações em
+  máquinas diferentes e conflitou no rebase de 07/08/2026. Se a máquina em que o
+  prompt for colado tiver a redação perdedora e um `LastWriteTime` mais novo,
+  o espelho pode tentar subir a versão errada — daí conferir antes.
 - Depois de rodar nas duas máquinas restantes, reescreva este arquivo na próxima
   migração — ele descreve sempre a migração pontual mais recente.
