@@ -5,8 +5,12 @@
 #   4. ~/.claude/scheduled-tasks   (claude-briefings, privado)
 # Seguro por padrao: commit local -> pull --rebase --autostash -> push.
 # Em conflito, aborta o rebase e reporta, sem perder nada.
+#
+# -PullOnly: modo somente-recebe, usado pelo auto-sync do hook SessionStart.
+# Nao commita, nao empurra e nao toca em repo com mudanca local pendente, para
+# que um processo em background nunca publique nem mexa em trabalho nao salvo.
 
-param([switch]$AllowNew)
+param([switch]$AllowNew, [switch]$PullOnly)
 
 # 'Continue', nao 'Stop': o git escreve avisos normais no stderr (ex.: "LF will be
 # replaced by CRLF") e, sob 'Stop', o PowerShell 5.1 os promove a NativeCommandError
@@ -100,7 +104,9 @@ function Sync-Repo {
 
     Set-Location $repo
 
-    if ($Public) {
+    # No modo somente-recebe nao ha `git add`, entao o portao de auditoria (que
+    # existe para barrar publicacao indevida) nao tem o que guardar.
+    if ($Public -and -not $PullOnly) {
         $ok = Test-Publicavel -repo $repo
         foreach ($m in $global:auditMsgs) { Write-Output $m }
         if (-not $ok) {
@@ -109,9 +115,19 @@ function Sync-Repo {
         }
     }
 
-    # 1. Commit local, se houver mudancas
     $dirty = git status --porcelain
-    if ($dirty) {
+
+    # 1. Commit local, se houver mudancas
+    if ($PullOnly) {
+        # Repo sujo fica intocado: o --autostash abaixo guardaria a mudanca e,
+        # se a reaplicacao conflitasse, ela sumiria dentro do stash sem ninguem
+        # olhando. Trabalho nao commitado espera o sync manual.
+        if ($dirty) {
+            Write-Output "PULADO: ha mudanca local nao commitada. Rode o sync manual."
+            Write-Output ($dirty | Out-String)
+            return
+        }
+    } elseif ($dirty) {
         git add -A
         $msg = "sync: $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
         git commit -m $msg | Out-Null
@@ -140,11 +156,13 @@ function Sync-Repo {
     }
 
     # 3. Push
-    git push origin HEAD
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "ERRO no push. Verifique credenciais/conexao."
-        $global:exitCode = 3
-        return
+    if (-not $PullOnly) {
+        git push origin HEAD
+        if ($LASTEXITCODE -ne 0) {
+            Write-Output "ERRO no push. Verifique credenciais/conexao."
+            $global:exitCode = 3
+            return
+        }
     }
 
     # 4. Resumo
@@ -175,7 +193,7 @@ $delegacia = Join-Path $env:USERPROFILE 'Documents\DELEGACIA'
 # Conflito real (as duas mudaram) e resolvido pelo proprio rebase do git.
 $globalMd = Join-Path $env:USERPROFILE '.claude\CLAUDE.md'
 $repoMd   = Join-Path $delegacia 'CONFIG-CLAUDE\CLAUDE-global.md'
-if ((Test-Path (Join-Path $delegacia '.git')) -and (Test-Path $globalMd)) {
+if ((-not $PullOnly) -and (Test-Path (Join-Path $delegacia '.git')) -and (Test-Path $globalMd)) {
     if (-not (Test-Path $repoMd)) {
         New-Item -ItemType Directory -Force (Split-Path $repoMd) | Out-Null
         Copy-Item $globalMd $repoMd -Force
@@ -203,8 +221,18 @@ if (-not (Test-Path (Join-Path $delegacia '.git'))) {
 }
 
 # Espelho do CLAUDE.md global, direcao repo -> maquina (apos pull ou clone).
+# Sob -PullOnly a subida acima nao rodou, entao so desce se a copia do repo for
+# mesmo a mais nova — senao uma edicao local ainda nao sincronizada seria
+# sobrescrita por um processo em background.
 if (Test-Path $repoMd) {
-    if (-not (Test-Path $globalMd) -or ((Get-FileHash $globalMd).Hash -ne (Get-FileHash $repoMd).Hash)) {
+    $desce = (-not (Test-Path $globalMd)) -or
+             ((Get-FileHash $globalMd).Hash -ne (Get-FileHash $repoMd).Hash)
+    if ($desce -and $PullOnly -and (Test-Path $globalMd) -and
+        ((Get-Item $globalMd).LastWriteTime -gt (Get-Item $repoMd).LastWriteTime)) {
+        Write-Output "CLAUDE.md global local e mais novo que o do repo. Rode o sync manual para envia-lo."
+        $desce = $false
+    }
+    if ($desce) {
         Copy-Item $repoMd $globalMd -Force
         Write-Output "CLAUDE.md global atualizado a partir do repo privado."
     }

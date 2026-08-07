@@ -83,6 +83,42 @@ O script copia o `extrair.py` para `~/.claude/tools/`, cria o venv e instala o D
 
 **Ao editar o `extrair.py`**: a fonte de verdade é a cópia no repo (`scripts/extrair.py`). Edite lá e rode o setup, ou copie para `~/.claude/tools/extrair.py` — as duas precisam ficar iguais.
 
+## Sync automático na abertura (hook SessionStart)
+
+Desde 07/08/2026 o `~/.claude/settings.json` tem um hook `SessionStart` que chama
+`scripts/auto-sync.ps1` em background (`asyncRewake`), sem atrasar a abertura:
+
+```json
+{ "type": "command", "command": "powershell.exe",
+  "args": ["-NoProfile", "-File", "C:/Users/<usuario>/.claude/skills/sync-skills/scripts/auto-sync.ps1"],
+  "asyncRewake": true, "timeout": 300 }
+```
+
+`shell: "powershell"` **não** serve: aponta para o `pwsh` (PowerShell 7), ausente
+nas máquinas do usuário. Daí a invocação direta do `powershell.exe` via `args`.
+Numa máquina nova, ajustar o caminho absoluto ao nome de usuário local.
+
+O automático **só recebe** — roda `sync.ps1 -PullOnly`. Enviar continua ato
+deliberado (invocar esta skill), porque o `claude-skills` é público e o portão de
+auditoria não lê prosa: publicar sem olhos humanos é risco que não compensa.
+Três garantias do modo `-PullOnly`:
+
+1. Não commita e não empurra, em nenhum dos quatro repos.
+2. **Pula** repo com mudança não commitada — o `--autostash` poderia engolir
+   trabalho não salvo num conflito de reaplicação, sem ninguém olhando.
+3. No espelho do `CLAUDE.md` global, só desce a versão do repo se ela for mais
+   nova que a local (no modo completo a subida roda antes, e aí a data não importa).
+
+Trava de 4 horas por carimbo em `~/.claude/.last-auto-sync`, tocado **antes** do
+sync — assim uma segunda sessão aberta no mesmo instante encontra o carimbo novo
+e desiste, o que também evita corrida entre sessões simultâneas. Saída completa em
+`~/.claude/auto-sync.log` (rotativo a 200 KB). Conflito de rebase sai com código 2
+e acorda a sessão pelo `asyncRewake`; erro de rede ou credencial fica só no log,
+para não interromper o usuário por algo que costuma se resolver sozinho.
+
+Forçar fora do intervalo: `auto-sync.ps1 -Force`. Mudar o intervalo:
+`-IntervaloHoras N`.
+
 ## Procedimento
 
 Execute o script pronto:
@@ -101,6 +137,9 @@ Para cada um dos quatro repos, o script faz nesta ordem:
 5. Imprime resumo (commits recebidos, skills novas ou alteradas).
 
 Códigos de saída: `1` erro no commit (identidade git), `2` conflito no rebase, `3` erro no push ou no clone, `4` bloqueio da auditoria.
+
+Com `-PullOnly` (o modo do automático), os passos 1, 2 e 4 não rodam: só fetch e
+`pull --rebase`, e repo sujo é pulado.
 
 ### O portão de auditoria (só no repo público)
 
