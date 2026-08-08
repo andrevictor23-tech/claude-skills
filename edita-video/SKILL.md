@@ -17,6 +17,9 @@ clara e padronizada.
 - `demucs` (separação voz/música, para suavizar trilha de fundo em material de TV)
 
 Se algo faltar em outra máquina: `pip install faster-whisper auto-editor imageio-ffmpeg demucs`.
+Na máquina onde `python` aponta para o venv do hermes (sem pip), use o venv dedicado
+`~/.claude/tools/edita-video-venv` (criado com `uv venv --python 3.12`; instalar com
+`uv pip install --python <venv>\Scripts\python.exe ...`). O ffmpeg do winget já está no PATH.
 
 ## Fluxo (ordem importa)
 
@@ -116,7 +119,10 @@ python scripts/melhorar_audio.py VIDEO_dinamico.mp4
    capa ou trecho em reel.** A tarja do telejornal pode expor dado que a
    comunicação oficial do usuário promete proteger (parentesco, nome, local —
    caso tramitando em segredo de justiça). Corte a tarja do enquadramento
-   (`crop`) ou escolha outro quadro.
+   (`crop`) ou escolha outro quadro. Vale também para GC com nome ERRADO (em
+   07/08/2026 o programa exibiu "SGT CLÉIA" durante fala do usuário): cubra o
+   intervalo exato com blur gaussiano localizado (`crop`+`gblur`+`overlay` com
+   `enable=between(t,...)`) — nunca `delogo`, que deixa listras horizontais.
 2. Preserve o original intacto; toda saída ganha sufixo novo.
 3. Vídeo de trabalho institucional (DELEGACIA) é dado sob sigilo: pipeline 100%
    local, sem Adobe Podcast, sem upload a MCP de mídia.
