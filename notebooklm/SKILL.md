@@ -326,6 +326,16 @@ python scripts/run.py auth_manager.py reauth   # Re-authenticate (browser visibl
 python scripts/run.py auth_manager.py clear    # Clear authentication
 ```
 
+### Cache Cleanup (`limpar_cache.py`)
+```bash
+python scripts/limpar_cache.py            # dry run — shows what would be removed
+python scripts/limpar_cache.py --aplicar  # actually remove
+```
+Drops regenerable browser cache while preserving cookies, Local Storage and
+`state.json` — the login survives. Run with the skill's browser closed; files
+in use are skipped with a warning. Exits non-zero if any credential file
+disappears.
+
 ### Notebook Management (`notebook_manager.py`)
 ```bash
 python scripts/run.py notebook_manager.py add --url URL --name NAME --description DESC --topics TOPICS
@@ -384,6 +394,11 @@ All data stored in `~/.claude/skills/notebooklm/data/`:
 - `browser_state/` - Browser cookies and session
 
 **Security:** Protected by `.gitignore`, never commit to git.
+
+**Cache growth:** the browser profile accumulates hundreds of MB of regenerable
+cache (compiled code, on-device models, shaders) — one machine reached 234 MB.
+Clean it with `limpar_cache.py` (see Script Reference). The cleanup is local
+only: `data/` is gitignored, so every machine needs its own run.
 
 ## Configuration
 
