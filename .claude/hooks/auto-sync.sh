@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
-# auto-sync.sh — salva e envia automaticamente as mudanças da skill para o GitHub.
+# auto-sync.sh — salva localmente as mudanças da skill. NÃO envia ao GitHub.
 #
 # Chamado pelo "Stop hook" do Claude Code (ver .claude/settings.json): sempre que o
-# Claude termina de responder, se houver mudanças no repositório, faz commit e push.
+# Claude termina de responder, se houver mudanças no repositório, faz commit local.
 # Objetivo: nunca perder trabalho ao editar a skill, em qualquer computador.
+#
+# O envio ao GitHub é DELIBERADAMENTE manual: este repo é público e a regra é que
+# nada suba sem revisão humana. Para publicar, use a skill `sync-skills`
+# (scripts/sync.ps1), que mostra o diff e pede confirmação antes do push.
 #
 # Seguro por design:
 #   - só age dentro de um repositório git;
 #   - o .gitignore deste repo já bloqueia dados sigilosos;
 #   - scan-sigilo.sh escaneia os arquivos alterados ANTES do commit: padrão de
-#     CPF, CNPJ, processo, IP ou telefone fora da allowlist BLOQUEIA o envio;
-#   - nunca interrompe a sessão: falhas são silenciosas e o commit local persiste
-#     mesmo que o push falhe (ex.: sem rede ou sem login) — vai no próximo envio.
+#     CPF, CNPJ, processo, IP ou telefone fora da allowlist BLOQUEIA o commit;
+#   - nunca interrompe a sessão: falhas são silenciosas.
 
 set -u
 cd "${CLAUDE_PROJECT_DIR:-.}" 2>/dev/null || exit 0
@@ -43,9 +46,6 @@ fi
 git add -A
 git commit -q -m "auto: backup automatico da skill ($(date '+%Y-%m-%d %H:%M'))" >/dev/null 2>&1 || exit 0
 
-if git push -q >/dev/null 2>&1; then
-  printf '{"systemMessage":"Skill salva e enviada ao GitHub (ramo %s)."}\n' "$ramo"
-else
-  printf '{"systemMessage":"Skill salva localmente (commit feito). O envio ao GitHub falhou (verifique rede/login) e sera reenviado no proximo."}\n'
-fi
+pendentes="$(git rev-list --count @{u}..HEAD 2>/dev/null || echo '?')"
+printf '{"systemMessage":"Skill salva localmente (ramo %s). %s commit(s) aguardando revisao — rode o sync-skills para enviar ao GitHub."}\n' "$ramo" "$pendentes"
 exit 0

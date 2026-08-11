@@ -27,12 +27,12 @@ Biblioteca pessoal de skills de Claude Code do André (Delegado de Polícia Civi
 - O `.gitignore` da raiz documenta essa política em comentários — leia antes de adicionar arquivos novos em `assets/` ou `references/`.
 - Exemplos em documentação devem usar dados fictícios ou anonimizados.
 
-## Hook de auto-sync
+## Hook de backup local
 
-`.claude/settings.json` registra um hook de *Stop* que executa `.claude/hooks/auto-sync.sh`: `git add -A` + commit `sync: <data>` + push ao final de cada sessão. Consequências práticas:
+`.claude/settings.json` registra um hook de *Stop* que executa `.claude/hooks/auto-sync.sh`: `git add -A` + commit local ao final de cada sessão, depois de `scan-sigilo.sh` varrer os arquivos alterados. **Não faz push** — o envio ao GitHub é sempre manual, via `sync-skills` (`scripts/sync.ps1`), que mostra o diff e pede confirmação. Consequências práticas:
 
-- Arquivos deixados na árvore de trabalho serão commitados e publicados automaticamente. Não deixe rascunhos, dados de teste ou arquivos temporários na pasta do repo.
-- Prefira commits manuais descritivos para mudanças substantivas; o auto-sync é rede de segurança, não substituto.
+- Arquivos deixados na árvore de trabalho serão commitados. Não deixe rascunhos, dados de teste ou arquivos temporários na pasta do repo — eles entram no histórico local e aparecem no diff do próximo envio.
+- Prefira commits manuais descritivos para mudanças substantivas; o backup automático é rede de segurança, não substituto.
 
 ## Testes e verificação
 
