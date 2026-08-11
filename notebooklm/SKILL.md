@@ -107,7 +107,7 @@ a.download='notebooklm-resposta.txt'; a.click();
 'ok: '+t.length+' chars'
 ```
 
-   Depois leia com uma única chamada `Read` em `E:\Users\andre\Downloads\notebooklm-resposta.txt`.
+   Depois leia com uma única chamada `Read` em `E:\Users\<usuário>\Downloads\notebooklm-resposta.txt`.
    Troca ~10 idas ao browser por 2.
 3. **Listar fontes e detectar falhas** — uma chamada, sem screenshot:
 

@@ -22,7 +22,7 @@ Se faltar informação crítica que o save não traz (as três cartas oferecidas
 Rode sempre antes de aconselhar, salvo se o usuário já colou tudo:
 
 ```powershell
-powershell -File "C:\Users\andre\.claude\skills\sts2\scripts\run-atual.ps1"
+powershell -File "$env:USERPROFILE\.claude\skills\sts2\scripts\run-atual.ps1"
 ```
 
 Saída: personagem, ascension, HP, ouro, andar, ato, deck completo agrupado, relíquias, poções e alertas.

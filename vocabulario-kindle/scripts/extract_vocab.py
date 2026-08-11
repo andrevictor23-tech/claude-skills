@@ -1,7 +1,7 @@
 """Extrai vocabulario EN do vocab.db do Kindle e atualiza o master JSON (incremental).
 
 Uso:
-  python extract_vocab.py --db "C:/Users/andre/Downloads/vocab.db" [--data-dir <pasta>]
+  python extract_vocab.py --db "%USERPROFILE%/Downloads/vocab.db" [--data-dir <pasta>]
 
 - Agrupa lookups por stem (raiz da palavra).
 - Palavras ja presentes no master sao preservadas (com traducao/definicao ja feitas).

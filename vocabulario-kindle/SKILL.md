@@ -8,8 +8,8 @@ description: Transforma o Vocabulary Builder do Kindle (vocab.db) em baralho Ank
 O usuário lê no Kindle e consulta palavras no dicionário; o Kindle grava tudo em
 `vocab.db` (palavra + frase exata do livro). Esta skill mantém um baralho Anki
 incremental a partir desse banco. Dados ficam em `<Meu Drive>/vocabulario-kindle/`
-(sincroniza entre as máquinas; nesta máquina é `C:\Users\andre\Meu Drive`, em
-outras pode ser `G:\Meu Drive` — os scripts detectam sozinhos).
+(sincroniza entre as máquinas; pode ser `%USERPROFILE%\Meu Drive` ou
+`G:\Meu Drive`, conforme a máquina — os scripts detectam sozinhos).
 
 ## Método (não mudar sem pedido do usuário)
 

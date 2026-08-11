@@ -7,7 +7,7 @@ description: Produz o GUIA DE ESTUDOS PARA CONCURSO DE CARTÓRIO com os assuntos
 
 Produz uma edição do guia com o que foi publicado nos **últimos 7 dias** nas fontes abaixo.
 
-Contexto do usuário: candidato ao **concurso de outorga de delegações de MT (Edital TJMT 48/2025, Cebraspe)** — objetiva em 05/09/2026, escrita e prática em 31/10/2026, oral em 25/04/2027. O material de base está em `E:\Users\andre\Documents\ESTUDO\CARTORIO-MT\`.
+Contexto do usuário: candidato ao **concurso de outorga de delegações de MT (Edital TJMT 48/2025, Cebraspe)** — objetiva em 05/09/2026, escrita e prática em 31/10/2026, oral em 25/04/2027. O material de base está em `E:\Users\<usuário>\Documents\ESTUDO\CARTORIO-MT\`.
 
 ## 1. Varredura das fontes
 
@@ -29,7 +29,7 @@ Percorra **todas** as sete fontes públicas. Elas são independentes: falha em u
 
 O Kollemata (`kollemata.com.br`) exige login com reCAPTCHA e a sessão dura **~2 horas**, então a rotina automática **não consegue acessá-lo sozinha**.
 
-- Se houver cookie válido em `E:\Users\andre\Documents\ESTUDO\CARTORIO-MT\.kollemata-sessao` (linha única no formato `__kid=...; ci_session=...`), use-o.
+- Se houver cookie válido em `E:\Users\<usuário>\Documents\ESTUDO\CARTORIO-MT\.kollemata-sessao` (linha única no formato `__kid=...; ci_session=...`), use-o.
 - Testar validade: baixe `https://www.kollemata.com.br/` com o cookie; se o HTML contiver `>Sair<`, a sessão vive; se vier cabeçalho `Refresh:` para `/login/`, expirou.
 - Busca (GET na raiz): `pagina`, `rows`, `gera-csv=nao`, `conector` (`&` todas / `|` qualquer / `f` frase), `q`, `campo[]` (`chave` verbetação, `ementa`, `integra`), `orgao[]`, `relator`, `data_de`, `data_ate`, `legislacao`, `legislacao_art`.
 - **Órgãos úteis por id:** `316` CGJMT, `272` CSMSP, `283` CGJSP, `296` CNJ, `299` CGJMG, `300` CGJRS, `282` CGJSC, `313` CGJPA, `311` ONR, `295` IRIB, `288` Arisp.
@@ -54,9 +54,9 @@ Priorize o que tem alta probabilidade de cobrança em concursos de cartório —
 
 ## 3. Estrutura da edição
 
-Escreva em `E:\Users\andre\Documents\ESTUDO\CARTORIO-MT\guias\guia-AAAA-MM-DD.md`:
+Escreva em `E:\Users\<usuário>\Documents\ESTUDO\CARTORIO-MT\guias\guia-AAAA-MM-DD.md`:
 
-> **Atenção ao destino.** Use sempre o drive **E:**. Este material já foi perdido uma vez em `C:\Users\andre\Documents\` — o drive C: opera com pouco espaço livre e houve remoção por processo externo à sessão. Nunca grave esta frente em C:.
+> **Atenção ao destino.** Use sempre o drive **E:**. Este material já foi perdido uma vez no perfil do usuário em `C:` — aquele drive opera com pouco espaço livre e houve remoção por processo externo à sessão. Nunca grave esta frente em C:.
 
 ### Cabeçalho
 Período coberto, data de geração, contagem de itens por fonte, e — se aplicável — aviso de fonte inacessível.
@@ -88,7 +88,7 @@ Prioridade **Alta / Média / Baixa** para aquela semana. Leitura complementar = 
 ## 4. Entrega
 
 1. Grave o markdown em `guias/guia-AAAA-MM-DD.md`.
-2. Gere o EPUB da edição com `python E:\Users\andre\Documents\ESTUDO\CARTORIO-MT\gerar_guia_epub.py guias/guia-AAAA-MM-DD.md` — sai um `.epub` ao lado, pronto para o Send to Kindle.
+2. Gere o EPUB da edição com `python E:\Users\<usuário>\Documents\ESTUDO\CARTORIO-MT\gerar_guia_epub.py guias/guia-AAAA-MM-DD.md` — sai um `.epub` ao lado, pronto para o Send to Kindle.
 3. Apresente no chat um resumo curto: quantos destaques, quais os 3 mais importantes, e o que ficou de fora por indisponibilidade de fonte.
 
 ## 5. Regras de qualidade — inegociáveis
