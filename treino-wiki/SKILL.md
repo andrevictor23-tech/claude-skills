@@ -36,6 +36,7 @@ Pergunte em uma única mensagem: disciplina(s) ou "mix geral", quantidade (padr�
      --title "Treino Wiki - <tema>"
    ```
 3. Vale a regra do simulado-quiz: HTML autocontido, salvo em `quiz-data/` (sincroniza entre as máquinas). Erros exportados pelo quiz seguem o fluxo normal de registro em `erros.md`.
+4. **Banco de múltipla escolha (A–E) passa pelo validador antes de virar HTML**: `py -3 quiz-data\_valida_quiz.py <arquivo>.json`. Ele reprova os dois vícios que questão gerada por IA carrega sozinha — gabarito concentrado em A/B e gabarito sempre na alternativa mais longa. Ao escrever, mantenha as cinco alternativas na mesma faixa de comprimento: a fundamentação vai no `comentario`, não no texto da alternativa certa. Não se aplica ao formato certo/errado.
 
 ## Estilo
 
