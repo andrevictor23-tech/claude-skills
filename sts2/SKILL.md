@@ -1,6 +1,6 @@
 ---
 name: sts2
-description: Coach de Slay the Spire 2 em tempo real. Lê o save da run ativa (deck, HP, relíquias, ouro, ato, andar) e aconselha decisões — qual recompensa de carta pegar ou pular, qual relíquia, qual caminho no mapa, enfrentar ou não a elite, o que remover/upgradar na fogueira, o que comprar na loja, qual blessing do Ancient, e a ordem de jogar as cartas no combate. Use SEMPRE que o usuário perguntar sobre Slay the Spire 2 durante uma partida — "qual carta pego", "pego ou pulo", "vale essa relíquia", "por onde vou no mapa", "enfrento essa elite", "o que removo", "como jogo esse turno", "analisa minha run", "estou perdido nessa run" — ou quando mandar um print/screenshot do jogo. Use também para revisar o histórico de runs, diagnosticar por que está perdendo, e planejar subida de ascension.
+description: Coach de Slay the Spire 2 em tempo real, lendo o save da run ativa. Use para qualquer pergunta sobre a run em andamento (carta, relíquia, caminho, elite, fogueira, loja, como jogar o turno), quando o usuário mandar print do jogo, ou para revisar histórico de runs e planejar ascension.
 ---
 
 # Coach de Slay the Spire 2 — André
@@ -29,8 +29,8 @@ Saída: personagem, ascension, HP, ouro, andar, ato, deck completo agrupado, rel
 
 Se o script disser que não há run ativa, o usuário está no menu ou entre runs — trabalhe pelo print ou pela descrição.
 
-**Caminhos** (o script resolve sozinho, mas para inspeção manual):
-- Run ativa: `C:\Program Files (x86)\Steam\userdata\1161446905\2868840\remote\profile1\saves\current_run.save`
+**Caminhos** (o id numérico de `userdata` varia por máquina/conta — o script resolve sozinho; exemplo para inspeção manual):
+- Run ativa: `C:\Program Files (x86)\Steam\userdata\<id-da-conta>\2868840\remote\profile1\saves\current_run.save`
 - Progresso: `...\saves\progress.save`
 - Histórico: `...\saves\history\*.run`
 

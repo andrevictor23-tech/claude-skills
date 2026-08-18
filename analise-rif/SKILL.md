@@ -1,19 +1,11 @@
 ---
 name: analise-rif
-description: Análise completa de Relatórios de Inteligência Financeira (RIF) do COAF com geração de Relatório de Análise Financeira (RAF) em formato .docx profissional. Use quando o usuário enviar arquivos CSV do COAF (RIF_Envolvidos, RIF_Comunicacoes, RIF_Ocorrencias), solicitar análise de dados financeiros do COAF, pedir identificação de indícios de lavagem de dinheiro, análise de vínculos financeiros, mapeamento de redes de movimentação, ou geração de relatórios técnicos sobre inteligência financeira. Aplicável a investigações de lavagem de dinheiro, crimes financeiros, organização criminosa, corrupção, evasão de divisas e qualquer crime com movimentação financeira atípica. Inclui cruzamento relacional por Indexador, deduplicação por idComunicacao, análise de tipologias de lavagem segundo Carta Circular BACEN 4.001/2020 e entrega em documento Word formatado.
+description: Analisa RIF do COAF e gera o Relatório de Análise Financeira (RAF) em .docx. Use ao receber os CSVs do COAF (RIF_Envolvidos, RIF_Comunicacoes, RIF_Ocorrencias) ou ao pedir análise de RIF, de movimentação financeira atípica, de indícios de lavagem de dinheiro ou de vínculos financeiros em investigação.
 ---
 
 # Análise de Relatórios de Inteligência Financeira (RIF/COAF)
 
 Skill especializada na análise de dados financeiros oriundos do Conselho de Controle de Atividades Financeiras (COAF), com foco em investigações policiais de lavagem de dinheiro e crimes financeiros.
-
-## When to Use
-
-Ative esta skill quando o usuário:
-- Enviar arquivos CSV do COAF (`RIF_Envolvidos`, `RIF_Comunicacoes`, `RIF_Ocorrencias`);
-- Pedir análise de dados financeiros do COAF, identificação de indícios de lavagem de dinheiro, análise de vínculos financeiros, mapeamento de redes de movimentação, ou geração de relatório técnico de inteligência financeira (RAF).
-
-Aplicável a investigações de lavagem de dinheiro, crimes financeiros, organização criminosa, corrupção, evasão de divisas e qualquer crime com movimentação financeira atípica.
 
 ## Persona
 
@@ -84,58 +76,9 @@ Tipos esperados:
 - `RIF_XXXXX_Comunicacoes.csv` — Comunicações financeiras + valores + períodos + informações adicionais
 - `RIF_XXXXX_Ocorrencias.csv` — Irregularidades + normativas aplicáveis
 
-#### 1.2 Carregamento com Tratamento de Encoding
+#### 1.2 Carga e Validação
 
-```python
-import pandas as pd
-import os
-
-# Os CSVs do COAF geralmente vêm em ISO-8859-1 (latin-1) com separador ;
-ENCODINGS = ['latin-1', 'utf-8', 'cp1252']
-SEPARATORS = [';', ',']
-
-def load_csv_coaf(filepath):
-    """Carrega CSV do COAF tentando múltiplos encodings e separadores."""
-    for enc in ENCODINGS:
-        for sep in SEPARATORS:
-            try:
-                df = pd.read_csv(filepath, encoding=enc, sep=sep, dtype=str)
-                if len(df.columns) > 1 and 'Indexador' in df.columns:
-                    return df
-            except:
-                continue
-    raise ValueError(f"Não foi possível ler o arquivo: {filepath}")
-```
-
-#### 1.3 Validação Estrutural
-
-```python
-def validar_estrutura(df_env, df_com, df_oco):
-    """Valida estrutura mínima dos 3 CSVs."""
-    erros = []
-    
-    # Verificar coluna Indexador em todos
-    for nome, df in [('Envolvidos', df_env), ('Comunicacoes', df_com), ('Ocorrencias', df_oco)]:
-        if 'Indexador' not in df.columns:
-            erros.append(f"Coluna 'Indexador' ausente em {nome}")
-    
-    # Colunas mínimas esperadas
-    cols_env = ['cpfCnpjEnvolvido', 'nomeEnvolvido', 'tipoEnvolvido']
-    cols_com = ['idComunicacao', 'Data_da_operacao', 'CampoA']
-    cols_oco = ['Ocorrencia']
-    
-    for col in cols_env:
-        if col not in df_env.columns:
-            erros.append(f"Coluna '{col}' ausente em Envolvidos")
-    for col in cols_com:
-        if col not in df_com.columns:
-            erros.append(f"Coluna '{col}' ausente em Comunicações")
-    for col in cols_oco:
-        if col not in df_oco.columns:
-            erros.append(f"Coluna '{col}' ausente em Ocorrências")
-    
-    return erros
-```
+A implementação única e autoritativa da carga, validação, filtragem e deduplicação (FASES 1 a 3) é `scripts/processar_rif.py` (ver seção "Processamento dos CSVs"). Regras semânticas que o processamento observa: os CSVs do COAF costumam vir em ISO-8859-1 (latin-1) com separador `;` (tolerar também utf-8/cp1252 e `,`); um arquivo só está corretamente lido quando possui a coluna `Indexador`; colunas mínimas esperadas — `cpfCnpjEnvolvido`, `nomeEnvolvido`, `tipoEnvolvido` em Envolvidos; `idComunicacao`, `Data_da_operacao`, `CampoA` em Comunicações; `Ocorrencia` em Ocorrências. Ausências devem ser reportadas antes de prosseguir.
 
 ### FASE 2 — FILTRAGEM DE INDEXADORES E LIMPEZA DE DADOS
 
@@ -143,24 +86,7 @@ def validar_estrutura(df_env, df_com, df_oco):
 
 #### 2.1 Filtragem de Indexadores Reais
 
-```python
-def filtrar_indexadores_reais(df):
-    """
-    Filtra apenas linhas com Indexadores reais (números inteiros sequenciais).
-    Remove: linhas em branco, hashes, comentários COAF, legendas de campos.
-    """
-    df_clean = df.copy()
-    df_clean['Indexador'] = df_clean['Indexador'].astype(str).str.strip()
-    
-    # Manter apenas indexadores numéricos inteiros
-    mask = df_clean['Indexador'].str.match(r'^\d+$', na=False)
-    
-    removidos = len(df_clean) - mask.sum()
-    df_clean = df_clean[mask].copy()
-    df_clean['Indexador'] = df_clean['Indexador'].astype(int)
-    
-    return df_clean, removidos
-```
+Indexadores reais são exclusivamente valores numéricos inteiros na coluna `Indexador`; tudo o mais é descartado da análise, e a quantidade de linhas removidas deve ser registrada. Implementação em `scripts/processar_rif.py`.
 
 #### 2.2 Elementos a IGNORAR (NÃO são indexadores)
 
@@ -182,28 +108,7 @@ No arquivo **Ocorrências**:
 1. **idComunicacao vazio/nulo NÃO deduplica**: linhas sem id são comunicações distintas — todas ficam. O `drop_duplicates` do pandas trata NaN como iguais entre si e eliminaria comunicações reais silenciosamente.
 2. **Dupla semântica da deduplicação**: deduplicar APENAS em agregações de nível-caso (volume total, ranking de envolvidos, contagem geral). No **detalhamento por RIF** (tabela "comunicações do RIF X", breakdown com "RIF de Origem"), a comunicação compartilhada aparece em CADA RIF de propósito — ela integra ambos os relatórios do COAF. Deduplicar ali esconderia a comunicação de um dos RIFs.
 
-```python
-def deduplicar_comunicacoes(df_com):
-    """
-    Elimina comunicações duplicadas por idComunicacao — usar SOMENTE para
-    agregações de nível-caso (ver dupla semântica acima).
-    Quando múltiplos RIFs referem a mesma comunicação, mantém a mais completa.
-    Linhas com idComunicacao vazio/nulo são únicas por definição: todas ficam.
-    """
-    ids = df_com['idComunicacao'].fillna('').astype(str).str.strip()
-    sem_id = df_com[ids == '']
-    com_id = df_com[ids != ''].copy()
-
-    # Priorizar comunicação com mais dados em informacoesAdicionais
-    com_id['_info_len'] = com_id['informacoesAdicionais'].fillna('').str.len()
-    com_id = com_id.sort_values('_info_len', ascending=False).drop_duplicates(
-        subset=['idComunicacao'], keep='first'
-    ).drop(columns=['_info_len'])
-
-    df_dedup = pd.concat([com_id, sem_id]).sort_index()
-    eliminadas = len(df_com) - len(df_dedup)
-    return df_dedup, eliminadas
-```
+Regra de desempate: quando múltiplos RIFs referem a mesma comunicação (mesmo `idComunicacao`), mantém-se a versão mais completa — a de maior conteúdo em `informacoesAdicionais`. A quantidade de eliminações deve ser registrada. Implementação em `scripts/processar_rif.py`.
 
 ### FASE 4 — ANÁLISE RELACIONAL INTEGRADA
 
@@ -337,7 +242,7 @@ def verificar_alvos(df_env, lista_alvos):
 Ao analisar as movimentações, buscar padrões que indiquem:
 
 **Fase 1 — Colocação (Placement):**
-- Depósitos em espécie acima de R$ 50.000,00
+- Depósitos em espécie acima do limite de comunicação automática da Carta Circular BACEN 4.001/2020 (cinquenta mil reais)
 - Fracionamento (structuring/smurfing): múltiplos depósitos logo abaixo dos limites
 - Depósitos em agências diversas para mesma conta
 - Uso de terceiros para depositar (laranjas)
@@ -425,7 +330,7 @@ def mapear_vinculos(df_env):
 
 O RAF deve ser gerado em formato `.docx` profissional. Para isso:
 
-1. **Ler a skill `/mnt/skills/public/docx/SKILL.md`** antes de gerar o documento
+1. **Acionar a skill docx (ou officecli)** para gerar o .docx
 2. Aplicar formatação profissional com:
    - Sumário/índice
    - Cabeçalhos hierárquicos
@@ -509,41 +414,15 @@ python scripts/processar_rif.py --entrada "<pasta dos CSVs>" --saida resumo.json
 - `--exportar-limpos` grava os três CSVs já limpos, que são a base das FASES 4 a 6.
 - Requer `pandas`. Não havendo na máquina, usar o venv de extração (`~/.claude/tools/docling-venv/Scripts/python.exe`).
 
-Os blocos de código das FASES 1 a 3 documentam a lógica de cada etapa; o script é a implementação autoritativa dela. Divergindo os dois, o script vale.
+O script é a implementação autoritativa das FASES 1 a 3; as regras semânticas descritas naquelas fases resumem sua lógica. Divergindo os dois, o script vale.
 
 ## Mensagem Inicial ao Usuário
 
-Ao iniciar uma análise RIF, Claude deve se apresentar com:
-
----
-
-**Olá! Sou seu assistente especializado em análise de dados financeiros (RIF/COAF).**
-
-Estou pronto para processar os dados do Relatório de Inteligência Financeira. Para uma análise completa, preciso:
-
-📋 **Arquivos necessários (3 CSVs):**
-- RIF_[Nº]_Envolvidos.csv
-- RIF_[Nº]_Comunicacoes.csv
-- RIF_[Nº]_Ocorrencias.csv
-
-📝 **Informações do procedimento:**
-- Número do IP/PCNET
-- Nomes e CPFs/CNPJs dos alvos da investigação
-- Unidade policial e autoridade solicitante
-
-🔍 **Processamento garantido:**
-✅ Validação prévia obrigatória
-✅ Filtragem de indexadores reais
-✅ Eliminação de repetições por idComunicacao
-✅ Análise relacional cruzada por Indexador
-✅ Identificação de tipologias de lavagem (CC 4.001/2020)
-✅ Relatório técnico RAF padronizado em .docx
-
----
+Antes de processar, confirmar com o usuário quais CSVs foram entregues e os dados do procedimento (ver FASE 0), em mensagem direta, sem checklists nem emojis.
 
 ## Notas Finais
 
-- O RAF deve ser gerado usando a skill docx (`/mnt/skills/public/docx/SKILL.md`)
+- O RAF deve ser gerado acionando a skill docx (ou officecli)
 - Sempre formatar o documento como SIGILOSO
 - Manter rastreabilidade total entre dados brutos e análises
 - Todas as conclusões devem ser fundamentadas nos dados dos CSVs

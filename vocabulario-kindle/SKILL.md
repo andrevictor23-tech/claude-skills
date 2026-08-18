@@ -1,6 +1,6 @@
 ---
 name: vocabulario-kindle
-description: Transforma o Vocabulary Builder do Kindle (vocab.db) em baralho Anki de inglês com repetição espaçada, recall ativo e frases reais dos livros lidos. Use SEMPRE que o usuário pedir para atualizar o vocabulário do Kindle, "atualiza meu vocabulário", "novas palavras do Kindle", "gera o baralho de inglês", "anki do kindle", mencionar vocab.db, Vocabulary Builder, palavras que consultou no Kindle, ou pedir flashcards/cartões de inglês a partir das leituras. Ative também quando o usuário plugar o Kindle e pedir para puxar as palavras novas.
+description: Transforma o Vocabulary Builder do Kindle (vocab.db) em baralho Anki de inglês. Use quando o usuário pedir para atualizar o vocabulário ou puxar as palavras novas do Kindle, flashcards de inglês das leituras, ou mencionar vocab.db.
 ---
 
 # Vocabulário do Kindle → Anki (inglês)

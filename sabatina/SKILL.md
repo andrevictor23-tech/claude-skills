@@ -1,6 +1,6 @@
 ---
 name: sabatina
-description: Sabatina relentless — entrevista o usuário pergunta por pergunta até haver entendimento compartilhado sobre um plano, peça, decisão ou funcionalidade, antes de produzir qualquer coisa. Use quando o usuário pedir para ser sabatinado ("me sabatina", "grill me", "me faz as perguntas", "estressa esse plano", "quero pensar melhor nisso"), ANTES de redigir peça jurídica complexa (representação cautelar, relatório final de IP, despacho difícil) ou implementar funcionalidade não trivial, e sempre que a ideia chegar crua, ambígua ou com decisões em aberto. Detecta sozinha se o assunto é jurídico/investigativo ou técnico e adapta as perguntas. Não use quando o pedido já está completo e sem ambiguidade, nem para tarefa mecânica de execução direta.
+description: Sabatina relentless que entrevista o usuário pergunta por pergunta até haver entendimento compartilhado sobre um plano, peça, decisão ou funcionalidade, antes de produzir qualquer coisa. Use quando ele pedir "me sabatina", "estressa esse plano", "quero pensar melhor nisso", e ANTES de redigir peça jurídica complexa ou implementar funcionalidade não trivial que chegue ambígua ou com decisões em aberto. Arguição de conteúdo de estudo é da prova-oral.
 ---
 
 # Sabatina
@@ -104,7 +104,3 @@ Antes de perguntar sobre estrutura de código, **leia o código**. Perguntas té
 - **Adiantar a execução.** Escrever a peça ou o código "enquanto conversa" mata o propósito da sabatina.
 - **Encerrar sozinho.** Só o usuário declara que houve entendimento compartilhado.
 - **Concordar para agradar.** Premissa frágil não confrontada vira erro caro depois.
-
-## Origem
-
-Adaptado do `/grilling` de Matt Pocock ([mattpocock/skills](https://github.com/mattpocock/skills), MIT), que por sua vez se apoia na ideia de *design tree* de Frederick Brooks (*The Design of Design*). Reescrito para o contexto de trabalho do usuário, com os modos jurídico e técnico.

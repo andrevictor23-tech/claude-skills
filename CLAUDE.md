@@ -11,7 +11,7 @@ Biblioteca pessoal de skills de Claude Code do André (Delegado de Polícia Civi
 - Cada skill é uma pasta na raiz com um `SKILL.md` (obrigatório, com frontmatter YAML `name` + `description`).
 - Pastas auxiliares opcionais por skill: `references/` (material que o Claude lê sob demanda), `scripts/` (Python/PowerShell), `templates/`, `assets/`, `evals/`.
 - Skills autorais têm um `README.md` com guia de uso (o que faz, quando usar, exemplos de prompt, requisitos, avisos). Ao criar ou alterar uma skill autoral, mantenha o `README.md` dela em dia.
-- Skills de terceiros (`canvas-design`, `doc-coauthoring`, `find-skills`, `internal-comms`, `notebooklm`, `prompt-master`, `skill-creator`): não altere o conteúdo além do mínimo necessário e preserve `LICENSE`/`LICENSE.txt` e créditos.
+- Skills de terceiros (`find-skills`, `notebooklm`, `prompt-master`, `skill-creator`): não altere o conteúdo além do mínimo necessário e preserve `LICENSE`/`LICENSE.txt` e créditos.
 
 ## Convenções
 

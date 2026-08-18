@@ -1,6 +1,6 @@
 ---
 name: guia-cartorio
-description: Produz o GUIA DE ESTUDOS PARA CONCURSO DE CARTÓRIO com os assuntos novos mais relevantes publicados na última semana, varrendo Kollemata, Migalhas Notariais e Registrais, IBDFAM, CNJ, Anoreg/BR, Colégio Notarial do Brasil, STJ e Boletim KollGEN do IRIB. Use SEMPRE que o usuário pedir "guia da semana", "novidades do cartório", "o que saiu de novo", "boletim registral", "atualização notarial e registral", "guia de estudos cartório", ou quando a rotina agendada de 3 em 3 dias disparar. Gera markdown datado e EPUB para Kindle, com destaques comentados, 5 questões de fixação e mapa de estudo dirigido.
+description: Produz o guia semanal de estudos para concurso de cartório com as novidades notariais e registrais dos últimos 7 dias. Use ao pedir "guia da semana", "novidades do cartório" ou "boletim registral", ou quando a rotina agendada disparar.
 ---
 
 # Guia de Estudos — Concurso de Cartório

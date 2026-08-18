@@ -1,6 +1,6 @@
 ---
 name: sync-skills
-description: Sincroniza as skills do Claude entre as máquinas do usuário via git (repo andrevictor23-tech/claude-skills em ~/.claude/skills). Use SEMPRE que o usuário pedir para sincronizar, atualizar, puxar ou enviar skills entre computadores, mencionar "git pull das skills", "sync das skills", "atualiza minhas skills", "manda pro git", "as skills estão atualizadas?", ou quando ele digitar comandos git relacionados a ~/.claude/skills no chat. Também use ao final de qualquer sessão em que skills foram criadas ou editadas, para oferecer o envio das mudanças às outras máquinas.
+description: Sincroniza as skills do Claude entre as máquinas do usuário via git. Use quando pedir sync, pull ou push das skills, quando digitar comandos git sobre ~/.claude/skills, e ao final de sessão em que skills foram criadas ou editadas, para oferecer o envio às outras máquinas.
 ---
 
 # Sync de skills entre máquinas
@@ -11,13 +11,13 @@ O script também sincroniza um segundo repo: `~/Documents/DELEGACIA`, clone de `
 
 Um terceiro repo também é sincronizado: `~/.claude/skills/osint-investigacao`, clone de `https://github.com/andrevictor23-tech/osint-investigacao.git`. Ele mora **dentro** de `~/.claude/skills` para o Claude enxergar a skill; o `.gitignore` do `claude-skills` exclui essa pasta, então o `git add -A` do primeiro repo não a engole. Mesmo comportamento de clone automático caso não exista na máquina.
 
-E um quarto: `~/.claude/scheduled-tasks`, clone de `https://github.com/andrevictor23-tech/claude-briefings.git` (**privado**, desde 30/07/2026) — as cinco rotinas de briefing agendado. O clone é o próprio local de execução, não uma cópia: é de lá que o Claude Code lê as tarefas. É privado por necessidade, não por preferência: somados, os briefings descrevem nome, cargo, comarca, e-mail, rotina de treino, carteira e concursos do usuário. Cargo e comarca de autoridade policial em repo público é risco de segurança pessoal. **Nunca torne esse repo público.**
+E um quarto: `~/.claude/scheduled-tasks`, clone de `https://github.com/andrevictor23-tech/claude-briefings.git` (**privado**) — as cinco rotinas de briefing agendado. O clone é o próprio local de execução, não uma cópia: é de lá que o Claude Code lê as tarefas. É privado por necessidade, não por preferência: somados, os briefings descrevem nome, cargo, comarca, e-mail, rotina de treino, carteira e concursos do usuário. Cargo e comarca de autoridade policial em repo público é risco de segurança pessoal. **Nunca torne esse repo público.**
 
-**Atenção: `claude-skills` é público.** Nada de sigiloso pode entrar nele. Em particular, o acervo da skill `representacao-cautelar` (modelos reais, catálogo e léxico) vive **apenas** no repo privado, em `MODELOS-REPRESENTACAO/`.
+O acervo da skill `representacao-cautelar` (modelos reais, catálogo e léxico) vive **apenas** no repo privado, em `MODELOS-REPRESENTACAO/` — nunca no `claude-skills`, que é público (ver Regras).
 
 ## Depois de clonar numa máquina nova
 
-O sync traz os quatro repos, mas o acervo da `representacao-cautelar` precisa ser espelhado para dentro da skill, pois lá os caminhos são ignorados pelo git. **Confira se o espelho existe mesmo numa máquina já configurada** — em 31/07/2026 uma delas tinha só o `LEIA-ME.md` em `assets/modelos/`, sem catálogo nem léxico, e a skill teria rodado sem base:
+O sync traz os quatro repos, mas o acervo da `representacao-cautelar` precisa ser espelhado para dentro da skill, pois lá os caminhos são ignorados pelo git. **Confira se o espelho existe mesmo numa máquina já configurada** — não basta haver o `LEIA-ME.md` em `assets/modelos/`: sem catálogo e léxico a skill roda sem base:
 
 ```powershell
 $src = "$env:USERPROFILE\Documents\DELEGACIA\MODELOS-REPRESENTACAO"
@@ -34,7 +34,7 @@ Se o usuário editar modelos na skill, copie-os de volta para `MODELOS-REPRESENT
 
 Mesmo esquema, mesma razão: `references/estado-carteira.md` reúne posições, metas,
 saldo e watchlist de tickers do André junto com nome, cargo e comarca. Não pode ir
-para o `claude-skills`, que é público (está no `.gitignore` da skill desde 21/07/2026).
+para o `claude-skills`, que é público (está no `.gitignore` da skill).
 Fonte de verdade: `~/Documents/DELEGACIA/PESSOAL/estado-carteira.md`.
 
 ```powershell
@@ -45,6 +45,14 @@ Copy-Item $src $dst -Force
 
 Se o usuário atualizar o estado da carteira pela skill (revisão de tese,
 rebalanceamento, nova prioridade), copie de volta para `PESSOAL/` antes de sincronizar.
+
+### Perfil do digesto (skill `digesto`)
+
+Mesmo esquema: `referencia/perfil.md` descreve cargo e comarca e está no
+`.gitignore` da skill. Fonte de verdade:
+`~/Documents/DELEGACIA/PESSOAL/digesto-perfil.md`. Numa máquina nova, copiar para
+`~/.claude/skills/digesto/referencia/perfil.md`. O e-mail do Kindle fica na
+variável `KINDLE_EMAIL` do `~/.claude/.env` local.
 
 ### CLAUDE.md global (regras pessoais)
 
@@ -85,22 +93,18 @@ O script copia o `extrair.py` para `~/.claude/tools/`, cria o venv e instala o D
 
 ## Sync automático na abertura (hook SessionStart)
 
-Desde 07/08/2026 o `~/.claude/settings.json` tem um hook `SessionStart` que chama
-`scripts/auto-sync.ps1` em background (`asyncRewake`), sem atrasar a abertura:
-
-```json
-{ "type": "command", "command": "powershell.exe",
-  "args": ["-NoProfile", "-File", "C:/Users/<usuario>/.claude/skills/sync-skills/scripts/auto-sync.ps1"],
-  "asyncRewake": true, "timeout": 300 }
-```
+O `~/.claude/settings.json` tem um hook `SessionStart` que chama
+`scripts/auto-sync.ps1` em background (`asyncRewake`), sem atrasar a abertura.
+A definição vigente do hook está no próprio `~/.claude/settings.json` de cada
+máquina — consulte lá, não copie daqui.
 
 `shell: "powershell"` **não** serve: aponta para o `pwsh` (PowerShell 7), ausente
 nas máquinas do usuário. Daí a invocação direta do `powershell.exe` via `args`.
 Numa máquina nova, ajustar o caminho absoluto ao nome de usuário local.
 
 O automático **só recebe** — roda `sync.ps1 -PullOnly`. Enviar continua ato
-deliberado (invocar esta skill), porque o `claude-skills` é público e o portão de
-auditoria não lê prosa: publicar sem olhos humanos é risco que não compensa.
+deliberado (invocar esta skill): o portão de auditoria não lê prosa, e publicar
+sem olhos humanos é risco que não compensa.
 Três garantias do modo `-PullOnly`:
 
 1. Não commita e não empurra, em nenhum dos quatro repos.

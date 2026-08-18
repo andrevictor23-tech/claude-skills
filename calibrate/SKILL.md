@@ -2,7 +2,7 @@
 name: calibrate
 version: 1.0
 updated: 2026-04-14
-description: In-session self-improvement. Reviews the current conversation for corrections, preferences, and patterns, then suggests specific skill/setup updates. Triggers on "calibrate", "what can you improve", "update your skills", "what did we learn", "tune up".
+description: In-session self-improvement. Reviews the current conversation for corrections and preferences, then suggests specific skill/setup updates. Triggers on "calibrate", "tune up", "what did we learn" at end of session.
 ---
 
 # Calibrate: In-Session Self-Improvement
@@ -37,7 +37,6 @@ For each finding, identify WHERE the fix belongs:
 - **CLAUDE.md** — if the issue is about general agent behavior or rules
 - **Memory** — if it's a preference or context that should persist across sessions
 - **Workflow/cron** — if it's about when or how automated tasks run
-- **SOUL.md / persona file** — if it's about tone or writing style (rare, check with the user)
 
 ### Step 3: Present Suggestions
 
@@ -76,13 +75,8 @@ Then:
 3. If updating a skill, re-read it after editing to verify it's coherent
 4. If updating memory, follow the memory system rules (write file + update MEMORY.md index)
 
-### Step 5: Done
-
-No follow-up needed. Changes are live for the next time the skill/rule is invoked.
-
 ## What NOT to Suggest
 
 - Changes that are already in the relevant skill or CLAUDE.md (check first)
 - Generic "best practices" not grounded in this session's data
 - Temporary fixes for one-off situations
-- Changes to other agents' files unless this agent has write access

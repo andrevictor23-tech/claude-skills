@@ -1,6 +1,6 @@
 ---
 name: generate
-description: Gera imagens (e futuramente vídeos) via API de modelos de IA do Google — Gemini / Nano Banana para imagem e Veo para vídeo — pela rota Vertex AI, consumindo o crédito do Google Cloud. Gatilhos - /generate, gera imagem, gerar imagem, criar imagem, imagem de anúncio, imagem do produto, foto do kit, thumbnail, infográfico do anúncio, gerar vídeo, animar imagem, nano banana, veo, vertex, imagem pelo Gemini, usar o crédito do Google.
+description: Gera imagens e vídeos com modelos do Google via Vertex AI (Nano Banana para imagem, Veo para vídeo). Use quando o usuário pedir para gerar ou criar imagem (anúncio, produto, thumbnail, infográfico), gerar ou animar vídeo, ou mencionar /generate, nano banana, veo ou vertex.
 ---
 
 # /generate
@@ -44,7 +44,7 @@ Todas com o mesmo sintoma enganoso — parecem bloqueio, cota ou modelo errado, 
 2. **`ConvertTo-Json` sobre string longa não devolve string.** Acima de ~1 KB ele retorna o objeto `{"value": "...", "Count": ...}`. O Vertex responde `400 Invalid value at 'contents[0].parts[0]' (text), Starting an object on a scalar field` — que parece prompt malformado, mas é o serializador. Prompt longo exige escape manual (função `ConvertTo-JsonString` no script).
 3. **`Invoke-RestMethod` também sufoca na resposta**, que traz a imagem em base64. Usar `curl.exe` (nativo no Windows 10+) gravando direto em arquivo e extrair `mimeType`/`data` por regex, sem materializar o objeto.
 
-Somam-se às duas já conhecidas: `Expect100Continue = $false` antes da chamada (senão `417`, com a página "Sorry..." do Google) e `"role": "user"` obrigatório em cada item de `contents` no Vertex.
+Somam-se às duas armadilhas do Vertex já descritas em "Provedores e rotas" (`Expect100Continue` e `"role": "user"`).
 
 ## Chave de API
 
@@ -62,7 +62,7 @@ Somam-se às duas já conhecidas: `Expect100Continue = $false` antes da chamada 
 
 ```json
 {
-  "model": "gemini-2.5-flash-image",
+  "model": "gemini-3.1-flash-lite-image",
   "prompt": "o prompt completo enviado à API",
   "refs": ["refs/talheres-catalogo.jpg"],
   "params": { "aspect": "1:1" },

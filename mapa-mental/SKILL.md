@@ -1,50 +1,11 @@
 ---
 name: mapa-mental
-description: Gera mapas mentais visuais interativos em HTML/SVG para estudo e revisão de conteúdos jurídicos e de concursos públicos. Use SEMPRE que o usuário pedir para criar, fazer, gerar, montar ou desenhar um mapa mental, mind map, diagrama de estudo, esquema visual, resumo visual ou mapa conceitual — seja sobre qualquer tema (Direito, legislação, doutrina, jurisprudência, matérias de concurso, planejamento, organização de ideias). Também use quando o usuário mencionar "mapear", "visualizar conteúdo", "esquematizar", "resumo em mapa", "mapa de revisão", ou qualquer variação. Funciona com texto livre, artigos de lei, tópicos de edital, anotações de aula, ou qualquer conteúdo que precise ser organizado visualmente. Entrega arquivo HTML interativo com zoom, pan, cores, ícones e estrutura radial fiel à metodologia Buzan.
+description: Gera mapa mental interativo em HTML/SVG a partir de qualquer conteúdo (tema jurídico, artigo de lei, tópico de edital ou texto colado). Use quando o usuário pedir mapa mental, mapa conceitual, esquema ou resumo visual, inclusive "mapa dos meus erros" a partir da wiki de estudos.
 ---
 
 # Skill: Mapa Mental para Concursos
 
-Gera mapas mentais visuais, interativos e cientificamente fundamentados para estudo e revisão de conteúdos de concursos públicos e áreas jurídicas.
-
-## Fundamentação Metodológica
-
-Esta skill segue os princípios consolidados pelos maiores expoentes em mapas mentais e técnicas de estudo para concursos:
-
-### Tony Buzan — O Criador (Regras Canônicas)
-1. **Imagem Central**: Sempre iniciar com uma imagem/ícone + título no centro
-2. **Pensamento Radiante**: Ramos irradiam do centro para fora (nunca linear)
-3. **Palavra-chave Única**: Cada ramo contém UMA palavra-chave (máximo duas)
-4. **Linhas Curvas**: Ramos orgânicos e curvos (nunca retos — curvas criam conexões mais fortes)
-5. **Cores**: Mínimo 3, ideal 5-7 cores distintas — uma cor por ramo principal
-6. **Imagens/Ícones**: Usar em todo o mapa — imagens são processadas 60.000x mais rápido que texto
-7. **Hierarquia Visual**: Linhas mais grossas perto do centro, afinando nas extremidades
-8. **Perspectiva e Variação**: Variar tamanho de fontes para transmitir hierarquia
-9. **Espaço Organizado**: Layout limpo com espaço entre ramos
-
-### Fernando Mesquita — Mapas para Concursos (Ciclo EARA)
-1. **Desenhos são 50% da retenção** — mesmo rústicos, devem ser feitos
-2. **Mapas como ferramenta PRINCIPAL de revisão** (não secundária)
-3. **Quanto mais você domina o assunto, menor o mapa fica** — síntese progressiva
-4. **Folha paisagem** (horizontal) para máximo aproveitamento do espaço
-5. **Integração com ciclo de revisão espaçada** — o mapa é revisado periodicamente
-6. **Não confundir esquema com mapa mental** — esquemas são lineares, mapas são radiais
-
-### William Douglas & Felipe Lima — Memorização e Mapas (Projeto GENIUS)
-1. **Engrenagem de 3 rodas**: Aprendizagem → Mapa Mental → Revisão Cíclica
-2. **Associações absurdas/divertidas** fixam melhor que associações lógicas
-3. **Consultar fontes ao fazer o mapa** (livros, apostilas) — não fazer só de memória
-4. **Revisão sistemática** dos mapas para manutenção da memória de longo prazo
-5. **Cores, formas e estórias** mesmo absurdas produzem resultados eficazes
-6. **Na véspera da prova**: revisar apenas pelos mapas mentais e esquemas
-
-### Alexandre Meirelles — Ciclo de Estudo e Revisão
-1. **Um só livro por disciplina** — e o mapa reflete esse material
-2. **Memória visual da posição** — lembrar onde o assunto estava na página/mapa
-3. **Revisão periódica obrigatória** — mapas são inúteis sem revisão
-4. **Exercícios + Mapas** = combinação ótima para fixação
-
----
+Gera mapas mentais visuais e interativos para estudo e revisão de conteúdos de concursos públicos e áreas jurídicas.
 
 ## Regras de Produção do Mapa Mental
 
@@ -92,8 +53,8 @@ O usuário pode solicitar paleta personalizada. Se o tema não for jurídico, ad
 2. **NUNCA frases completas** nos ramos
 3. **Artigos de lei**: representar como "Art. 5º, CF" (forma abreviada)
 4. **Prazos**: sempre em destaque com ícone ⏰
-5. **Fonte maior no centro**, diminuindo progressivamente nos sub-ramos
-6. **Negrito** nas palavras-chave dos ramos de nível 1
+5. **Negrito** nas palavras-chave dos ramos de nível 1
+6. **Tamanhos de fonte**: seguir a hierarquia definida em "Detalhes Técnicos do HTML" (seção "Fontes")
 
 ---
 
@@ -130,35 +91,10 @@ Se o usuário pedir "mapa mental em texto", "mapa simples" ou "mapa no chat":
 
 ## Fluxo de Trabalho
 
-> Esta seção resume o processo passo a passo. Os detalhes de fundamentação (acima) e de formato/técnica (abaixo) são consultados dentro de cada passo conforme indicado.
-
-### Passo 1: Receber o Input
-O input pode ser:
-- **Tema livre**: "Faça um mapa mental de Direito Penal - Crimes contra a pessoa"
-- **Artigos de lei**: "Mapa mental do Art. 5º da CF"
-- **Tópico de edital**: "Mapa mental: Poder de Polícia"
-- **Conteúdo colado**: Texto longo que precisa ser sintetizado em mapa
-
-### Passo 2: Analisar e Estruturar
-1. Identificar o tema central
-2. Extrair 3-8 ramos principais (categorias/tópicos)
-3. Para cada ramo, extrair sub-ramos (2-5 por ramo)
-4. Para cada sub-ramo, extrair detalhes terminais (1-4)
-5. Selecionar ícones/emojis apropriados
-6. Atribuir cores seguindo a paleta
-
-### Passo 3: Gerar o Mapa
-- Construir o HTML/SVG com a estrutura mapeada
-- Aplicar layout radial com algoritmo de distribuição angular
-- Renderizar curvas de Bézier para ramos
-- Posicionar textos ao longo dos ramos
-- Adicionar interatividade (zoom, pan, collapse)
-
-### Passo 4: Entregar
-- Salvar o arquivo HTML conforme a convenção de saída (ver "Formato de Saída")
-- Informar o caminho completo do arquivo como link clicável e sugerir abrir no navegador
-- No contexto de estudo, linkar o mapa na nota da disciplina da wiki
-- Oferecer versão em texto no chat se solicitado
+1. **Receber o input**: tema livre, artigo de lei, tópico de edital ou conteúdo colado a sintetizar.
+2. **Analisar e estruturar**: identificar o tema central e extrair ramos, sub-ramos, ícones e cores conforme "Regras de Produção do Mapa Mental".
+3. **Gerar o mapa**: construir o HTML/SVG conforme "Formato de Saída" e "Detalhes Técnicos do HTML" (ler antes `references/template-tecnico.md`).
+4. **Entregar**: salvar conforme a convenção de "Formato de Saída", informar o caminho completo como link clicável e, no contexto de estudo, linkar o mapa na nota da disciplina da wiki. Versão em texto no chat só se solicitada.
 
 ---
 
@@ -180,7 +116,7 @@ Esse arquivo contém o template HTML completo com:
 3. **Comprimento do ramo** proporcional à importância (ramos principais mais longos)
 4. **Curvas suaves**: usar `quadraticCurveTo` ou curvas de Bézier cúbicas
 5. **Sem sobreposição**: algoritmo de detecção de colisão para textos
-6. **Cores em gradiente**: do saturado (perto do centro) ao suave (nas pontas)
+6. **Cores**: seguir o "Sistema de Cores" das Regras de Produção (saturado perto do centro, tom mais claro nas pontas)
 
 ### Fontes
 - Centro: `'Segoe UI', system-ui, sans-serif` — 22-28px, bold
@@ -225,26 +161,9 @@ Ative quando o usuário pedir "mapa dos meus erros", "mapa do que eu confundo", 
 
 ---
 
-## Exemplos de Uso
-
-**Usuário**: "Mapa mental do crime de feminicídio"
-→ Centro: ⚖️ FEMINICÍDIO (Art. 121-A CP)
-→ Ramos: Conceito | Sujeitos | Qualificadoras | Pena (20-40a) | Causas de Aumento | Ação Penal | Lei 14.994/2024
-
-**Usuário**: "Mapa mental: Poder de Polícia"
-→ Centro: 🏛️ PODER DE POLÍCIA
-→ Ramos: Conceito (Art. 78 CTN) | Atributos (DAC) | Espécies | Limites | Meios de Atuação | Delegação | Prescrição
-
-**Usuário**: "Mapa mental do Art. 5º, CF - primeiros 10 incisos"
-→ Centro: 🛡️ ART. 5º CF - DIREITOS FUNDAMENTAIS
-→ Ramos organizados por inciso com palavras-chave
-
----
-
 ## Notas Importantes
 
 1. **Nunca inventar conteúdo jurídico** — se incerto sobre um ponto de direito, sinalizar explicitamente
 2. **Manter fidelidade à lei vigente** — aplicar atualizações legislativas (ex: Lei 14.994/2024)
 3. **Priorizar concisão** — o mapa é para REVISÃO, não para estudo primário
 4. **O mapa deve caber em uma tela** — se o conteúdo for muito extenso, sugerir divisão em sub-mapas
-5. **Sempre oferecer personalização** — perguntar se o usuário quer ajustar cores, ramos ou profundidade

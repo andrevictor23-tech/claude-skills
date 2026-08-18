@@ -1,6 +1,6 @@
 ---
 name: anki
-description: Transforma os erros comprovados dos estudos (exports de quiz em quiz-data/*-resultado.json + wiki/revisao/erros.md) em baralho Anki incremental com repetição espaçada, um subbaralho por disciplina. Use SEMPRE que o usuário pedir "gera meus flashcards", "manda os erros pro Anki", "cartões do Anki", "ankifica isso", "baralho de revisão", "flashcards do simulado", "quero revisar meus erros no Anki", ou mencionar Anki, .apkg, repetição espaçada e cartões de estudo para concurso. Ative também depois de um quiz ruim, quando o usuário perguntar como fixar o que errou. Não use para o vocabulário de inglês do Kindle (skill vocabulario-kindle) nem para responder questões (simulado-quiz/treino-wiki).
+description: Gera baralho Anki (.apkg) para concurso a partir dos erros comprovados nos quizzes e no caderno de erros. Use quando o usuário pedir flashcards ou cartões dos erros, mencionar Anki ou .apkg, ou perguntar como fixar o que errou depois de um quiz ruim. Vocabulário de inglês do Kindle é da skill vocabulario-kindle.
 ---
 
 # Erros → Anki (concurso)

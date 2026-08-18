@@ -1,6 +1,6 @@
 ---
 name: escrita-para-agentes
-description: Referência de escrita de documentos consumidos por agente — SKILL.md (principalmente o campo description), CLAUDE.md, AGENTS.md e arquivos de memória. Use ao criar ou revisar qualquer um desses, quando uma skill dispara errado ou deixa de disparar, quando as descriptions estão inchadas ("poda as skills", "revisa as descriptions"), ou antes de acrescentar regra nova ao CLAUDE.md. Complementa a skill-creator, que cuida da mecânica (pastas, frontmatter, empacotamento, evals) — aqui é a qualidade da escrita em si.
+description: Referência de escrita de documentos consumidos por agente (SKILL.md, CLAUDE.md, AGENTS.md e memória). Use ao criar ou revisar qualquer um deles, quando uma skill dispara errado ou deixa de disparar, ao podar descriptions inchadas, ou antes de regra nova no CLAUDE.md. A mecânica de skills (pastas, evals, empacotamento) é da skill-creator.
 ---
 
 # Escrita para agentes

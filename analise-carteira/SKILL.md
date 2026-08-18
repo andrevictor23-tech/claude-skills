@@ -1,20 +1,11 @@
 ---
 name: analise-carteira
-description: Análise de carteira de investimentos na filosofia Bastter + Canal do Holder + Fundamentei, em regime de buy and hold. Use ao colar posições do Bastter System (PDF, texto ou planilha com ativos e percentuais) ou ao perguntar onde aportar no mês, se deve vender um ativo, como está o balanceamento ou a saúde do patrimônio — inclusive em pedido curto ("analisa minha carteira", "onde aporto", "meus investimentos"). Cobre ações brasileiras, FIIs, Tesouro Direto, stocks, REITs e ETFs.
+description: Analisa carteira de investimentos em regime buy and hold (filosofia Bastter). Use ao colar posições do Bastter System (PDF, texto ou planilha) ou ao perguntar onde aportar, se deve vender um ativo ou como está o balanceamento, inclusive em pedido curto ("analisa minha carteira", "onde aporto").
 ---
 
 # Análise de Carteira de Investimentos
 
 Skill para análise de carteira seguindo a filosofia Bastter + Canal do Holder + Fundamentei, com foco em acumulação de patrimônio de longo prazo e possibilidade de meta financeira definida (ex: compra de imóvel).
-
-## When to Use
-
-Ative esta skill sempre que o usuário:
-- Mencionar Bastter System, carteira de investimentos, análise de portfólio, balanceamento, aporte mensal, diversificação, renda variável/fixa, FIIs, Stocks, REITs, buy and hold ou análise fundamentalista;
-- Colar dados do Bastter System (PDF, texto, planilha, print de tela);
-- Perguntar onde aportar, se deve vender um ativo, ou como está a saúde/o patrimônio da carteira — mesmo em frases curtas como "analisa minha carteira" ou "o que comprar esse mês".
-
-Aplica-se a carteiras com ações brasileiras, FIIs, Tesouro Direto, Stocks, REITs e ETFs.
 
 ## Disclaimers Obrigatórios
 
@@ -69,36 +60,7 @@ Pergunte ao usuário apenas o essencial que falta. NÃO bloqueie a análise por 
 
 ## 2. FILOSOFIA APLICADA
 
-Antes de analisar, leia o arquivo `references/filosofia.md` para os princípios detalhados e `references/estado-carteira.md` para as prioridades, watchlist de teses em revisão e regras de filtragem ATUAIS do André (mantenha esse arquivo atualizado quando o usuário informar mudança de tese, rebalanceamento ou nova prioridade).
-
-### Resumo Executivo das 3 Filosofias
-
-**BASTTER (Base Filosófica Principal)**
-- Patrimônio se ACUMULA, não se gira
-- Bases: Aporte + Tempo + Valor + Diversificação
-- Venda é ÚLTIMO recurso — só quando empresa perde valor fundamentalmente
-- Balanceamento por NOVOS APORTES, nunca vendendo para rebalancear
-- Foque no trabalho que gera renda para investir
-- Reserva de Emergência é sagrada (poupança)
-- Renda Fixa = colchão de estabilidade (Tesouro IPCA+ mais longo)
-- 20-30 ações diversificadas em setores diferentes
-- NÃO acompanhe cotações obsessivamente
-
-**FÁBIO HOLDER / CANAL DO HOLDER (Critérios de Seleção)**
-- 3 Pilares: Governança Corporativa + Fundamentos + Vantagens Competitivas
-- Análise SWOT das empresas
-- Novo Mercado preferencial (governança)
-- Buy and Hold com consistência nos aportes mensais
-- FIIs como complemento importante da carteira
-- Investimento no exterior (Stocks/REITs) direto, não BDRs
-
-**EDUARDO CAVALCANTI / FUNDAMENTEI (Análise Fundamentalista)**
-- Foco em indicadores: P/L, P/VPA, P/EBITDA, P/FCL, DY, ROE, ROIC
-- Análise de DRE, DFC e Balanço Patrimonial
-- Atratividade do negócio, crescimento, rentabilidade, geração de caixa
-- Diversificação é a melhor amiga do investidor
-- Reequilibrar com aportes mensais, não vendendo
-- Ranking de ativos por qualidade fundamentalista
+Antes de analisar, leia o arquivo `references/filosofia.md` para os princípios detalhados das 3 filosofias (Bastter, Fábio Holder/Canal do Holder, Eduardo Cavalcanti/Fundamentei) e `references/estado-carteira.md` para as prioridades, watchlist de teses em revisão e regras de filtragem ATUAIS do André (mantenha esse arquivo atualizado quando o usuário informar mudança de tese, rebalanceamento ou nova prioridade).
 
 ---
 
@@ -109,13 +71,13 @@ Antes de analisar, leia o arquivo `references/filosofia.md` para os princípios 
 Apresentar em formato visual claro:
 
 ```
-📊 VISÃO GERAL DO PATRIMÔNIO
-├── 💰 Patrimônio Total Estimado: R$ XXX.XXX
-├── 🏦 Renda Fixa: XX% (alvo: XX%)
-├── 📈 Ações BR: XX% (alvo: XX%)
-├── 🏢 FIIs: XX% (alvo: XX%)
-├── 🌍 Exterior: XX% (alvo: XX%)
-└── 🆘 Reserva de Emergência: R$ XXX
+VISÃO GERAL DO PATRIMÔNIO
+├── Patrimônio Total Estimado: R$ XXX.XXX
+├── Renda Fixa: XX% (alvo: XX%)
+├── Ações BR: XX% (alvo: XX%)
+├── FIIs: XX% (alvo: XX%)
+├── Exterior: XX% (alvo: XX%)
+└── Reserva de Emergência: R$ XXX
 ```
 
 ### 3.2 Análise de Balanceamento (Estilo Bastter System)
@@ -125,10 +87,10 @@ Para CADA CLASSE de ativos, verificar:
 - **Qual classe está mais "para trás"** → essa recebe o próximo aporte
 - **Dentro de cada classe**, qual ativo está mais abaixo do alvo → esse recebe o aporte
 
-Usar código de cores:
-- 🟢 **No alvo** (diferença < 2%)
-- 🟡 **Levemente abaixo** (2-5% abaixo do alvo)
-- 🔴 **Muito abaixo** (>5% abaixo do alvo) → PRIORIDADE de aporte
+Classificar cada classe/ativo:
+- **No alvo** (diferença < 2%)
+- **Levemente abaixo** (2-5% abaixo do alvo)
+- **Muito abaixo** (>5% abaixo do alvo) → PRIORIDADE de aporte
 
 ### 3.3 Análise Individual de Ativos
 
@@ -163,10 +125,10 @@ Para cada ativo da carteira, buscar dados atuais via `WebSearch` e classificar:
 
 | Classificação | Significado | Ação |
 |:---:|:---:|:---:|
-| ✅ **COMPRAR** | Empresa mantém valor, fundamentos sólidos | Continuar aportando normalmente |
-| ⏸️ **MANTER** | Fundamentos ok mas com pontos de atenção | Não aportar mais, manter posição |
-| ⚠️ **OBSERVAR** | Fundamentos deteriorando | Parar aportes, acompanhar próximos balanços |
-| 🔴 **CONSIDERAR SAÍDA** | Perda fundamental de valor | Avaliar venda gradual (ÚLTIMO RECURSO) |
+| **COMPRAR** | Empresa mantém valor, fundamentos sólidos | Continuar aportando normalmente |
+| **MANTER** | Fundamentos ok mas com pontos de atenção | Não aportar mais, manter posição |
+| **OBSERVAR** | Fundamentos deteriorando | Parar aportes, acompanhar próximos balanços |
+| **CONSIDERAR SAÍDA** | Perda fundamental de valor | Avaliar venda gradual (ÚLTIMO RECURSO) |
 
 **REGRA DE OURO**: Venda APENAS se a empresa perdeu valor fundamental de forma irreversível. NUNCA venda por:
 - Queda de preço/cotação
@@ -180,7 +142,7 @@ Para cada ativo da carteira, buscar dados atuais via `WebSearch` e classificar:
 Com base no balanceamento, indicar:
 
 ```
-🎯 RECOMENDAÇÃO DE APORTE DESTE MÊS
+RECOMENDAÇÃO DE APORTE DESTE MÊS
 1º Prioridade: [ATIVO] — motivo (classe mais para trás, ativo mais para trás)
 2º Prioridade: [ATIVO] — motivo
 3º Prioridade: [ATIVO] — motivo

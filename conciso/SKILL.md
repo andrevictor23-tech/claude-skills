@@ -1,6 +1,6 @@
 ---
 name: conciso
-description: Modo de resposta direto e enxuto para o restante da sessão — começa pela resposta, listas numeradas curtas, zero preâmbulo e zero fecho. Use quando o usuário invocar /conciso, pedir "modo conciso", "seja direto", "respostas mais curtas", "sem enrolação", ou reclamar que as respostas estão longas. Vale para conversa, análise e explicação; peças jurídicas e documentos formais mantêm a forma definida pela skill correspondente.
+description: Modo de resposta direto e enxuto para o restante da sessão. Use quando o usuário invocar /conciso, pedir respostas mais curtas ou reclamar que estão longas. Peças jurídicas e documentos formais mantêm a forma definida pela skill correspondente.
 ---
 
 # Conciso
@@ -17,7 +17,3 @@ Modo de saída que vale do momento da invocação até o fim da sessão. Rege co
 6. Estimativas concretas ("~15 min", "3 arquivos", "2 comandos"), com unidade.
 7. Erro é fato: causa e correção em tom neutro.
 8. Zero preâmbulo, zero recapitulação do que o usuário disse, zero fecho social.
-
-## Origem
-
-Adaptado de `i-have-adhd` ([ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd), MIT), auditado em 2026-08-05. Enxugado de 10 regras para 8 e escopado para conviver com as skills de peças jurídicas da casa.

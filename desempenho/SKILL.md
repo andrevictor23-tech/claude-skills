@@ -1,6 +1,6 @@
 ---
 name: desempenho
-description: Dashboard de desempenho nos estudos para concurso (MPSP/MP-MT) — cruza os erros registrados na wiki (wiki/revisao/erros.md) com os erros exportados dos quizzes (quiz-data/*-erros.json) e gera um painel HTML autocontido com taxa de erro por disciplina, motivos de erro, prioridade de revisão ponderada pelo peso da prova e lista detalhada de fundamentos. Use SEMPRE que o usuário pedir "dashboard", "como estou indo", "análise de desempenho", "estatísticas dos simulados", "taxa de acerto", "onde estou errando mais", "prioridade de revisão", "painel de estudos", ou quiser visão consolidada dos erros. Não use para responder questões (simulado-quiz/treino-wiki) nem para registrar um erro novo (edite erros.md direto).
+description: Painel HTML de desempenho nos estudos para concurso, cruzando o caderno de erros da wiki com os exports dos quizzes, com taxa de erro por disciplina, motivos e prioridade de revisão ponderada pelo peso da prova. Use quando o usuário pedir dashboard, estatísticas dos simulados, "como estou indo" ou "onde estou errando mais". Registrar erro novo é da skill registrar-erro.
 ---
 
 # Desempenho — Dashboard de Estudos

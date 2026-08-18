@@ -301,7 +301,7 @@ Read references/templates.md Template L for the full Prompt Decompiler template.
 ---
 
 **Unknown tool:**
-Identify the closest matching tool category from context. If genuinely unclear, ask: "Which tool is this for?" — then route accordingly. If not tool is found listed connect to the closest related tool.
+Identify the closest matching tool category from context. If genuinely unclear, ask: "Which tool is this for?" — then route accordingly. If no listed tool matches, use the closest related tool.
 Then build using the closest matching category.
 
 ---

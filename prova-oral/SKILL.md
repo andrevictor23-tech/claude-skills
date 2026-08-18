@@ -1,6 +1,6 @@
 ---
 name: prova-oral
-description: Simulador de banca examinadora de prova oral de concurso (MPSP, MP-MT e carreiras jurídicas). Argui o usuário pergunta por pergunta como um examinador real, com sorteio de ponto, follow-ups de pressão, espelho de resposta, nota por questão e registro de fraquezas na wiki. Use SEMPRE que o usuário pedir "prova oral", "simula a banca", "me argui", "arguição oral", "sabatina de banca", "treino para a oral", "examinador", "sorteia um ponto", "me toma o ponto", ou mencionar preparação para fase oral de concurso. Não use para planejamento de peças ou decisões (use sabatina) nem para questões objetivas rápidas (use treino-wiki).
+description: Simulador de banca examinadora de prova oral de concursos jurídicos, arguindo o candidato pergunta por pergunta como examinador real. Use para "prova oral", "me argui", "me toma o ponto", "sabatina de banca" ou preparação para a fase oral. Sabatinar um plano ou peça é da skill sabatina; questões objetivas rápidas, da treino-wiki.
 ---
 
 # Prova Oral — Simulador de Banca Examinadora

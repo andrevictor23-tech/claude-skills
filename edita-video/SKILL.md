@@ -1,6 +1,6 @@
 ---
 name: edita-video
-description: Edição automática de vídeos falados (Reels, stories, vídeos institucionais) — remove muletas verbais ("né", "hã", "hum"), corta silêncios e pausas mortas com auto-editor, e melhora o tom de voz (clareza de dicção, presença, de-esser, volume padronizado). Use SEMPRE que o usuário pedir para editar um vídeo dele falando, "tira os né", "corta os ham", "remove as hesitações", "melhora minha voz", "reduz a língua presa", "corta os silêncios", "limpa o áudio", "deixa o vídeo mais dinâmico", ou enviar um vídeo bruto pedindo tratamento. Não use para gerar vídeo novo por IA (use o MCP de mídia) nem para artes estáticas.
+description: Edição de vídeo falado do usuário (Reels, stories, institucional) que remove muletas verbais e silêncios e melhora a voz. Use quando ele enviar vídeo bruto pedindo tratamento, ou pedir para tirar os "né", cortar silêncios, limpar o áudio ou melhorar a dicção. Não gera vídeo novo por IA (use a skill generate ou o MCP de mídia).
 ---
 
 # edita-video — pipeline de edição de vídeo falado
@@ -111,17 +111,17 @@ python scripts/melhorar_audio.py VIDEO_dinamico.mp4
 1b. **Em material com mais de um locutor (TV, entrevista), nunca atribua fala
    por inferência textual da transcrição.** Antes de recortar "a parte do
    usuário", extraia quadros do trecho (folha de contatos via ffmpeg
-   `fps=1,tile=`) e confirme QUEM está na tela. Frases como "como fulano falou"
-   enganam — em 04/08/2026 uma fala do apresentador de estúdio quase foi
-   entregue como fala do usuário. Dúvida remanescente vira [VERIFICAR] para o
-   usuário, não decisão silenciosa.
+   `fps=1,tile=`) e confirme QUEM está na tela — frases como "como fulano
+   falou" enganam (já quase se entregou fala do apresentador como se fosse do
+   usuário). Dúvida remanescente vira [VERIFICAR] para o usuário, não decisão
+   silenciosa.
 1c. **Vídeo de TV: confira tarjas/GC (lower thirds) antes de usar quadro como
    capa ou trecho em reel.** A tarja do telejornal pode expor dado que a
    comunicação oficial do usuário promete proteger (parentesco, nome, local —
    caso tramitando em segredo de justiça). Corte a tarja do enquadramento
-   (`crop`) ou escolha outro quadro. Vale também para GC com nome ERRADO (em
-   07/08/2026 o programa exibiu "SGT CLÉIA" durante fala do usuário): cubra o
-   intervalo exato com blur gaussiano localizado (`crop`+`gblur`+`overlay` com
+   (`crop`) ou escolha outro quadro. Vale também para GC com nome errado (já
+   exibiram nome trocado durante fala do usuário): cubra o intervalo exato com
+   blur gaussiano localizado (`crop`+`gblur`+`overlay` com
    `enable=between(t,...)`) — nunca `delogo`, que deixa listras horizontais.
 2. Preserve o original intacto; toda saída ganha sufixo novo.
 3. Vídeo de trabalho institucional (DELEGACIA) é dado sob sigilo: pipeline 100%

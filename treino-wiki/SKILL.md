@@ -1,6 +1,6 @@
 ---
 name: treino-wiki
-description: Treino intensivo de revisão relâmpago com perguntas geradas a partir das notas da wiki de estudos (não de PDFs de simulado). Perguntas rápidas e objetivas no chat, uma por vez, com correção imediata, placar e registro de erros na wiki; opcionalmente gera quiz HTML no padrão do simulado-quiz. Use SEMPRE que o usuário pedir "treino intensivo", "revisão relâmpago", "perguntas rápidas", "me testa em [disciplina]", "flashcards de [tema]", "quiz da wiki", "gera questões novas", "treino de véspera", ou pedir questões inéditas sobre o conteúdo já estudado. Não use quando ele quiser questões extraídas de PDF de simulado (use simulado-quiz) nem arguição aprofundada de banca (use prova-oral).
+description: Gera perguntas objetivas inéditas a partir das notas da wiki de estudos e conduz o treino no chat (ou em quiz HTML). Use para "me testa em [disciplina]", treino intensivo, revisão relâmpago, quiz da wiki, ou questões novas sobre o que já foi estudado. Questões de PDF de simulado são da simulado-quiz; arguição de banca, da prova-oral; flashcards, da anki.
 ---
 
 # Treino Wiki — Revisão Relâmpago

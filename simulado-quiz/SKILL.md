@@ -1,6 +1,6 @@
 ---
 name: simulado-quiz
-description: Transforma PDFs de simulado de concurso (MPSP/VadeFocus e similares) em quiz HTML interativo ou caderno de revisão de erros, com cache das questões extraídas para nunca reprocessar o mesmo PDF. Use SEMPRE que o usuário pedir quiz, simulado interativo, artefato para responder questões, caderno de revisão, "questões que eu errei", revisão de simulado, extrair questões de PDF de simulado, ou mencionar simulados do MPSP, VadeFocus, enunciado/espelho. Ative também para "faça igual aquele quiz", "monta as questões de [matéria] dos simulados", ou qualquer pedido de estudar questões a partir de PDFs.
+description: Transforma PDFs de simulado de concurso (VadeFocus e similares) em quiz HTML interativo ou caderno de revisão de erros. Use para qualquer pedido de estudar questões vindas de PDF de simulado, "questões que eu errei", revisão de simulado, ou menção a VadeFocus e enunciado/espelho. Questões inéditas geradas da wiki são da treino-wiki.
 ---
 
 # Simulado → Quiz HTML com cache

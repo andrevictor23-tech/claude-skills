@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Comprime a sessão atual num documento de passagem para uma sessão futura (ou outro agente) continuar o trabalho do ponto exato onde parou. Use quando o usuário pedir "handoff", "passa o caso", "documento de passagem", "anota onde paramos", "encerra por hoje", "continuo amanhã em outra sessão", ou quando um trabalho longo (inquérito, peça, projeto, estudo) for atravessar sessões. Não use para registrar decisões de sabatina — a skill sabatina grava a própria ata.
+description: Comprime a sessão num documento de passagem para outra sessão ou agente continuar de onde parou. Use ao pedir "handoff", "anota onde paramos", "encerra por hoje", ou quando um trabalho longo (inquérito, peça, projeto, estudo) for atravessar sessões. Decisões de sabatina ficam na ata da própria sabatina.
 ---
 
 # Handoff

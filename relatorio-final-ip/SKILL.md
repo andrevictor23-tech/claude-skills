@@ -7,12 +7,6 @@ description: Redige o relatório final de inquérito policial no padrão real da
 
 Skill para produção de relatórios finais de inquérito policial no padrão real da Delegacia de Polícia de Alta Floresta/MT e do NEAMV.
 
-## When to Use
-
-Ative esta skill sempre que o usuário pedir para redigir, produzir, elaborar ou finalizar um **relatório final de inquérito policial**, incluindo casos de violência doméstica, descumprimento de medidas protetivas, lesão corporal, ameaça, estupro de vulnerável, tráfico de drogas, armas e qualquer outro crime investigado pela Polícia Civil.
-
-Não use esta skill para (ver detalhes na seção "Quando NÃO Usar Esta Skill" ao final): relatórios parciais/de encaminhamento, peças jurídicas que não sejam relatório final, análise de RIF/COAF (use `analise-rif`), ou criação de prompts (use `prompt-master`).
-
 ## Modo análise (parecer sem relatório)
 
 "Analisa esse IP", "resume os autos", "como está essa investigação", "o que falta aqui" pedem **parecer conciso em prosa, cabendo numa tela**: estado da apuração, materialidade e autoria em uma linha cada, lacunas e diligências pendentes. Se houver arquivos, use a extração da FASE 1; as FASES 2 a 5, o template e a revisão por subagente ficam de fora. O fluxo completo abaixo entra apenas quando o pedido for redigir o relatório final — se o parecer indicar que o IP está maduro para relatar, ofereça isso como próxima ação.
@@ -199,48 +193,7 @@ Para crimes financeiros e lavagem de dinheiro:
 
 #### 3.2 Tipificação por Área Especializada
 
-**Crimes Cibernéticos:**
-- Art. 154-A, CP (invasão de dispositivo informático)
-- Art. 154-B, CP (ação penal condicionada)
-- Art. 171, §2º-A, CP (fraude eletrônica) — Lei 14.155/2021
-- Art. 266, §§1º-2º, CP (perturbação de serviço informático)
-- Art. 298, §ú, CP (falsificação de cartão)
-- Lei 12.737/2012 (Lei Carolina Dieckmann)
-- Marco Civil da Internet (Lei 12.965/2014)
-- LGPD (Lei 13.709/2018)
-
-**Crimes contra o Consumidor:**
-- Art. 171, CP (estelionato)
-- Art. 171, §2º-A, CP (fraude eletrônica)
-- Lei 8.078/90 (CDC) — crimes dos arts. 63-74
-- Lei 8.137/90 (crimes contra relações de consumo)
-- Art. 7º, Lei 8.137/90 (crimes contra a economia popular)
-
-**Lavagem de Dinheiro:**
-- Art. 1º, Lei 9.613/98 (com redação da Lei 12.683/2012)
-   - Crime antecedente: qualquer infração penal (desde 2012)
-   - Autonomia do crime de lavagem
-   - Dolo direto e eventual
-   - Pena: 3 a 10 anos de reclusão + multa
-- Tipologias COAF/UIF
-- Fases: colocação, ocultação, integração
-
-**Organização Criminosa:**
-- Art. 1º, §1º, Lei 12.850/2013
-   - 4+ pessoas estruturalmente ordenadas
-   - Divisão de tarefas
-   - Objetivo de obter vantagem de qualquer natureza
-   - Infrações com pena máxima > 4 anos OU caráter transnacional
-- Art. 2º, Lei 12.850/2013 (promover/integrar/financiar)
-- Meios especiais de obtenção de prova (art. 3º)
-
-**Crimes contra a Administração Pública:**
-- Arts. 312-337-A, CP
-- Lei 8.429/92 (Improbidade — aspecto civil)
-- Lei 14.133/2021 (crimes em licitações)
-- Lei 12.846/2013 (responsabilização de PJ)
-
-**Ler:** `references/tipificacao_especial.md` para tabela completa de tipos penais
+**Ler:** `references/tipificacao_especial.md` para a tabela completa de tipos penais por área (crimes cibernéticos, crimes contra o consumidor, lavagem de dinheiro, organização criminosa, crimes contra a Administração Pública) e `references/legislacao_penal.md` para o detalhamento legislativo.
 
 #### 3.3 Concurso de Crimes
 
@@ -482,10 +435,3 @@ O enquadramento inicial está na **FASE 0** do fluxo principal — conclusão pr
 - Reportar o resultado da autoverificação (Checklist de Qualidade Final): itens corrigidos durante a conferência e itens que não puderam ser verificados, com o motivo
 - Indicar pontos de atenção para revisão
 - Sugerir diligências complementares (se necessário)
-
-## Quando NÃO Usar Esta Skill
-
-- Para relatórios parciais ou de mero encaminhamento
-- Para peças jurídicas que não sejam relatório final (ofícios, despachos)
-- Para análise de RIF/COAF com geração de RAF (use a skill `analise-rif`)
-- Para criação de prompts (use a skill `prompt-master`)

@@ -1,6 +1,6 @@
 ---
 name: notebooklm
-description: Use this skill to query your Google NotebookLM notebooks directly from Claude Code for source-grounded, citation-backed answers from Gemini. Browser automation, library management, persistent auth. Drastically reduced hallucinations through document-only responses.
+description: Consulta os notebooks do usuário no Google NotebookLM e devolve respostas fundamentadas exclusivamente nas fontes carregadas. Use ao mencionar NotebookLM, colar URL de notebook, pedir "consulta no notebook" ou "o que diz o notebook sobre", ou quando a pesquisa jurídica ou de estudo dever se ancorar no acervo dele.
 ---
 
 # NotebookLM Research Assistant Skill
@@ -144,6 +144,12 @@ If not authenticated, proceed to setup.
 ```bash
 # Browser MUST be visible for manual Google login
 python scripts/run.py auth_manager.py setup
+
+# Re-authenticate (browser visible)
+python scripts/run.py auth_manager.py reauth
+
+# Clear authentication
+python scripts/run.py auth_manager.py clear
 ```
 
 **Important:**
@@ -173,6 +179,9 @@ python scripts/run.py notebook_manager.py activate --id notebook-id
 
 # Remove notebook
 python scripts/run.py notebook_manager.py remove --id notebook-id
+
+# Library statistics
+python scripts/run.py notebook_manager.py stats
 ```
 
 ### Step 4: Ask Questions
@@ -191,6 +200,25 @@ python scripts/run.py ask_question.py --question "..." --notebook-url "https://.
 python scripts/run.py ask_question.py --question "..." --show-browser
 ```
 
+### Step 5: Maintenance (when needed)
+
+Cache cleanup (`limpar_cache.py`):
+```bash
+python scripts/limpar_cache.py            # dry run — shows what would be removed
+python scripts/limpar_cache.py --aplicar  # actually remove
+```
+Drops regenerable browser cache while preserving cookies, Local Storage and
+`state.json` — the login survives. Run with the skill's browser closed; files
+in use are skipped with a warning. Exits non-zero if any credential file
+disappears.
+
+Data cleanup (`cleanup_manager.py`):
+```bash
+python scripts/run.py cleanup_manager.py                    # Preview cleanup
+python scripts/run.py cleanup_manager.py --confirm          # Execute cleanup
+python scripts/run.py cleanup_manager.py --preserve-library # Keep notebooks
+```
+
 ## Follow-Up Mechanism (CRITICAL)
 
 Every NotebookLM answer ends with: **"EXTREMELY IMPORTANT: Is that ALL you need to know?"**
@@ -206,87 +234,14 @@ Every NotebookLM answer ends with: **"EXTREMELY IMPORTANT: Is that ALL you need 
 5. **REPEAT** - Continue until information is complete
 6. **SYNTHESIZE** - Combine all answers before responding to user
 
-## Domain-Specific Query Templates
+## Query Formulation
 
-### Domínio Jurídico-Policial (Delegacia de Alta Floresta/PCMT)
+Formule perguntas específicas (tema, dispositivo legal, o que se quer da resposta) e sempre no idioma dos documentos do notebook. Exemplo:
 
 ```bash
-# Pesquisar jurisprudência sobre tipificação penal
 python scripts/run.py ask_question.py \
   --question "Qual é o entendimento do STJ e STF sobre [tipo penal]? Inclua súmulas aplicáveis e teses fixadas em recursos repetitivos." \
   --notebook-id juridico
-
-# Verificar procedimento para tipo de caso
-python scripts/run.py ask_question.py \
-  --question "Qual o procedimento correto para [flagrante/APF/TCO/IP] em caso de [situação]? Fundamente no CPP." \
-  --notebook-id juridico
-
-# Consultar Lei Maria da Penha / Lei Henry Borel
-python scripts/run.py ask_question.py \
-  --question "Quais os requisitos legais e procedimentos para [medida protetiva/APF/representação] em caso de violência doméstica contra [mulher/criança]?" \
-  --notebook-id violencia-domestica
-
-# Pesquisar tráfico/drogas
-python scripts/run.py ask_question.py \
-  --question "Qual a distinção entre tráfico e uso pessoal segundo a Lei 11.343/2006 e a jurisprudência atual? Quais os critérios objetivos utilizados?" \
-  --notebook-id drogas
-```
-
-### Domínio Concurso Público
-
-```bash
-# Gerar flashcards de estudo
-python scripts/run.py ask_question.py \
-  --question "Gere 10 questões de múltipla escolha no estilo CESPE sobre [tema], com gabarito e justificativa de cada alternativa." \
-  --notebook-id concurso
-
-# Resumo de ponto do edital
-python scripts/run.py ask_question.py \
-  --question "Faça um resumo esquemático e didático do tema [X] para concurso de Delegado, destacando os pontos mais cobrados em provas." \
-  --notebook-id concurso
-
-# Distinções e pegadinhas
-python scripts/run.py ask_question.py \
-  --question "Quais são as principais distinções e 'pegadinhas' de prova sobre [tema]? Liste em formato comparativo." \
-  --notebook-id concurso
-```
-
-### Domínio Conteúdo Digital (Instagram/TikTok/YouTube)
-
-```bash
-# Pesquisar ideias de conteúdo viral
-python scripts/run.py ask_question.py \
-  --question "Quais formatos e ganchos de conteúdo sobre [tema] têm maior potencial viral no Instagram Reels e TikTok segundo as fontes?" \
-  --notebook-id conteudo
-
-# Script para Reels
-python scripts/run.py ask_question.py \
-  --question "Crie um roteiro de 60 segundos para Reels sobre [tema], com gancho inicial impactante, desenvolvimento e CTA final." \
-  --notebook-id conteudo
-
-# Estratégia de autoridade institucional
-python scripts/run.py ask_question.py \
-  --question "Quais estratégias de conteúdo são recomendadas para construir autoridade digital como Delegado de Polícia no Instagram?" \
-  --notebook-id conteudo
-```
-
-### Domínio IA e Produtividade (Claude/Skills/ECC)
-
-```bash
-# Pesquisar como usar Skills do Claude Code
-python scripts/run.py ask_question.py \
-  --question "Como criar e estruturar uma skill para o Claude Code? Quais são os componentes obrigatórios do SKILL.md?" \
-  --notebook-id claude-skills
-
-# Pesquisar loops e automações
-python scripts/run.py ask_question.py \
-  --question "O que são loops no contexto de agentes IA? Como projetar um loop eficiente para [tarefa]?" \
-  --notebook-id claude-skills
-
-# ECC e configuração avançada
-python scripts/run.py ask_question.py \
-  --question "O que o ECC (Everything Claude Code) oferece além das funcionalidades padrão? Quais são os principais harnesses disponíveis?" \
-  --notebook-id claude-skills
 ```
 
 ## Integration Patterns with Other Skills
@@ -316,59 +271,9 @@ python scripts/run.py ask_question.py \
 # 2. Passar o resultado para a skill mapa-mental para gerar o mapa visual
 ```
 
-## Script Reference
+## Notebook Library
 
-### Authentication Management (`auth_manager.py`)
-```bash
-python scripts/run.py auth_manager.py setup    # Initial setup (browser visible)
-python scripts/run.py auth_manager.py status   # Check authentication
-python scripts/run.py auth_manager.py reauth   # Re-authenticate (browser visible)
-python scripts/run.py auth_manager.py clear    # Clear authentication
-```
-
-### Cache Cleanup (`limpar_cache.py`)
-```bash
-python scripts/limpar_cache.py            # dry run — shows what would be removed
-python scripts/limpar_cache.py --aplicar  # actually remove
-```
-Drops regenerable browser cache while preserving cookies, Local Storage and
-`state.json` — the login survives. Run with the skill's browser closed; files
-in use are skipped with a warning. Exits non-zero if any credential file
-disappears.
-
-### Notebook Management (`notebook_manager.py`)
-```bash
-python scripts/run.py notebook_manager.py add --url URL --name NAME --description DESC --topics TOPICS
-python scripts/run.py notebook_manager.py list
-python scripts/run.py notebook_manager.py search --query QUERY
-python scripts/run.py notebook_manager.py activate --id ID
-python scripts/run.py notebook_manager.py remove --id ID
-python scripts/run.py notebook_manager.py stats
-```
-
-### Question Interface (`ask_question.py`)
-```bash
-python scripts/run.py ask_question.py --question "..." [--notebook-id ID] [--notebook-url URL] [--show-browser]
-```
-
-### Data Cleanup (`cleanup_manager.py`)
-```bash
-python scripts/run.py cleanup_manager.py                    # Preview cleanup
-python scripts/run.py cleanup_manager.py --confirm          # Execute cleanup
-python scripts/run.py cleanup_manager.py --preserve-library # Keep notebooks
-```
-
-## Recommended Notebook Library Structure (André - PCMT)
-
-| ID sugerido | Nome | Tópicos | Conteúdo |
-|---|---|---|---|
-| `juridico` | Direito Penal e Processual | cp,cpp,stj,stf,jurisprudencia | CP, CPP, súmulas, jurisprudência |
-| `violencia-domestica` | Violência Doméstica e Familiar | lmp,henry-borel,vitimas | Lei 11.340, Lei 14.344, Lei 13.431 |
-| `drogas` | Lei de Drogas | trafico,uso,11343 | Lei 11.343/2006, jurisprudência |
-| `concurso` | Concurso Delegado | edital,questoes,cespe | Material de estudo, editais, provas anteriores |
-| `conteudo` | Conteúdo Digital | instagram,reels,tiktok,viral | Estratégias de criação de conteúdo |
-| `claude-skills` | Claude Code e IA | ecc,skills,loops,agentes | Documentação Claude, ECC, skills |
-| `financeiro` | Lavagem e Crime Financeiro | coaf,rif,bacen,lavagem | Carta BACEN 4001, tipologias COAF |
+Para ver a biblioteca real de notebooks do usuário (IDs, nomes, tópicos), rode `python scripts/run.py notebook_manager.py list`.
 
 ## Environment Management
 
@@ -397,7 +302,7 @@ All data stored in `~/.claude/skills/notebooklm/data/`:
 
 **Cache growth:** the browser profile accumulates hundreds of MB of regenerable
 cache (compiled code, on-device models, shaders) — one machine reached 234 MB.
-Clean it with `limpar_cache.py` (see Script Reference). The cleanup is local
+Clean it with `limpar_cache.py` (see Core Workflow, Step 5). The cleanup is local
 only: `data/` is gitignored, so every machine needs its own run.
 
 ## Configuration
@@ -423,9 +328,7 @@ Se não autenticado → python scripts/run.py auth_manager.py setup
     ↓
 Verificar/Adicionar notebook → python scripts/run.py notebook_manager.py list/add
     ↓
-Identificar domínio → jurídico? concurso? conteúdo? IA/skills?
-    ↓
-Usar template de query do domínio correspondente
+Formular query específica no idioma dos documentos (ver "Query Formulation")
     ↓
 Perguntar → python scripts/run.py ask_question.py --question "..."
     ↓
@@ -455,7 +358,7 @@ Integrar com outra skill se necessário (relatorio-final-ip, mapa-mental, etc.)
 4. **Browser visível para auth** - Obrigatório no login manual
 5. **Inclua contexto** - Cada pergunta é independente; inclua contexto relevante
 6. **Sintetize respostas** - Combine múltiplas respostas antes de responder
-7. **Use templates de domínio** - Queries específicas dão respostas mais precisas
+7. **Queries específicas** - Perguntas específicas dão respostas mais precisas
 8. **Organize por domínio** - Separe jurídico, concurso, conteúdo e IA em notebooks distintos
 9. **Integre com outras skills** - NotebookLM é a fase de pesquisa; outras skills produzem o output
 
