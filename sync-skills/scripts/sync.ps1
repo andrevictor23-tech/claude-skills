@@ -183,7 +183,23 @@ function Sync-Repo {
 Sync-Repo -repo (Join-Path $env:USERPROFILE '.claude\skills') -label 'claude-skills' -Public
 
 # --- Repo 2: workspace DELEGACIA (clona se ainda nao existir nesta maquina) ---
-$delegacia = Join-Path $env:USERPROFILE 'Documents\DELEGACIA'
+# O workspace nao mora no mesmo lugar em toda maquina: em umas e
+# ~/Documents/DELEGACIA, em outras ~/Meu Drive/DELEGACIA (pasta do Google Drive).
+# Procurar um clone existente antes de decidir clonar, senao o script tenta criar
+# um segundo clone numa maquina que ja tem o repo -- foi o que aconteceu em
+# 11/09/2026, com o agravante de haver uma juncao quebrada em Documents\DELEGACIA
+# apontando para um disco onde a pasta nao existe mais.
+$delegaciaCandidatos = @(
+    (Join-Path $env:USERPROFILE 'Documents\DELEGACIA'),
+    (Join-Path $env:USERPROFILE 'Meu Drive\DELEGACIA'),
+    (Join-Path $env:USERPROFILE 'My Drive\DELEGACIA')
+)
+$delegacia = $delegaciaCandidatos | Where-Object { Test-Path (Join-Path $_ '.git') } | Select-Object -First 1
+if (-not $delegacia) {
+    # Nenhum clone encontrado: clonar no primeiro candidato cujo caminho esteja livre.
+    $delegacia = $delegaciaCandidatos | Where-Object { -not (Test-Path $_) } | Select-Object -First 1
+    if (-not $delegacia) { $delegacia = $delegaciaCandidatos[0] }
+}
 
 # Espelho do CLAUDE.md global. O arquivo vive em ~/.claude/CLAUDE.md (fora de
 # qualquer repo) e e distribuido entre as maquinas via copia no repo PRIVADO
