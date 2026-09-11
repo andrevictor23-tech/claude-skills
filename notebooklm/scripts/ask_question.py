@@ -44,6 +44,38 @@ POLL_SECONDS = 3
 STABLE_POLLS = 5
 
 
+# Textos de status que o NotebookLM exibe NO PROPRIO BALAO da resposta enquanto
+# ainda esta buscando nas fontes. Em notebook com muitas fontes esse balao fica
+# parado mais de 15s -- passa no teste de estabilidade e e devolvido como se
+# fosse a resposta. Diagnosticado em 07/09/2026: o notebook 66fb8143 devolveu
+# tres vezes apenas "Pesquisa nas suas fontes concluida... expand_more".
+TRANSIENT_MARKERS = (
+    "pesquisa nas suas fontes",
+    "pesquisando nas suas fontes",
+    "analisando suas fontes",
+    "searching your sources",
+    "researching your sources",
+    "research complete",
+)
+
+
+def _is_transient(text: str) -> bool:
+    """True se o texto for so o balao de status, sem resposta dentro."""
+    stripped = text.strip()
+    if len(stripped) > 600:
+        return False
+    low = stripped.lower()
+    if not any(marker in low for marker in TRANSIENT_MARKERS):
+        return False
+    resto = low
+    for marker in TRANSIENT_MARKERS:
+        resto = resto.replace(marker, "")
+    for ruido in ("expand_more", "expand_less", "concluída", "concluida", "complete"):
+        resto = resto.replace(ruido, "")
+    resto = re.sub(r"[\s.·…\-–—]+", "", resto)
+    return len(resto) < 120
+
+
 def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> str:
     """
     Ask a question to NotebookLM
@@ -187,7 +219,7 @@ def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> s
 
             # So aceita texto que nao existia antes da pergunta (a lista de chat
             # e virtualizada, entao contar elementos e pouco confiavel).
-            if text and text not in baseline_texts:
+            if text and text not in baseline_texts and not _is_transient(text):
                 if text == last_text:
                     stable_count += 1
                     if stable_count >= STABLE_POLLS:

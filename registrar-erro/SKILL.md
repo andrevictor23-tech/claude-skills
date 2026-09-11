@@ -33,11 +33,19 @@ Qualquer uma destas colagens, sem exigir arrumação prévia:
 ### [Tema curto] — [QC / DLS / quiz-data `nome` / prova], [data ou nº]
 - **Erro:** marquei X; gabarito Y (síntese da alternativa correta)
 - **Motivo:** <vocabulário fechado>
+- **Tipo:** referência | conceito
 - **Fundamento correto:** dispositivo + contraste + macete
 - **Revisar em:** [link relativo à lei seca ou à nota da disciplina]
 ```
 
 **Motivo usa vocabulário fechado**, senão o dashboard da skill `desempenho` não agrupa: `lei seca` · `jurisprudência` · `requisito acrescido` · `inversão de par simétrico` · `prazo/número` · `competência` · `distração`.
+
+**Tipo tem só dois valores**, e define o tratamento do erro:
+
+- **referência** — o que é dado bruto e não muda a compreensão: prazo, valor, percentual, quórum, competência, número de artigo, lista fechada. Aqui repetição funciona: o item é candidato natural a flashcard pela skill `anki`.
+- **conceito** — regime jurídico, natureza do instituto, requisito, efeito, distinção entre figuras próximas. Aqui repetição *não* funciona, porque o conhecimento só se sustenta ligado a outros; refazer a questão dez vezes ensina o gabarito, não o instituto. O que resolve é o contraste explícito com o instituto vizinho.
+
+Na dúvida, classificar como conceito — o custo de tratar referência como conceito é pequeno; o inverso enche o baralho de cartão que nunca cola.
 
 Alvos de "Revisar em" (caminhos relativos a `wiki/revisao/`):
 
@@ -58,8 +66,17 @@ Só existem as sete notas de disciplina listadas — não inventar `protesto.md`
 Antes de inserir, procurar no arquivo entrada do mesmo tema. Havendo:
 
 - não duplicar o fundamento;
-- acrescentar à entrada existente a linha `- **⚠️ Reincidente:** errei de novo em [fonte, data] — [o que mudou na pegadinha]`;
-- avisar na confirmação. Tema com 3+ reincidências é candidato a bloco de revisão dirigida na semana final.
+- acrescentar à entrada existente a linha `- **⚠️ Reincidente (Nx):** errei de novo em [fonte, data] — [o que mudou na pegadinha]`, onde **N é a contagem total de erros naquele tema**, incluindo o primeiro registro. O segundo erro do tema é `(2x)`, o terceiro `(3x)`, e assim por diante — a contagem sai do número de linhas de erro já presentes na entrada, não de um contador à parte;
+- avisar na confirmação, com a contagem: "Registrado em Registro de Imóveis — retificação de área (3x)."
+
+### A regra dos três erros
+
+Ao chegar em **3x**, o tema sai do ciclo de refazer questão. Refazer pela quarta vez ensina a reconhecer o enunciado, não o instituto — o item já provou que a repetição não está resolvendo. O tratamento passa a depender do **Tipo**:
+
+- **referência** → vai para o baralho, via skill `anki`. É o caso em que repetição espaçada é a ferramenta certa.
+- **conceito** → vira um bloco de ~10 minutos de **contraste explícito**: escrever, em duas ou três linhas, o que separa aquele instituto do vizinho com que a banca o confunde (averbação × registro, usufruto × uso × habitação, penhor × hipoteca × anticrese, protesto × apontamento). O contraste entra na própria entrada, como linha `- **Contraste (3x):** ...`, e é o que deve ser relido na revisão — não a questão.
+
+Ao atingir 3x, dizer isso na confirmação em uma linha, indicando qual dos dois tratamentos cabe. Não executar o tratamento sem que ele peça: a skill registra e sinaliza; ele decide quando fazer o bloco.
 
 ## Lote
 
