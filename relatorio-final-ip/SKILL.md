@@ -288,15 +288,11 @@ O indiciamento (ou não indiciamento) deve ser fundamentado com:
 
 #### 4.6 Revisão por agente independente (OBRIGATÓRIA)
 
-Antes de passar à FASE 5, submeter o rascunho do relatório a um **subagente revisor** via ferramenta Agent (general-purpose), que NÃO participou da redação. O revisor recebe o rascunho e o resumo das provas dos autos (tudo local — nenhum dado sai da máquina) com a instrução de auditar:
+Antes de passar à FASE 5, submeter o rascunho à skill `revisao-contradicoes`, que dispara um subagente revisor independente (não participou da redação) com os critérios de relatório de IP: contradições internas, afirmações sem lastro, tipificação e excludentes, materialidade e autoria demonstradas em separado, confronto de versões, placeholders e coerência da conclusão.
 
-1. **Contradições internas** — datas, nomes, qualificações e sequência dos fatos inconsistentes entre seções
-2. **Afirmações sem lastro** — todo fato afirmado deve corresponder a prova listada (depoimento, perícia, documento); apontar afirmações órfãs
-3. **Tipificação** — adequação típica correta, dispositivo legal citado com artigo/parágrafo/inciso exatos, excludentes analisadas quando cabíveis
-4. **Campos pendentes** — marcadores [VERIFICAR] ou placeholders esquecidos no texto
-5. **Coerência da conclusão** — o indiciamento (ou não) decorre logicamente das provas confrontadas
+Passar ao revisor **o rascunho e o resumo das provas dos autos** — nunca a tese escolhida nem a conclusão pretendida da FASE 0, que contaminam a leitura. Tudo local: nenhum dado sai da máquina.
 
-**Fluxo**: o revisor devolve lista de apontamentos → corrigir cada um → registrar na entrega o que foi corrigido (ou informar "revisão independente sem apontamentos"). **Proibido entregar o relatório sem esta revisão.**
+**Fluxo**: o revisor devolve lista de apontamentos por gravidade → triar um a um (acatar, acatar com ressalva, recusar) → corrigir cirurgicamente os acatados → registrar na entrega o que foi corrigido, o que ficou pendente de dado e o que foi recusado (ou informar "revisão independente sem apontamentos"). **Proibido entregar o relatório sem esta revisão.**
 
 ### FASE 5 — ENTREGA DO RELATÓRIO
 

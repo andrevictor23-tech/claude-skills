@@ -135,9 +135,17 @@ Depois de redigir e **antes** de entregar, confira a peça contra o checklist ab
 
 O resultado da conferência é reportado nas Notas ao Delegado (Passo 7): itens corrigidos, itens não verificáveis e por quê.
 
+### Passo 6.5 — Revisão independente (OBRIGATÓRIA)
+
+A autoconferência do Passo 6 é feita por quem redigiu, e quem redigiu lê no texto a intenção, não o que está escrito. Por isso, **antes de entregar**, submeter a peça à skill `revisao-contradicoes`, que dispara um subagente revisor que não participou da redação, com os critérios de representação cautelar: requisito legal por medida amarrado a fato concreto, contemporaneidade, individualização (imóvel, linha, conta, período), pedidos acessórios, proporcionalidade e fragilidade declarada em vez de maquiada.
+
+Passar ao revisor **a peça e o material dos autos que a sustenta** — nunca a medida que o usuário pediu no Passo 1 nem o modelo de origem, que induzem a leitura. Tudo local: nenhum dado sai da máquina.
+
+**Fluxo**: o revisor devolve lista de apontamentos por gravidade → triar um a um (acatar, acatar com ressalva, recusar) → corrigir cirurgicamente os acatados → o resultado entra nas Notas ao Delegado (Passo 7), junto com o da autoconferência. **Proibido entregar a representação sem esta revisão.**
+
 ### Passo 7 — Notas ao Delegado (fora do corpo da peça)
 
-Após a peça, em seção separada e enxuta, liste: **premissas assumidas** por falta de dado; **pontos de atenção jurídica** (cabimento duvidoso, jurisprudência a conferir, risco de indeferimento); **dados a completar** antes do protocolo (`[VERIFICAR: ...]` deixados no texto); **diligências recomendadas** para robustecer a representação se houver tempo; e o **resultado da autoverificação** do Passo 6.
+Após a peça, em seção separada e enxuta, liste: **premissas assumidas** por falta de dado; **pontos de atenção jurídica** (cabimento duvidoso, jurisprudência a conferir, risco de indeferimento); **dados a completar** antes do protocolo (`[VERIFICAR: ...]` deixados no texto); **diligências recomendadas** para robustecer a representação se houver tempo; e o **resultado da autoverificação** do Passo 6 e da **revisão independente** do Passo 6.5 (apontamentos corrigidos, pendentes de dado e recusados, com o motivo).
 
 ## Formato de saída
 

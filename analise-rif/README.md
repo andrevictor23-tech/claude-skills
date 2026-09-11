@@ -12,7 +12,7 @@ O pipeline é fixo: validação estrutural e carregamento com tratamento de enco
 
 Sobre os dados limpos, a skill identifica titulares, verifica quais alvos da investigação constam (e em que condição: titular, depositante, sacador, sócio etc.), mapeia vínculos financeiros e busca tipologias de lavagem nas três fases (colocação, ocultação, integração), **correlacionando as ocorrências com os incisos da Carta Circular BACEN nº 4.001/2020** (17 categorias de situações suspeitas). Diretriz inviolável: nenhuma conclusão fora dos dados dos CSVs; o que não consta é declarado como não constante.
 
-Antes da entrega, o RAF passa obrigatoriamente por revisão de um subagente independente, que recalcula somas, procura contradições internas, vínculos sem sustentação e duplicidades residuais.
+Antes da entrega, o RAF passa obrigatoriamente pela skill `revisao-contradicoes` — um subagente independente que recalcula somas a partir das tabelas, procura contradições internas, vínculos sem sustentação e duplicidades residuais.
 
 ## Quando usar
 

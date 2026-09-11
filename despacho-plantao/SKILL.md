@@ -126,6 +126,8 @@ Depois de redigir e **antes** de entregar, confira a minuta contra o checklist a
 
 O resultado da conferência é reportado nas Notas ao Delegado (Passo 8): itens corrigidos, itens não verificáveis e por quê.
 
+**Revisão independente (opcional, para caso grave).** O plantão corre contra o relógio e o checklist acima basta na rotina. Em caso de consequência alta — prisão em flagrante que será ratificada, homicídio, estupro de vulnerável, dúvida real de tipificação, ou quando o próprio usuário pedir ("dá uma conferida nisso") — vale submeter a minuta à skill `revisao-contradicoes` antes de entregar, com os critérios de despacho. Ela roda em um subagente e devolve apontamentos por gravidade; o custo é de um a dois minutos. Nunca deixe a revisão travar a entrega: se o caso é urgente, entregue o despacho e ofereça a revisão em seguida.
+
 ### Passo 8 — Notas ao Delegado (fora do corpo do despacho)
 
 Após o despacho, em seção separada e enxuta, liste: as **premissas assumidas** por falta de dado; os **pontos de atenção jurídica** (dúvida de tipificação, fiança, competência); as **diligências que dependem de informação que o usuário não trouxe**; e o **resultado da autoverificação** do Passo 7 (o que foi conferido e o que não pôde ser). Isso preserva a honestidade sobre lacunas sem poluir a peça.

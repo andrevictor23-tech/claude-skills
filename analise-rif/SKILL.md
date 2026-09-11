@@ -342,15 +342,11 @@ O RAF deve ser gerado em formato `.docx` profissional. Para isso:
 
 ### FASE 6.5 — REVISÃO POR AGENTE INDEPENDENTE (OBRIGATÓRIA)
 
-Antes de entregar o RAF (no chat ou em .docx), submeter o rascunho a um **subagente revisor** via ferramenta Agent (general-purpose), que NÃO participou da redação. O revisor recebe o rascunho completo do RAF e as tabelas consolidadas (tudo local — nenhum dado sai da máquina) com a instrução de auditar:
+Antes de entregar o RAF (no chat ou em .docx), submeter o rascunho à skill `revisao-contradicoes`, que dispara um subagente revisor independente (não participou da redação) com os critérios de RAF: recálculo das somas a partir das tabelas, duplicidades residuais por `idComunicacao`, rastreabilidade dos valores, vínculos sem sustentação no cruzamento por Indexador, tipologias de lavagem e limites dos dados.
 
-1. **Somas e totais** — recalcular valores de crédito/débito por titular e totais gerais a partir das tabelas; não confiar nos números do texto
-2. **Contradições internas** — divergências entre o corpo dissertativo e as tabelas (valores, datas, quantidades de comunicações)
-3. **Vínculos sem sustentação** — toda conexão afirmada entre envolvidos deve ter lastro no cruzamento por Indexador; hipóteses devem estar marcadas como indício, nunca como fato
-4. **Duplicidades residuais** — mesmo idComunicacao contado mais de uma vez em somas ou contagens
-5. **Rastreabilidade** — valores citados sem correspondência nas tabelas de origem
+Passar ao revisor **o rascunho completo do RAF e as tabelas consolidadas**. Tudo local: nenhum dado sai da máquina.
 
-**Fluxo**: o revisor devolve lista de apontamentos → corrigir cada um no RAF → registrar na entrega ao usuário o que foi corrigido (ou informar "revisão independente sem apontamentos"). **Proibido entregar o RAF sem esta revisão.**
+**Fluxo**: o revisor devolve lista de apontamentos por gravidade → triar um a um (acatar, acatar com ressalva, recusar) → corrigir os acatados no RAF → registrar na entrega ao usuário o que foi corrigido, o que ficou pendente e o que foi recusado (ou informar "revisão independente sem apontamentos"). **Proibido entregar o RAF sem esta revisão.**
 
 ### FASE 7 — APRESENTAÇÃO INTERATIVA DOS RESULTADOS
 

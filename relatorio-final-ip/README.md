@@ -10,7 +10,7 @@ A skill assume a persona de Delegado de Polícia Civil experiente e conduz a pro
 
 O ponto central são os **dois padrões reais de unidade**: IP iniciado com `392.4.` usa o template do **NEAMV** (crimes contra mulher e vulneráveis, com relato de diligências e depoimento verbatim da vítima); IP iniciado com `55.4.` usa o template da **Delegacia de Polícia** (crimes em geral, com seções de fatos, flagrante, oitivas, materialidade e conclusão). Cada template traz cabeçalho, fraseologia, estrutura de seções e checklist específico por tipo penal.
 
-Antes da entrega, o rascunho passa obrigatoriamente por revisão de um subagente independente (contradições internas, afirmações sem lastro nas provas, tipificação, placeholders esquecidos e coerência da conclusão), e por um checklist final de forma, conteúdo e técnica. Há estratégia específica de processamento em lotes para autos de grande volume (500+ páginas).
+Antes da entrega, o rascunho passa obrigatoriamente pela skill `revisao-contradicoes` — um subagente independente que audita contradições internas, afirmações sem lastro nas provas, tipificação e excludentes, placeholders esquecidos e coerência da conclusão — e por um checklist final de forma, conteúdo e técnica. Há estratégia específica de processamento em lotes para autos de grande volume (500+ páginas).
 
 ## Quando usar
 
