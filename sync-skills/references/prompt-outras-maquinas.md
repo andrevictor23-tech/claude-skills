@@ -1,84 +1,55 @@
-# Prompt pronto — publicar trabalho preso numa máquina (11/09/2026)
+# Prompt pronto — catálogo OSINT Brazuca na skill osint-investigacao (13/09/2026)
 
-Copie o bloco abaixo e cole no Claude Code da máquina **onde o trabalho foi
-feito**. É autocontido: não depende do histórico da conversa em que o problema
-foi diagnosticado.
+Copie o bloco abaixo e cole no Claude Code das **outras máquinas**. É
+autocontido: não depende do histórico da conversa em que a mudança foi feita.
 
-Contexto desta migração: em 11/09/2026 constatou-se que skills editadas numa
-máquina (`despacho-plantao`, `representacao-cautelar`) nunca chegaram ao GitHub,
-e que **sub-agente nenhum jamais atravessou máquina** — `~/.claude/agents` é
-pasta irmã de `~/.claude/skills` e não era coberta por repositório algum. O
-espelho `CONFIG-CLAUDE/agents/` no repositório privado passou a existir nesta
-data para fechar o buraco.
+Contexto desta migração: em 13/09/2026 a skill `osint-investigacao` passou a
+integrar o catálogo OSINT Brazuca (commit `eea0e79`), com o script
+`scripts/busca_brazuca.py` e a referência `references/osint-brazuca.md`. O
+catálogo em si **não vem pelo git**: é clonado em `OSINT-tools/osint-brazuca/`
+por máquina, e o `.gitignore` da skill ganhou `/OSINT-tools/` para o auto-sync
+não engolir o repositório aninhado.
 
-(A versão anterior deste arquivo descrevia a instalação do hook `SessionStart`,
-de 07/08/2026, já aplicada nas três máquinas.)
+(A versão anterior deste arquivo, de 11/09/2026, publicava skills e o sub-agente
+revisor presos numa máquina; já aplicada nas três máquinas.)
 
 ---
 
 ```
-Tenho trabalho não publicado nesta máquina: editei as skills despacho-plantao e
-representacao-cautelar (talvez outras) e criei um sub-agente revisor. Nada disso
-chegou ao GitHub — conferi da outra máquina e TODAS as branches remotas do
-claude-skills estão paradas em 17/08/2026. Publique daqui.
+Atualizei a skill osint-investigacao em outra máquina: ela agora integra o
+catálogo OSINT Brazuca (commit eea0e79 no repo osint-investigacao). Traga a
+atualização e instale o catálogo aqui. Siga na ordem, me mostre o resultado de
+cada etapa e pare se algo divergir.
 
-Siga na ordem e me mostre o resultado de cada etapa. Não pule etapa e não
-prossiga se algo divergir do descrito.
-
-1. LEVANTAR ANTES DE MEXER
-   git -C "$env:USERPROFILE\.claude\skills" status --porcelain --untracked-files=all
-   git -C "$env:USERPROFILE\.claude\skills" log --oneline -5
-   Get-ChildItem "$env:USERPROFILE\.claude\agents" -ErrorAction SilentlyContinue
-   Quero ver o tamanho do estrago antes de qualquer commit.
-
-2. AUDITAR O CONTEÚDO — o claude-skills é PÚBLICO
-   Antes de commitar, me mostre o `git diff` completo das skills modificadas e o
-   conteúdo integral de cada arquivo novo. Procure especificamente: nome de
-   investigado, CPF, número de processo, nome de operação, endereço, telefone e
-   fraseologia que revele tática operacional (canais de cooperação com
-   provedores, sistemas internos de inteligência, medidas de bloqueio de dados).
-   Achando qualquer uma dessas coisas, PARE e me diga: aquilo vai para o
-   repositório privado, não para o público.
-
-3. PUBLICAR AS SKILLS
+1. SINCRONIZAR
    & "$env:USERPROFILE\.claude\skills\sync-skills\scripts\sync.ps1"
-   Não use -ExecutionPolicy Bypass (faz o classificador de permissões bloquear).
+   Não use -ExecutionPolicy Bypass. Se barrar por arquivo novo ou conflito, me
+   avise antes de qualquer outra ação.
 
-   O portão de auditoria deve barrar com código 4 e a mensagem "ARQUIVOS NOVOS
-   (nao rastreados)" — é o comportamento correto quando criei arquivo. Só rode de
-   novo com -AllowNew depois que eu tiver aprovado a etapa 2. Se o bloqueio for
-   por conteúdo suspeito (CPF, processo, chave), NÃO existe flag: me avise.
+2. CONFERIR QUE A VERSÃO CHEGOU
+   git -C "$env:USERPROFILE\.claude\skills\osint-investigacao" log --oneline -1
+   Tem que mostrar eea0e79 (ou commit posterior). Confira também que existem
+   scripts\busca_brazuca.py e references\osint-brazuca.md, e que o .gitignore
+   da skill termina com a linha  /OSINT-tools/
 
-   Este sync também traz o conserto do caminho do workspace privado: o script
-   agora procura o clone em Documents\DELEGACIA, Meu Drive\DELEGACIA e
-   My Drive\DELEGACIA, em vez de assumir o primeiro.
+3. INSTALAR O CATÁLOGO (não vem pelo git, é clonado por máquina)
+   cd "$env:USERPROFILE\.claude\skills\osint-investigacao"
+   python scripts\busca_brazuca.py --instalar
+   Se "python" não existir, tente "py".
 
-4. O SUB-AGENTE — ele NÃO sobe sozinho
-   Sub-agente mora em ~/.claude/agents/, pasta IRMÃ de ~/.claude/skills. Nenhum
-   dos quatro repositórios do sync cobre esse caminho, então a etapa 3 não o
-   levou. Faça à mão:
+4. TESTAR
+   python scripts\busca_brazuca.py --busca imei
+      -> deve trazer 1 fonte 🟢 (aparelho impedido, ABR Telecom)
+   python scripts\busca_brazuca.py --busca desaparecidos --uf MT
+      -> deve trazer o portal da PJC-MT
+   python scripts\busca_brazuca.py --input cpf --incluir-vedadas
+      -> deve listar 4 fontes 🔴 (força bruta de CPF, CPF Validador TRT3,
+         e-CAC, Meu INSS); sem a flag, nenhuma 🔴 pode aparecer
 
-   a) Me mostre o conteúdo integral de cada .md em ~/.claude/agents/.
-   b) Descubra qual caminho do workspace privado existe aqui (Documents\DELEGACIA
-      ou Meu Drive\DELEGACIA). Se já existir CONFIG-CLAUDE\agents\ lá, siga em
-      frente. Se NÃO existir, crie você mesmo: a pasta CONFIG-CLAUDE\agents e,
-      no .gitignore do workspace — que é lista branca, ignora tudo e libera item
-      a item —, a linha  !CONFIG-CLAUDE/agents/*.md  logo depois da linha
-      !CONFIG-CLAUDE/CLAUDE-global.md. Sem essa linha o git ignora os agentes em
-      silêncio e você vai achar que publicou.
-   c) Copy-Item "$env:USERPROFILE\.claude\agents\*.md" "<workspace>\CONFIG-CLAUDE\agents\" -Force
-   d) git -C "<workspace>" status --porcelain --untracked-files=all
-      Os agentes TÊM que aparecer na lista. O .gitignore de lá é lista branca: se
-      não aparecerem, estão sendo ignorados em silêncio — pare e me avise.
-   e) Rode o sync de novo para publicar.
-
-5. CONFIRMAR QUE SAIU MESMO
-   Para cada um dos quatro repositórios (~/.claude/skills, o workspace privado,
-   ~/.claude/skills/osint-investigacao, ~/.claude/scheduled-tasks):
-   git -C "<repo>" fetch --quiet origin
-   git -C "<repo>" rev-list --left-right --count origin/main...HEAD
-   Tem que dar "0   0" em todos. Qualquer número à direita significa commit que
-   não foi empurrado — o problema que originou tudo isto.
+5. CONFIRMAR QUE O CATÁLOGO NÃO VAZA PARA O REPO PÚBLICO
+   git -C "$env:USERPROFILE\.claude\skills\osint-investigacao" status --porcelain --untracked-files=all
+   Tem que sair vazio. Se aparecer qualquer coisa sob OSINT-tools/, pare e me
+   avise: o repositório é público e tem auto-sync.
 ```
 
 ---
@@ -87,11 +58,9 @@ prossiga se algo divergir do descrito.
 
 - Use `$env:USERPROFILE` no corpo dos comandos, nunca caminho absoluto: o nome de
   usuário difere entre as máquinas do André (`andre`, `PJC`).
-- A etapa 4 é manual de propósito. Um espelho automático de `~/.claude/agents`
-  dentro do `sync.ps1` (nos moldes do `CLAUDE-global.md`) é o próximo passo
-  natural, mas ainda não foi escrito — enquanto não for, agente novo exige a
-  cópia à mão, nas duas direções.
-- A ordem das etapas 3 e 4 importa: é o sync da etapa 3 que traz do repositório
-  privado a pasta `CONFIG-CLAUDE/agents/` e a liberação correspondente no
-  `.gitignore`. Copiar o agente antes disso faz o git ignorá-lo sem avisar.
+- As contagens da etapa 4 dependem do catálogo: se o OSINT Brazuca incluir ou
+  remover fontes, os números podem mudar sem que haja erro. Divergência só na
+  presença de 🔴 sem `--incluir-vedadas` é defeito real.
+- Espelho automático de `~/.claude/agents` no `sync.ps1` segue pendente: agente
+  novo ainda exige cópia à mão para `CONFIG-CLAUDE/agents/` no repo privado.
 - Reescreva este arquivo na próxima migração — ele descreve sempre a mais recente.
