@@ -29,3 +29,20 @@ cache/extracao/
 # officecli e skill de terceiro instalada localmente; nao redistribuir neste
 # repo publico sem conferir a licenca. Remova a linha se decidir publicar.
 officecli/
+
+# Skills de terceiros instaladas localmente. Ficam no disco (o Claude as carrega
+# normalmente), mas nao sao redistribuidas por este repo: cada uma tem autoria e
+# licenca propria, e a raiz aqui anuncia MIT. Os creditos e os links de origem
+# estao na secao "Skills de terceiros que uso" do README.
+calibrate/
+doctor-plus/
+find-skills/
+notebooklm/
+prompt-master/
+skill-creator/
+
+# Espelho de skills da claude.ai criado pelo proprio Claude Code. E copia
+# efemera, com caminhos fora do alcance das regras por caminho deste arquivo
+# (o acervo de modelos da representacao-cautelar reaparece aqui dentro).
+# Nunca versionar.
+synced/
