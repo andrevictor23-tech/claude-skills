@@ -129,15 +129,25 @@ function Sync-Repo {
         }
     } elseif ($dirty) {
         git add -A
-        $msg = "sync: $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
-        git commit -m $msg | Out-Null
-        if ($LASTEXITCODE -ne 0) {
-            Write-Output "ERRO no commit (identidade git configurada? git config --global user.name/email)."
-            $global:exitCode = 1
-            return
+        # $dirty foi medido antes do espelho do CLAUDE.md global rodar. O espelho
+        # toca o arquivo mesmo quando o conteudo e identico, entao o repo parece
+        # sujo e o add nao encena nada: o commit sai vazio e retorna != 0. Isso
+        # nao e erro -- tratar como tal abortava o repo antes do push e deixava
+        # commits legitimos sem subir (21/09/2026).
+        $encenado = git diff --cached --name-only
+        if (-not $encenado) {
+            Write-Output "Nenhuma mudanca efetiva para commitar (arquivo tocado sem alteracao de conteudo)."
+        } else {
+            $msg = "sync: $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+            git commit -m $msg | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                Write-Output "ERRO no commit (identidade git configurada? git config --global user.name/email)."
+                $global:exitCode = 1
+                return
+            }
+            Write-Output "Commit local criado: $msg"
+            Write-Output ($dirty | Out-String)
         }
-        Write-Output "Commit local criado: $msg"
-        Write-Output ($dirty | Out-String)
     } else {
         Write-Output "Nenhuma mudanca local para commitar."
     }
