@@ -189,11 +189,19 @@ Sync-Repo -repo (Join-Path $env:USERPROFILE '.claude\skills') -label 'claude-ski
 # um segundo clone numa maquina que ja tem o repo -- foi o que aconteceu em
 # 11/09/2026, com o agravante de haver uma juncao quebrada em Documents\DELEGACIA
 # apontando para um disco onde a pasta nao existe mais.
-$delegaciaCandidatos = @(
-    (Join-Path $env:USERPROFILE 'Documents\DELEGACIA'),
-    (Join-Path $env:USERPROFILE 'Meu Drive\DELEGACIA'),
-    (Join-Path $env:USERPROFILE 'My Drive\DELEGACIA')
-)
+# Numa das maquinas o Google Drive e uma unidade mapeada (G:\Meu Drive\DELEGACIA),
+# fora de $env:USERPROFILE: sem esses candidatos o script nao enxerga o clone que
+# ja existe e cria um segundo em ~/Meu Drive -- foi o que aconteceu em 21/09/2026.
+# Os drives vem antes de ~/Meu Drive porque, havendo os dois, o do Drive e o real.
+# Só unidades montadas entram: Join-Path numa letra inexistente lanca erro.
+$delegaciaCandidatos = @( (Join-Path $env:USERPROFILE 'Documents\DELEGACIA') )
+foreach ($letra in (Get-PSDrive -PSProvider FileSystem).Name) {
+    if ($letra.Length -ne 1) { continue }
+    $delegaciaCandidatos += "${letra}:\Meu Drive\DELEGACIA"
+    $delegaciaCandidatos += "${letra}:\My Drive\DELEGACIA"
+}
+$delegaciaCandidatos += (Join-Path $env:USERPROFILE 'Meu Drive\DELEGACIA')
+$delegaciaCandidatos += (Join-Path $env:USERPROFILE 'My Drive\DELEGACIA')
 $delegacia = $delegaciaCandidatos | Where-Object { Test-Path (Join-Path $_ '.git') } | Select-Object -First 1
 if (-not $delegacia) {
     # Nenhum clone encontrado: clonar no primeiro candidato cujo caminho esteja livre.
