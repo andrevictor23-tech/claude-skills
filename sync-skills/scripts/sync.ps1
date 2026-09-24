@@ -192,6 +192,25 @@ function Sync-Repo {
 # --- Repo 1: skills (PUBLICO: passa pelo portao de auditoria) ---
 Sync-Repo -repo (Join-Path $env:USERPROFILE '.claude\skills') -label 'claude-skills' -Public
 
+# --- Hook global contra as copias antigas de skills do claude.ai ---
+# O script do hook vive neste repo; o registro no ~/.claude/settings.json e por
+# maquina, entao o sync manual garante que exista (instalar-hook-skills.py e
+# idempotente). Fora do -PullOnly: processo em background nao mexe na
+# configuracao do usuario.
+if (-not $PullOnly) {
+    $settingsJson = Join-Path $env:USERPROFILE '.claude\settings.json'
+    $jaTem = (Test-Path $settingsJson) -and
+             (Select-String -Path $settingsJson -Pattern 'bloquear-skills-antigas.sh' -SimpleMatch -Quiet)
+    if (-not $jaTem) {
+        if (Get-Command python -ErrorAction SilentlyContinue) {
+            $r = python (Join-Path $PSScriptRoot 'instalar-hook-skills.py') $settingsJson
+            Write-Output "Hook de skills antigas: $r"
+        } else {
+            Write-Output "AVISO: python ausente; hook de skills antigas nao registrado (rode sync-skills\scripts\instalar-hook-skills.py)."
+        }
+    }
+}
+
 # --- Repo 2: workspace DELEGACIA (clona se ainda nao existir nesta maquina) ---
 # O workspace nao mora no mesmo lugar em toda maquina: em umas e
 # ~/Documents/DELEGACIA, em outras ~/Meu Drive/DELEGACIA (pasta do Google Drive).

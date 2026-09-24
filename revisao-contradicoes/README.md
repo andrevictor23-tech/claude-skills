@@ -16,7 +16,7 @@ Os apontamentos voltam classificados por gravidade (CRÍTICO, RELEVANTE, FORMAL)
 
 ## Quando usar
 
-- Etapa obrigatória antes de entregar relatório final de IP, RAF, representação cautelar ou despacho de plantão;
+- Etapa obrigatória antes de entregar relatório final de IP, RAF ou representação cautelar; no despacho de plantão, só em caso grave (critério na `despacho-plantao`);
 - Pedido direto de crítica a texto já redigido: "revisa essa peça", "procura contradição aí", "isso está coerente?", "estressa esse relatório";
 - Minuta trazida de fora (ofício, portaria, peça escrita pelo próprio Delegado) que precise de auditoria antes de assinar.
 

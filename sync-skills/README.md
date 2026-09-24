@@ -54,6 +54,8 @@ Comando principal executado pela skill:
 
 - `SKILL.md` — instruções completas: repos, procedimento, resolução de conflitos, espelhamento de arquivos sensíveis e regras de segurança.
 - `scripts/sync.ps1` — script de sincronização dos três repos, com varredura de padrões sensíveis (CPF etc.) no repo público antes do push.
+- `scripts/bloquear-skills-antigas.sh` — hook global (PreToolUse) que recusa as cópias antigas, sincronizadas do claude.ai, de quatro skills autorais (`anthropic-skills:conciso`, `despacho-plantao`, `relatorio-final-ip`, `representacao-cautelar`) e manda usar a versão local.
+- `scripts/instalar-hook-skills.py` — registra esse hook no `~/.claude/settings.json` da máquina; o `sync.ps1` o chama no sync manual e ele não faz nada se o hook já estiver lá.
 - `scripts/extrair.py` — extrator universal de documentos (PDF nativo ou escaneado, DOCX, XLSX, PPTX, HTML, imagens) para Markdown, com cache; usa PyMuPDF para texto nativo e Docling/EasyOCR para OCR local. Nenhum dado sai da máquina.
 - `scripts/setup-extracao.ps1` — prepara o ambiente de extração na máquina (copia o `extrair.py` para `~/.claude/tools/`, cria o venv e instala o Docling, ~1,3 GB; o venv não vai para o git).
 - `references/extracao-documentos.md` — referência compartilhada de extração usada pelas demais skills.

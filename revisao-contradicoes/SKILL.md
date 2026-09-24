@@ -1,6 +1,6 @@
 ---
 name: revisao-contradicoes
-description: Submete peça pronta a um subagente revisor independente que só aponta defeitos — contradições internas, afirmações sem lastro nos autos, fundamentação genérica, placeholders esquecidos e conclusão que não decorre das provas. Use quando o usuário pedir para criticar, auditar, estressar ou revisar uma peça já redigida ("revisa essa peça", "procura contradição aí", "isso está coerente?"), e como etapa obrigatória antes de entregar relatório final de IP, RAF, representação cautelar ou despacho. Sabatina interroga o usuário antes de produzir; esta skill audita o texto depois de produzido.
+description: Submete peça pronta a um subagente revisor independente que só aponta defeitos — contradições internas, afirmações sem lastro nos autos, fundamentação genérica, placeholders esquecidos e conclusão que não decorre das provas. Use quando o usuário pedir para criticar, auditar, estressar ou revisar uma peça já redigida ("revisa essa peça", "procura contradição aí", "isso está coerente?"), e como etapa obrigatória antes de entregar relatório final de IP, RAF ou representação cautelar (despacho de plantão, só em caso grave). Sabatina interroga o usuário antes de produzir; esta skill audita o texto depois de produzido.
 ---
 
 # Revisão de Contradições
@@ -39,7 +39,8 @@ Conferência de dispositivo legal ou julgado que exija consulta externa **não s
 | Relatório final de IP | `relatorio-final-ip` | `references/criterios-ip.md` |
 | Relatório de Análise Financeira (RAF) | `analise-rif` | `references/criterios-raf.md` |
 | Representação cautelar | `representacao-cautelar` | `references/criterios-cautelar.md` |
-| Despacho de plantão | `despacho-plantao` | `references/criterios-despacho.md` |
+
+**Só em caso grave**, no despacho de plantão (`despacho-plantao`, módulo `references/criterios-despacho.md`). O que conta como caso grave e a regra de não travar a entrega urgente estão na própria `despacho-plantao`; na rotina, o checklist dela basta.
 
 **Sob demanda**, quando o usuário pedir crítica de qualquer texto já redigido — inclusive peça que ele escreveu sozinho, ofício, portaria ou minuta trazida de fora. Nesse caso use os critérios comuns e, se a peça se encaixar em um dos tipos acima, carregue também o módulo correspondente.
 
