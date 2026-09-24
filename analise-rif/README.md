@@ -10,7 +10,7 @@ A skill assume a persona de Investigador Financeiro Policial Sênior e processa 
 
 O pipeline é fixo: validação estrutural e carregamento com tratamento de encoding (latin-1/utf-8, separador `;`), **filtragem de indexadores reais** (o COAF mistura legendas, hashes e comentários nos arquivos), **deduplicação por idComunicacao** (zero tolerância a contagem dupla, inclusive entre múltiplos RIFs), **cruzamento relacional por Indexador** entre os três arquivos, conversão de valores no formato brasileiro e interpretação dos campos de valores (CampoA a CampoE) conforme o CodigoSegmento.
 
-Sobre os dados limpos, a skill identifica titulares, verifica quais alvos da investigação constam (e em que condição: titular, depositante, sacador, sócio etc.), mapeia vínculos financeiros e busca tipologias de lavagem nas três fases (colocação, ocultação, integração), **correlacionando as ocorrências com os incisos da Carta Circular BACEN nº 4.001/2020** (17 categorias de situações suspeitas). Diretriz inviolável: nenhuma conclusão fora dos dados dos CSVs; o que não consta é declarado como não constante.
+Sobre os dados limpos, a skill identifica titulares, verifica quais alvos da investigação constam (e em que condição: titular, depositante, sacador, sócio etc.; correspondência só por CPF/CNPJ), mapeia as correlações entre envolvidos por Indexador — hipóteses de vínculo a confirmar, não vínculo provado — e busca tipologias de lavagem nas três fases (colocação, ocultação, integração), **correlacionando as ocorrências com os incisos da Carta Circular BACEN nº 4.001/2020** (17 categorias de situações suspeitas). Diretriz inviolável: nenhuma conclusão fora dos dados dos CSVs; o que não consta é declarado como não constante.
 
 Antes da entrega, o RAF passa obrigatoriamente pela skill `revisao-contradicoes` — um subagente independente que recalcula somas a partir das tabelas, procura contradições internas, vínculos sem sustentação e duplicidades residuais.
 
@@ -45,7 +45,8 @@ Para relatório final de inquérito, use `relatorio-final-ip`; esta skill é esp
 
 | Item | Papel |
 |---|---|
-| `SKILL.md` | Instruções completas: persona, diretrizes éticas, pipeline em 7 fases e script de processamento em Python |
+| `SKILL.md` | Instruções completas: persona, diretrizes éticas e pipeline em 7 fases |
+| `scripts/processar_rif.py` | Tratamento de dados das FASES 1 a 5: carga, filtragem, deduplicação, conversão de valores, período, cruzamento por Indexador, titulares, correlações e verificação de alvos |
 | `references/carta_circular_4001_2020.md` | Referência das 17 categorias de situações suspeitas do BACEN |
 | `references/csv_structure_examples.md` | Exemplos da estrutura real dos CSVs do COAF |
 | `references/modelo_raf_v1.md` | Modelo oficial do RAF com as 9 seções obrigatórias |

@@ -114,73 +114,25 @@ Regra de desempate: quando múltiplos RIFs referem a mesma comunicação (mesmo 
 
 **OBRIGATÓRIO**: Cruzar dados SEMPRE por Indexador. JAMAIS analisar arquivos isoladamente.
 
+As tabelas desta fase saem do `scripts/processar_rif.py` (ver "Processamento dos CSVs"); não reescreva o cruzamento no contexto.
+
 #### 4.1 Cruzamento Relacional
 
-```python
-def cruzar_por_indexador(df_env, df_com, df_oco):
-    """
-    Cruza os três CSVs pelo campo Indexador para análise integrada.
-    """
-    # Merge Envolvidos + Comunicações
-    df_merged = pd.merge(df_env, df_com, on='Indexador', how='outer', suffixes=('_env', '_com'))
-    
-    # Merge com Ocorrências
-    df_full = pd.merge(df_merged, df_oco, on='Indexador', how='outer')
-    
-    return df_full
-```
+`--exportar-limpos` grava `cruzado_por_indexador.csv`: os três arquivos unidos pelo Indexador, uma linha por combinação.
 
 #### 4.2 Identificação de Titulares
 
-```python
-def identificar_titulares(df_env):
-    """
-    Identifica os titulares de contas (tipo = 'Titular').
-    """
-    titulares = df_env[df_env['tipoEnvolvido'].str.strip().str.lower() == 'titular']
-    return titulares[['Indexador', 'cpfCnpjEnvolvido', 'nomeEnvolvido', 
-                       'agenciaEnvolvido', 'contaEnvolvido', 'DataAberturaConta']].drop_duplicates()
-```
+`titulares.csv`: envolvidos com `tipoEnvolvido` = Titular, com agência, conta e data de abertura quando o CSV as trouxer.
 
 #### 4.3 Conversão de Valores Monetários
 
-```python
-import re
+O script converte tolerando formato brasileiro e americano, nesta ordem:
+- ponto E vírgula → ponto é milhar, vírgula é decimal ("10.000,50" → 10000.5)
+- só vírgula → decimal ("10000,50" → 10000.5)
+- só ponto em grupos de 3 → milhar ("10.000" → 10000; "1.234.567" → 1234567)
+- só ponto fora do padrão milhar → decimal ("1500.75" → 1500.75)
 
-def converter_valor_br(valor_str):
-    """Converte valor monetário para float, tolerando formato brasileiro E americano.
-
-    Regras (na ordem):
-    - ponto E vírgula → ponto é milhar, vírgula é decimal ("10.000,50" → 10000.5)
-    - só vírgula → decimal ("10000,50" → 10000.5)
-    - só ponto em grupos de 3 → milhar ("10.000" → 10000; "1.234.567" → 1234567)
-    - só ponto fora do padrão milhar → decimal ("1500.75" → 1500.75)
-    Sem essas regras, "1500.75" viraria 150075 (erro ×100) e "10.000" com
-    replace ingênuo de vírgula viraria 10.0 em fonte americana.
-    """
-    if pd.isna(valor_str) or str(valor_str).strip() in ['', '0', '-']:
-        return 0.0
-    s = re.sub(r'\s|R\$', '', str(valor_str), flags=re.IGNORECASE)
-    if not s:
-        return 0.0
-    tem_ponto, tem_virgula = '.' in s, ',' in s
-    if tem_ponto and tem_virgula:
-        s = s.replace('.', '').replace(',', '.')
-    elif tem_virgula:
-        s = s.replace(',', '.')
-    elif tem_ponto and re.fullmatch(r'-?\d{1,3}(\.\d{3})+', s):
-        s = s.replace('.', '')
-    try:
-        return float(s)
-    except ValueError:
-        return 0.0
-
-def formatar_valor_br(valor):
-    """Formata float para formato brasileiro R$ X.XXX,XX"""
-    if valor == 0:
-        return "R$ 0,00"
-    return f"R$ {valor:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
-```
+Vazio, "0" e "-" valem zero. Texto que não é número fica fora das somas e sai no resumo em `valores_invalidos`, que vira `[VERIFICAR]` no RAF. O valor bruto continua na coluna original.
 
 #### 4.4 Cálculo de Valores por Titular
 
@@ -195,45 +147,10 @@ Os campos de valores nos CSVs do COAF seguem esta estrutura para os segmentos 41
 
 #### 4.5 Verificação de Alvos da Investigação
 
-```python
-def verificar_alvos(df_env, lista_alvos):
-    """
-    Verifica quais alvos da investigação constam no RIF e em qual condição.
-    lista_alvos: lista de dicts com {'nome': str, 'cpf_cnpj': str}
-    """
-    resultados = []
-    for alvo in lista_alvos:
-        cpf = alvo.get('cpf_cnpj', '').strip()
-        nome = alvo.get('nome', '').strip().upper()
-        
-        # Buscar por CPF/CNPJ
-        encontrado = df_env[df_env['cpfCnpjEnvolvido'].str.strip() == cpf]
-        
-        if len(encontrado) == 0 and nome:
-            # Tentar por nome
-            encontrado = df_env[df_env['nomeEnvolvido'].str.strip().str.upper().str.contains(nome, na=False)]
-        
-        if len(encontrado) > 0:
-            tipos = encontrado['tipoEnvolvido'].unique().tolist()
-            indexadores = encontrado['Indexador'].unique().tolist()
-            resultados.append({
-                'nome': encontrado['nomeEnvolvido'].iloc[0],
-                'cpf_cnpj': encontrado['cpfCnpjEnvolvido'].iloc[0],
-                'encontrado': True,
-                'tipos_envolvimento': tipos,
-                'indexadores': indexadores
-            })
-        else:
-            resultados.append({
-                'nome': alvo.get('nome', 'N/I'),
-                'cpf_cnpj': cpf,
-                'encontrado': False,
-                'tipos_envolvimento': [],
-                'indexadores': []
-            })
-    
-    return resultados
-```
+Grave os alvos em `alvos.csv` (colunas `nome;cpf_cnpj`), fora do repositório como qualquer dado real, e rode com `--alvos alvos.csv`. O resultado entra no resumo JSON, por alvo:
+- `encontrado_por_documento` — CPF/CNPJ confere (pontuação é ignorada). Só este status permite afirmar que o alvo consta do RIF.
+- `[VERIFICAR] nome identico, ...` — nome completo igual, mas sem o mesmo documento. Homônimo é comum: trate como hipótese a confirmar.
+- `nao_encontrado` — nome parcial nunca casa, de propósito.
 
 ### FASE 5 — ANÁLISE DE TIPOLOGIAS E INDÍCIOS
 
@@ -276,32 +193,7 @@ Esta Carta Circular elenca 17 categorias de situações suspeitas. As mais frequ
 
 #### 5.3 Análise de Vínculos
 
-```python
-def mapear_vinculos(df_env):
-    """
-    Mapeia os vínculos entre envolvidos por Indexador.
-    Pessoas que aparecem no mesmo Indexador possuem vínculo financeiro.
-    """
-    vinculos = []
-    for idx in df_env['Indexador'].unique():
-        envolvidos = df_env[df_env['Indexador'] == idx]
-        nomes = envolvidos[['cpfCnpjEnvolvido', 'nomeEnvolvido', 'tipoEnvolvido']].values.tolist()
-        
-        # Criar pares de vínculos
-        for i in range(len(nomes)):
-            for j in range(i+1, len(nomes)):
-                vinculos.append({
-                    'indexador': idx,
-                    'pessoa_1': nomes[i][1],
-                    'cpf_1': nomes[i][0],
-                    'tipo_1': nomes[i][2],
-                    'pessoa_2': nomes[j][1],
-                    'cpf_2': nomes[j][0],
-                    'tipo_2': nomes[j][2]
-                })
-    
-    return pd.DataFrame(vinculos)
-```
+`correlacoes_por_indexador.csv` lista os pares de envolvidos que aparecem no mesmo Indexador. Isso é **correlação de registros no RIF, não vínculo provado**: não demonstra, por si, relação financeira, societária, familiar ou criminosa. Vínculo só entra no RAF com lastro específico (a própria comunicação descrevendo a operação entre as partes, documento dos autos) e, sem ele, como hipótese a confirmar.
 
 ### FASE 6 — GERAÇÃO DO RAF (Relatório de Análise Financeira)
 
@@ -400,17 +292,19 @@ Colunas, exemplos de dados e características técnicas (encoding, separador, qu
 
 ## Processamento dos CSVs
 
-Não reescreva o pipeline no contexto: rode `scripts/processar_rif.py`, que implementa as FASES 1 a 3 acima — carga com detecção de encoding e separador, extração de legendas, filtragem de indexadores, deduplicação por `idComunicacao` e conversão de valor no padrão brasileiro.
+Não reescreva o pipeline no contexto: rode `scripts/processar_rif.py`, que implementa as FASES 1 a 3 acima (carga com detecção de encoding e separador, extração de legendas, filtragem de indexadores, deduplicação por `idComunicacao`, conversão de valor) e as tabelas das FASES 4 e 5.
 
 ```powershell
-python scripts/processar_rif.py --entrada "<pasta dos CSVs>" --saida resumo.json --exportar-limpos ./limpos
+python scripts/processar_rif.py --entrada "<pasta dos CSVs>" --saida resumo.json --exportar-limpos ./limpos --alvos alvos.csv
 ```
 
-- `--saida` grava o resumo em JSON (contagens, valor total, período, legendas encontradas) — leia esse arquivo em vez de recontar no contexto.
-- `--exportar-limpos` grava os três CSVs já limpos, que são a base das FASES 4 a 6.
+- `--saida` grava o resumo em JSON: contagens, valor total, período (calculado sobre datas convertidas), `datas_ausentes_ou_invalidas`, `valores_invalidos`, legendas e, com `--alvos`, a verificação de cada alvo. Leia esse arquivo em vez de recontar no contexto.
+- `--exportar-limpos` grava os três CSVs limpos mais `cruzado_por_indexador.csv`, `titulares.csv` e `correlacoes_por_indexador.csv`, base das FASES 4 a 6.
+- `--alvos` localiza os alvos da investigação (ver 4.5).
+- Todo arquivo de entrada e de saída fica no diretório local segregado do caso, nunca dentro da skill ou de repositório.
 - Requer `pandas`. Não havendo na máquina, usar o venv de extração (`~/.claude/tools/docling-venv/Scripts/python.exe`).
 
-O script é a implementação autoritativa das FASES 1 a 3; as regras semânticas descritas naquelas fases resumem sua lógica. Divergindo os dois, o script vale.
+O script é a implementação autoritativa do tratamento de dados das FASES 1 a 5; as regras descritas nessas fases resumem sua lógica. Divergindo os dois, o script vale.
 
 ## Mensagem Inicial ao Usuário
 

@@ -2,14 +2,19 @@
 """Processador de dados RIF/COAF.
 
 Carrega, valida, limpa, deduplica e resume os 3 CSVs do RIF (Envolvidos,
-Comunicacoes, Ocorrencias). Substitui o bloco de codigo que antes vivia colado
-no SKILL.md: aqui e um arquivo executavel e testavel, nao um exemplo para
-reproduzir a mao.
+Comunicacoes, Ocorrencias) e monta as tabelas relacionais das FASES 4 e 5
+(cruzamento por Indexador, titulares, correlacoes, verificacao de alvos).
+Substitui os blocos de codigo que antes viviam colados no SKILL.md: aqui e um
+arquivo executavel e testavel, nao um exemplo para reproduzir a mao.
 
 Uso:
     python processar_rif.py --entrada DIR_COM_OS_CSVS
     python processar_rif.py --entrada . --saida resumo.json
     python processar_rif.py --entrada . --exportar-limpos ./limpos
+    python processar_rif.py --entrada . --alvos alvos.csv --saida resumo.json
+
+alvos.csv: colunas `nome` e `cpf_cnpj` (separador ; ou ,), uma linha por alvo.
+Tambem aceita .json com uma lista de objetos com as mesmas chaves.
 
 Requisito: pandas.
 """
@@ -19,10 +24,42 @@ import json
 import os
 import re
 import sys
+import unicodedata
 
 import pandas as pd
 
 CAMPOS_VALOR = ["CampoA", "CampoB", "CampoC", "CampoD", "CampoE"]
+NATUREZA_CORRELACAO = "correlacao de registros no RIF; nao prova vinculo"
+
+
+def so_digitos(s):
+    if s is None or pd.isna(s):
+        return ""
+    return re.sub(r"\D", "", str(s))
+
+
+def normalizar_nome(s):
+    """Maiusculas, sem acento e com espacos colapsados, para comparar nome completo."""
+    if s is None or pd.isna(s):
+        return ""
+    s = unicodedata.normalize("NFKD", str(s))
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    return re.sub(r"\s+", " ", s).strip().upper()
+
+
+def formatar_valor_br(valor):
+    return "R$ " + f"{valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+def carregar_alvos(caminho):
+    if caminho.lower().endswith(".json"):
+        with open(caminho, encoding="utf-8") as fh:
+            return json.load(fh)
+    for sep in (";", ","):
+        df = pd.read_csv(caminho, sep=sep, dtype=str, encoding="utf-8-sig").fillna("")
+        if {"nome", "cpf_cnpj"} <= set(df.columns):
+            return df.to_dict("records")
+    raise ValueError(f"{caminho}: esperado CSV com colunas nome e cpf_cnpj, ou JSON")
 
 
 class ProcessadorRIF:
@@ -116,7 +153,11 @@ class ProcessadorRIF:
         return df_dedup, antes - len(df_dedup)
 
     def converter_valor(self, val):
-        """Converte valor monetario brasileiro para float (regras da FASE 4.3)."""
+        """Converte valor monetario (padrao brasileiro ou americano) para float.
+
+        Vazio, "0" e "-" valem 0.0 (ausencia de valor). Texto que nao e numero
+        devolve NaN: fica fora das somas e sai no resumo como [VERIFICAR].
+        """
         if pd.isna(val) or str(val).strip() in ["", "0", "-"]:
             return 0.0
         s = re.sub(r"\s|R\$", "", str(val), flags=re.IGNORECASE)
@@ -132,7 +173,7 @@ class ProcessadorRIF:
         try:
             return float(s)
         except ValueError:
-            return 0.0
+            return float("nan")
 
     def processar(self):
         """Pipeline completo. Devolve True se processou os 3 arquivos."""
@@ -165,62 +206,182 @@ class ProcessadorRIF:
         self.df_com, dedup = self.deduplicar(self.df_com)
         self.log(f"Deduplicacao: {dedup} comunicacoes duplicadas eliminadas")
 
+        invalidos = {}
         for campo in CAMPOS_VALOR:
             if campo in self.df_com.columns:
-                self.df_com[f"{campo}_float"] = self.df_com[campo].apply(self.converter_valor)
+                col = self.df_com[campo].apply(self.converter_valor)
+                self.df_com[f"{campo}_float"] = col
+                ruins = self.df_com[col.isna()]
+                if len(ruins):
+                    invalidos[campo] = [
+                        {
+                            "Indexador": int(r["Indexador"]),
+                            "idComunicacao": str(r.get("idComunicacao", "")),
+                            "valor_bruto": str(r[campo]),
+                        }
+                        for _, r in ruins.iterrows()
+                    ]
 
-        titulares = self.df_env[self.df_env["tipoEnvolvido"].str.strip().str.lower() == "titular"]
+        # Periodo sobre datas convertidas: ordenacao textual de dd/mm/aaaa erra.
+        inicio, fim, datas_ruins = "N/I", "N/I", 0
+        if "Data_da_operacao" in self.df_com.columns:
+            datas = pd.to_datetime(
+                self.df_com["Data_da_operacao"].str.strip(), format="%d/%m/%Y", errors="coerce"
+            )
+            datas_ruins = int(datas.isna().sum())
+            if datas.notna().any():
+                inicio = datas.min().strftime("%d/%m/%Y")
+                fim = datas.max().strftime("%d/%m/%Y")
+
         self.metricas = {
             "comunicacoes_validas": len(self.df_com),
             "comunicacoes_removidas_dedup": dedup,
             "indexadores_unicos": int(self.df_com["Indexador"].nunique()),
-            "titulares": int(titulares["cpfCnpjEnvolvido"].nunique()),
+            "titulares": int(self.titulares()["cpfCnpjEnvolvido"].nunique()),
             "envolvidos": int(self.df_env["cpfCnpjEnvolvido"].nunique()),
             "ocorrencias": len(self.df_oco),
             "valor_total_campoA": float(self.df_com["CampoA_float"].sum())
             if "CampoA_float" in self.df_com.columns
             else 0.0,
-            "periodo_inicio": str(self.df_com["Data_da_operacao"].min())
-            if "Data_da_operacao" in self.df_com.columns
-            else "N/I",
-            "periodo_fim": str(self.df_com["Data_da_operacao"].max())
-            if "Data_da_operacao" in self.df_com.columns
-            else "N/I",
+            "valores_invalidos": invalidos,
+            "periodo_inicio": inicio,
+            "periodo_fim": fim,
+            "datas_ausentes_ou_invalidas": datas_ruins,
+            "correlacoes_por_indexador": len(self.correlacoes_por_indexador()),
             "legendas_do_arquivo": self.legendas_campos,
         }
 
         m = self.metricas
-        valor = f"{m['valor_total_campoA']:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
         self.log("")
         self.log("RESUMO DO RIF:")
         self.log(f"   Comunicacoes validas: {m['comunicacoes_validas']}")
         self.log(f"   Indexadores unicos:   {m['indexadores_unicos']}")
         self.log(f"   Titulares:            {m['titulares']}")
         self.log(f"   Total de envolvidos:  {m['envolvidos']}")
-        self.log(f"   Valor total (CampoA): R$ {valor}")
+        self.log(f"   Valor total (CampoA): {formatar_valor_br(m['valor_total_campoA'])}")
         self.log(f"   Periodo:              {m['periodo_inicio']} a {m['periodo_fim']}")
+        if datas_ruins:
+            self.log(f"   [VERIFICAR] {datas_ruins} comunicacao(oes) sem data valida, fora do periodo")
+        for campo, itens in invalidos.items():
+            self.log(f"   [VERIFICAR] {campo}: {len(itens)} valor(es) invalido(s), fora das somas")
 
         return True
 
+    def titulares(self):
+        """FASE 4.2: titulares de conta (tipoEnvolvido = Titular)."""
+        cols = [
+            c
+            for c in ("Indexador", "cpfCnpjEnvolvido", "nomeEnvolvido", "agenciaEnvolvido", "contaEnvolvido", "DataAberturaConta")
+            if c in self.df_env.columns
+        ]
+        t = self.df_env[self.df_env["tipoEnvolvido"].str.strip().str.lower() == "titular"]
+        return t[cols].drop_duplicates()
+
+    def cruzar(self):
+        """FASE 4.1: cruza os tres arquivos pelo Indexador (uma linha por combinacao)."""
+        df = pd.merge(self.df_env, self.df_com, on="Indexador", how="outer", suffixes=("_env", "_com"))
+        return pd.merge(df, self.df_oco, on="Indexador", how="outer", suffixes=("", "_oco"))
+
+    def correlacoes_por_indexador(self):
+        """FASE 5.3: pares de envolvidos que aparecem no mesmo Indexador.
+
+        O mesmo Indexador so indica correlacao de registros no RIF; nao prova,
+        por si, vinculo financeiro, societario, familiar ou criminoso.
+        """
+        cols = ["cpfCnpjEnvolvido", "nomeEnvolvido", "tipoEnvolvido"]
+        pares = []
+        for idx, grupo in self.df_env.groupby("Indexador"):
+            pessoas = grupo[cols].drop_duplicates().values.tolist()
+            for i in range(len(pessoas)):
+                for j in range(i + 1, len(pessoas)):
+                    pares.append({
+                        "indexador": int(idx),
+                        "pessoa_1": pessoas[i][1], "cpf_cnpj_1": pessoas[i][0], "tipo_1": pessoas[i][2],
+                        "pessoa_2": pessoas[j][1], "cpf_cnpj_2": pessoas[j][0], "tipo_2": pessoas[j][2],
+                        "natureza": NATUREZA_CORRELACAO,
+                    })
+        colunas = ["indexador", "pessoa_1", "cpf_cnpj_1", "tipo_1", "pessoa_2", "cpf_cnpj_2", "tipo_2", "natureza"]
+        return pd.DataFrame(pares, columns=colunas)
+
+    def verificar_alvos(self, alvos):
+        """FASE 4.5: localiza os alvos da investigacao no RIF.
+
+        Correspondencia so vale por CPF/CNPJ. Nome completo identico sem o mesmo
+        documento gera apenas candidato [VERIFICAR] (homonimo e comum). Nome
+        parcial nunca casa.
+        """
+        env = self.df_env.assign(
+            _doc=self.df_env["cpfCnpjEnvolvido"].map(so_digitos),
+            _nome=self.df_env["nomeEnvolvido"].map(normalizar_nome),
+        )
+        vazio = env.iloc[0:0]
+        resultados = []
+        for alvo in alvos:
+            doc = so_digitos(alvo.get("cpf_cnpj", ""))
+            nome = normalizar_nome(alvo.get("nome", ""))
+            achados = env[env["_doc"] == doc] if doc else vazio
+            status = "encontrado_por_documento"
+            if achados.empty:
+                achados = env[env["_nome"] == nome] if nome else vazio
+                if achados.empty:
+                    status = "nao_encontrado"
+                elif doc:
+                    status = "[VERIFICAR] nome identico, documento divergente"
+                else:
+                    status = "[VERIFICAR] nome identico, alvo sem documento"
+            resultados.append({
+                "alvo_nome": alvo.get("nome", ""),
+                "alvo_cpf_cnpj": alvo.get("cpf_cnpj", ""),
+                "status": status,
+                "no_rif": [
+                    {
+                        "nome": n,
+                        "cpf_cnpj": c,
+                        "tipos": sorted(g["tipoEnvolvido"].str.strip().unique().tolist()),
+                        "indexadores": sorted(int(i) for i in g["Indexador"].unique()),
+                    }
+                    for (c, n), g in achados.groupby(["cpfCnpjEnvolvido", "nomeEnvolvido"])
+                ],
+            })
+        return resultados
+
     def exportar_limpos(self, destino):
-        """Grava os 3 dataframes ja limpos em CSV UTF-8, para as fases seguintes."""
+        """Grava os CSVs limpos e as tabelas relacionais, base das FASES 4 a 6."""
         os.makedirs(destino, exist_ok=True)
-        for nome, df in (("envolvidos", self.df_env), ("comunicacoes", self.df_com), ("ocorrencias", self.df_oco)):
-            caminho = os.path.join(destino, f"limpo_{nome}.csv")
+        tabelas = (
+            ("limpo_envolvidos", self.df_env),
+            ("limpo_comunicacoes", self.df_com),
+            ("limpo_ocorrencias", self.df_oco),
+            ("cruzado_por_indexador", self.cruzar()),
+            ("titulares", self.titulares()),
+            ("correlacoes_por_indexador", self.correlacoes_por_indexador()),
+        )
+        for nome, df in tabelas:
+            caminho = os.path.join(destino, f"{nome}.csv")
             df.to_csv(caminho, index=False, encoding="utf-8", sep=";")
             self.log(f"Gravado: {caminho}")
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Processa os CSVs do RIF/COAF (validacao, limpeza, deduplicacao, resumo).")
+    ap = argparse.ArgumentParser(
+        description="Processa os CSVs do RIF/COAF (validacao, limpeza, deduplicacao, resumo e tabelas relacionais)."
+    )
     ap.add_argument("--entrada", default=".", help="diretorio com os 3 CSVs do RIF (padrao: diretorio atual)")
     ap.add_argument("--saida", help="grava o resumo em JSON neste arquivo")
-    ap.add_argument("--exportar-limpos", metavar="DIR", help="grava os CSVs ja limpos neste diretorio")
+    ap.add_argument("--exportar-limpos", metavar="DIR", help="grava os CSVs limpos e as tabelas das FASES 4 e 5 neste diretorio")
+    ap.add_argument("--alvos", metavar="ARQ", help="CSV (nome;cpf_cnpj) ou JSON com os alvos a localizar no RIF")
     args = ap.parse_args()
 
     proc = ProcessadorRIF(args.entrada)
     if not proc.processar():
         return 1
+
+    if args.alvos:
+        proc.metricas["alvos"] = proc.verificar_alvos(carregar_alvos(args.alvos))
+        proc.log("")
+        proc.log("ALVOS:")
+        for r in proc.metricas["alvos"]:
+            proc.log(f"   {r['alvo_nome'] or r['alvo_cpf_cnpj']}: {r['status']}")
 
     if args.exportar_limpos:
         proc.exportar_limpos(args.exportar_limpos)
