@@ -38,8 +38,15 @@ N. [GRAVIDADE] Defeito em uma frase
    Por quê: o que torna isso um defeito, em uma ou duas linhas
 ```
 
-Gravidade: **CRÍTICO** (compromete a validade ou a decisão — contradição de fato essencial, requisito legal ausente, conclusão que não fecha), **RELEVANTE** (enfraquece a peça — afirmação sem lastro, fundamentação genérica), **FORMAL** (placeholder, dispositivo mal citado, inconsistência de forma).
+Gravidade:
+
+- **CRÍTICO** — compromete a validade ou a decisão: contradição de fato essencial, requisito legal ausente, conclusão que não fecha. Também: nome de investigado, vítima ou autoridade trocado; CPF/CNPJ inteiro errado; valor estrutural da imputação divergente; fala atribuída a quem não a disse; data que altera prescrição, decadência ou marco da conduta; artigo errado no tipo penal central; fato, documento ou diligência afirmado que não consta do material.
+- **RELEVANTE** — enfraquece a peça: afirmação sem lastro, fundamentação genérica. Também: data divergente em ato relevante, CPF/CNPJ com dígito errado, endereço trocado, inciso ou parágrafo errado com artigo certo, cargo ou lotação imprecisos.
+- **FORMAL** — placeholder, dispositivo mal citado sem efeito no mérito, letra trocada em nome, diferença de centavos, folha com pequeno desvio, sigla errada.
 
 Nenhum defeito encontrado: responda exatamente `SEM APONTAMENTOS` e, em uma linha, o que você verificou.
 
-Ao final, sempre: **Não auditado** — o que você não conseguiu verificar e por quê (base probatória ausente, folha não fornecida, jurisprudência não conferível offline).
+Ao final, sempre:
+
+- **Não auditado** — o que você não conseguiu verificar e por quê (base probatória ausente, folha não fornecida, jurisprudência não conferível offline).
+- **Veredito** — uma linha, só um destes: `APTA` (sem apontamentos); `APTA COM AJUSTES FORMAIS` (só FORMAL); `APTA APÓS CORREÇÕES` (RELEVANTE, nenhum CRÍTICO); `REFAZER ANTES DE ASSINAR` (qualquer CRÍTICO).

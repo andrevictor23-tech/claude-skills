@@ -1,0 +1,29 @@
+{
+  "skill_name": "portaria-ip",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "portaria-denuncia-anonima-trafico",
+      "prompt": "baixa a portaria. Denúncia anônima nº 21/2026 diz que um homem conhecido como 'Neguinho do Lava-Jato' vende droga no lava-jato da Rua das Palmeiras, bairro Boa Nova, usando um perfil de Instagram para combinar entregas. O investigador fez o Relatório de Investigação nº 2026.13.140001 confirmando movimentação de usuários no local em três dias de campana. Ninguém identificado ainda.",
+      "expected_output": "Corpo de portaria no Modelo A, sem cabeçalho, número de portaria ou assinatura digital. Origem citando a denúncia anônima nº 21/2026 corroborada pelo Relatório de Investigação nº 2026.13.140001. Capitulação em tese no art. 33 da Lei 11.343/2006, praticado por pessoa(s) a apurar, contra a saúde pública. Providência única ou numerada de juntada dos documentos existentes, autos conclusos e CUMPRA-SE. Nenhum nome ou CPF inventado; o apelido pode constar como referido na denúncia. Diligências investigativas (requisição ao Instagram, campana, representação) apenas nas Notas ao Delegado, não na portaria."
+    },
+    {
+      "id": 1,
+      "eval_name": "portaria-derivada-rif-orcrim",
+      "prompt": "Instaura o IP derivado do IP 55.4.2026.10001 (tráfico). Chegaram os RIF-150001 e RIF-150002 do COAF e o Relatório de Inteligência nº 12/2026/NI/DRAF. Apontam fracionamento de depósitos em espécie, contas de passagem e uso de duas empresas de fachada por JOÃO TESTE DA SILVA (CPF fictício nº 1) e MARIA TESTE SOUZA (CPF fictício nº 2), possível lavagem do dinheiro do tráfico por uma facção.",
+      "expected_output": "Corpo de portaria no Modelo B. Origem no curso do IP 55.4.2026.10001, com os RIFs e o relatório de inteligência. Narrativa dos indicadores em tese. Capitulação: art. 1º da Lei 9.613/1998 e, quanto à organização criminosa, apresentação nas Notas da alternativa entre art. 2º da Lei 12.850/2013 e uma figura associativa menor (art. 35 da Lei 11.343/2006, por ser tráfico, ou art. 288 do CP), com recomendação, já que estrutura e divisão de tarefas não estão descritas. Investigados com os CPFs fornecidos e 'outros a apurar'. Providências: autuação das peças trasladadas em ordem, certificação da origem, tramitação sob acesso restrito por envolver inteligência financeira, autos conclusos. Termina com CUMPRA-SE."
+    },
+    {
+      "id": 2,
+      "eval_name": "oficio-operadora-por-ip-cgnat",
+      "prompt": "Faz ofício pra Claro pedindo quem estava usando o IP 189.40.10.20 no dia 03/10/2026 às 22:14 (horário de Brasília). IP 401.4.2026.20002 (estelionato via falsa central). Precisa ser rápido.",
+      "expected_output": "Corpo do ofício de requisição de dados cadastrais à Claro, sem cabeçalho nem número. Identificador com IP, data, hora e fuso. Aponta nas Notas, ou pergunta, a falta da porta lógica de origem, sem a qual o IP compartilhado (CGNAT) não individualiza o assinante; campo de porta marcado [VERIFICAR] ou pedido ao usuário. Campos de provedor de conexão (nome, CPF/CNPJ, endereço de instalação, telefone, e-mail, contrato), sem campos de Starlink. Fundamento específico (art. 10, § 3º, da Lei 12.965/2014 e/ou art. 2º, § 2º, da Lei 12.830/2013), sem art. 21 da Lei 12.850 porque não é organização criminosa. Não notificação com base no art. 20 do CPP. Prazo de 24 horas com motivo da urgência ou [VERIFICAR] do motivo. Nota sobre o art. 10, § 1º, do Marco Civil e a possibilidade de recusa, com caminho para representação."
+    },
+    {
+      "id": 3,
+      "eval_name": "oficio-google-orcrim-com-preservacao",
+      "prompt": "Ofício pro Google com os dados cadastrais do e-mail contato.teste.investigacao@gmail.com, IP 392.4.2026.30003, investigação de organização criminosa. Quero também que preservem os registros para eu pedir depois ao juiz. Resposta via LERS para o agente responsável, que eu vou informar.",
+      "expected_output": "Corpo do ofício ao Google com e-mail como identificador, campos cadastrais do Google (nome, e-mail e telefone de recuperação, data de criação), sem registros de acesso. Fundamento cumulado: art. 15 da Lei 12.850/2013 e art. 10, § 3º, da Lei 12.965/2014. Não notificação pelo art. 20 do CPP e advertência do art. 21 da Lei 12.850/2013 (não a Lei 12.830). Parágrafo de preservação com arts. 13, § 2º, e 15, § 2º, da Lei 12.965/2014. Canal LERS com responsável em [VERIFICAR]. Notas registram o prazo de 60 dias para o pedido judicial (art. 13, § 3º) e que IPs de acesso vão à representacao-cautelar."
+    }
+  ]
+}

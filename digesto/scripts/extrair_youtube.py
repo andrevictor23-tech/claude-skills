@@ -6,10 +6,10 @@ Uso:  python extrair_youtube.py <pasta_de_saida> <url_ou_id> [url_ou_id ...]
 
 Grava um .txt por vídeo, com carimbo de tempo a cada parágrafo, e imprime uma
 linha de status por vídeo. O texto NÃO deve ser lido pelo agente: serve de
-entrada para o delegado (Gemini ou Hermes).
+entrada para o delegado (Gemini).
 
-Depende de youtube-transcript-api, presente no venv do Hermes:
-%LOCALAPPDATA%/hermes/hermes-agent/venv/Scripts/python.exe
+Depende de youtube-transcript-api:
+python -m pip install youtube-transcript-api
 """
 import re
 import sys

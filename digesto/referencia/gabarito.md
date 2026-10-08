@@ -1,6 +1,6 @@
 # Gabarito do delegado
 
-O que o Gemini (ou o Hermes) recebe e o que ele devolve. O objetivo é que volte
+O que o Gemini recebe e o que ele devolve. O objetivo é que volte
 pouco texto e muito julgamento: cerca de 400 palavras por fonte, no lugar das
 dezenas de milhares do original.
 
@@ -48,8 +48,7 @@ Regras de julgamento:
 ## Chamada
 
 Preferência: `gemini --skip-trust -p "PROMPT"`.
-Reserva, quando o Gemini devolver 429 ou vazio: `hermes -z "PROMPT"`.
-Último recurso: fazer localmente e **dizer ao usuário que foi feito localmente**.
+Se o Gemini devolver 429 ou vazio: fazer localmente e **dizer ao usuário que foi feito localmente**.
 
 Grave a resposta em `digestao/<slug>.json`. Se vier com cerca de código em volta,
 descasque antes de gravar.

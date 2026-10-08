@@ -80,7 +80,7 @@ Nunca corrija no automático a lista inteira. Revisor erra, e apontamento errado
 Ao entregar a peça ao usuário, acrescente seção enxuta ao final:
 
 ```
-**Revisão independente**: [N] apontamentos — [N] corrigidos, [N] pendentes de dado, [N] recusados.
+**Revisão independente**: [N] apontamentos — [N] corrigidos, [N] pendentes de dado, [N] recusados. Veredito do revisor: [veredito].
 - Corrigido: [defeito] ([onde])
 - Pendente: [defeito] — falta [dado], marcado [VERIFICAR]
 - Recusado: [defeito] — [motivo em uma linha]

@@ -38,8 +38,8 @@ abrir o navegador:
 devolve título, data, `canonical_url` e o campo `audience`, que diz se o post é
 aberto ou só para assinante.
 
-Rode os scripts com o Python do venv do Hermes, que tem as dependências:
-`$env:LOCALAPPDATA/hermes/hermes-agent/venv/Scripts/python.exe`
+Rode os scripts com o Python do sistema. O `extrair_youtube.py` depende de
+`youtube-transcript-api` (`python -m pip install youtube-transcript-api`).
 
 ## 3. Delegar a digestão
 
@@ -47,8 +47,8 @@ Rode os scripts com o Python do venv do Hermes, que tem as dependências:
 python scripts/delegar.py extraido digestao referencia/perfil.md
 ```
 
-Uma chamada por fonte, duas em paralelo. Tenta `gemini --skip-trust -p` e cai
-para `hermes -z` quando o Gemini devolve 429, o que acontece com frequência. O
+Uma chamada por fonte, duas em paralelo. Usa `gemini --skip-trust -p`; se o Gemini devolver 429,
+o que acontece com frequência, a fonte falha e o script avisa. O
 conteúdo vai embutido no prompt, não por caminho de arquivo, para não depender
 das ferramentas de leitura do delegado. O esquema de saída está em
 `referencia/gabarito.md`. Cada JSON gravado registra em `_delegado` quem fez o

@@ -17,7 +17,7 @@ clara e padronizada.
 - `demucs` (separação voz/música, para suavizar trilha de fundo em material de TV)
 
 Se algo faltar em outra máquina: `pip install faster-whisper auto-editor imageio-ffmpeg demucs`.
-Na máquina onde `python` aponta para o venv do hermes (sem pip), use o venv dedicado
+Na máquina onde `python` não tiver pip, use o venv dedicado
 `~/.claude/tools/edita-video-venv` (criado com `uv venv --python 3.12`; instalar com
 `uv pip install --python <venv>\Scripts\python.exe ...`). O ffmpeg do winget já está no PATH.
 

@@ -4,7 +4,7 @@ Manda cada arquivo extraído para o delegado e grava a digestão em JSON.
 
 Uso:  python delegar.py <pasta_extraido> <pasta_digestao> <perfil.md>
 
-Preferência Gemini, reserva Hermes. O conteúdo vai embutido no prompt, e não por
+Delegado: Gemini CLI. O conteúdo vai embutido no prompt, e não por
 caminho de arquivo, porque assim não depende das ferramentas de leitura do
 delegado. Imprime uma linha de status por fonte; nada do texto volta para cá.
 """
@@ -73,8 +73,7 @@ def chamar(comando, prompt, por_stdin, limite=600):
     """
     O Gemini precisa receber o prompt por stdin. O atalho gemini.CMD passa por
     cmd.exe, que estropia argumento com quebra de linha: o processo termina com
-    exito e o modelo responde que nao recebeu texto nenhum. O Hermes e .EXE de
-    verdade e aceita o prompt como argumento.
+    exito e o modelo responde que nao recebeu texto nenhum.
     """
     if por_stdin:
         r = subprocess.run(comando, input=prompt, capture_output=True, text=True,
@@ -89,10 +88,9 @@ def digerir(arquivo, pasta_saida, perfil):
     prompt = MOLDE.format(perfil=perfil, esquema=ESQUEMA,
                           conteudo=arquivo.read_text(encoding="utf-8"))
     destino = pasta_saida / f"{arquivo.stem}.json"
-    # no Windows os dois sao .CMD/.EXE: sem o caminho resolvido o subprocess nao acha
+    # no Windows o gemini e .CMD: sem o caminho resolvido o subprocess nao acha
     tentativas = [
         ("gemini", [shutil.which("gemini"), "--skip-trust"], True),
-        ("hermes", [shutil.which("hermes"), "-z"], False),
     ]
     for nome, comando, por_stdin in tentativas:
         if not comando[0]:
@@ -135,7 +133,7 @@ def main():
         resultados = list(pool.map(lambda a: digerir(a, saida, perfil), arquivos))
     print(f"\n{sum(resultados)}/{len(arquivos)} digeridas")
     if not all(resultados):
-        print("ATENCAO: alguma fonte falhou nos dois delegados; avise o usuario.")
+        print("ATENCAO: alguma fonte falhou no delegado; avise o usuario.")
 
 
 if __name__ == "__main__":
